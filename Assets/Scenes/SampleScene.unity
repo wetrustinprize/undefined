@@ -329,14 +329,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f68448340d6840b940cd83371d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 8
-  fric: 0.65
+  maxSpeed: 9
+  fric: 0.8
   defaultGravityScale: 3
   jumpSpeed: 12
+  wallCheckDist: 0.2
+  wallBoxOffset: {x: 0, y: -1.03}
+  wallBoxSize: {x: 1.09, y: 1.93}
+  framesToWallJump: 17
+  groundBoxOffset: {x: 0, y: -2}
+  groundBoxSize: {x: 1.09, y: 0.08}
+  framesToJump: 8
+  framesToPreJump: 20
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  groundChecker: {fileID: 720623933}
   IsGrounded: 0
   OnWall: 0
 --- !u!114 &1040150030

@@ -3,12 +3,18 @@
 public class PlayerAnimator : MonoBehaviour
 {
     
+        #region Variables
+
     [SerializeField]
     private Animator animator;
     [SerializeField]
     private SpriteRenderer sprite;
 
+    //Script side vars
+
     private PlayerMotor motor {get {return GetComponent<PlayerMotor>();}}
+
+        #endregion
 
     void Update() {
         float vInput = motor.verticalInput;
