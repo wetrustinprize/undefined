@@ -49,6 +49,7 @@ public class PlayerMotor : MonoBehaviour
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
     public float verticalSpeed {get {return Mathf.Round(inputSpeed.x);}}
     public float verticalInput {get {return Mathf.Round(input.x);}}
+    public bool isFacingWall {get {return (input.x == 1 && onRightWall || input.x == -1 && onLeftWall); } }
 
     // Input recieved by the player
     private Vector2 input;
@@ -66,6 +67,7 @@ public class PlayerMotor : MonoBehaviour
 
     private bool onRightWall;
     private bool onLeftWall;
+    private float lastFaceDir;
 
         #endregion
 
@@ -112,6 +114,9 @@ public class PlayerMotor : MonoBehaviour
         CheckNearWall();
         DebugPlayer();
 
+        if((!canWallJump || !canJump) && jumped)
+            jumped = false;
+
         // Apply the final speed
         rb.velocity = finalSpeed;
         
@@ -120,7 +125,7 @@ public class PlayerMotor : MonoBehaviour
     // Jump void called when the players hits the jump button
     // Start the pre jump frames
     void Jump() {
-        frameToNotPreJump = framesToJump;
+        frameToNotPreJump = framesToPreJump;
         if(jumped || !canJump && !canWallJump) return;
         jumped = true;
         frameToNotPreJump = 0;
@@ -141,7 +146,7 @@ public class PlayerMotor : MonoBehaviour
         if(IsGrounded)
             framesToNotJump = framesToJump;
 
-        canJump = framesToNotJump != 0;
+        canJump = framesToNotJump != 0 && !OnWall;
         
         CalculateFrames();
     }
@@ -153,7 +158,6 @@ public class PlayerMotor : MonoBehaviour
 
 
         // Checking if has a wall nearby
-        // By checking that, a slower gravity will be applied so the player will be "grabbed" at the wall
         Vector2 pos = (Vector2)transform.position + col.offset;
         Vector2 siz = col.size - new Vector2(0, 0.1f);
         
@@ -163,32 +167,48 @@ public class PlayerMotor : MonoBehaviour
         onRightWall = Physics2D.OverlapBox(pos + new Vector2(wallCheckDist, 0), siz, 0, groundLayer);
         onLeftWall = Physics2D.OverlapBox(pos + new Vector2(-wallCheckDist, 0), siz, 0, groundLayer);
 
-        var wallJump = Physics2D.OverlapBox(wjpos + new Vector2(wallCheckDist, 0), wjsiz, 0, groundLayer) || Physics2D.OverlapBox(wjpos + new Vector2(-wallCheckDist, 0), wjsiz, 0, groundLayer);
+        bool WallJump = Physics2D.OverlapBox(wjpos + new Vector2(wallCheckDist, 0), wjsiz, 0, groundLayer) || Physics2D.OverlapBox(wjpos + new Vector2(-wallCheckDist, 0), wjsiz, 0, groundLayer);
+
+        // If is on wall or have extra frames to jump, canWallJump will be true
+        canWallJump = WallJump || framesToNotWallJump != 0;
 
         OnWall = onRightWall || onLeftWall;
-        
-        if(wallJump && !IsGrounded) {
+
+        // Do gravity calculations if is on wall
+        if(OnWall) {
+            // Give player extra frames to wall jump
             framesToNotWallJump = framesToWallJump;
-            canWallJump = true;
-        } else {
-            if(framesToNotWallJump == 0 || IsGrounded) {
-                canWallJump = false;
+
+            //Calculate gravity
+            if(input.y != -1 && canWallJump && isFacingWall) {  //If is facing the wall and is 'grabbing' it
+                inputSpeed = new Vector2(0, rb.velocity.y * 0.70f);
+            } else if((!IsGrounded || input.y == -1) && isFacingWall) { //If is still on the wall but is holding down or not 'grabbing' a wall
+                inputSpeed = new Vector2(0, rb.velocity.y);
+            } else { //If players moves against the wall direction
+                inputSpeed = new Vector2(inputSpeed.x, jumpCalc ? inputSpeed.y : rb.velocity.y);
             }
         }
 
-        if(!OnWall)
-            return;
+        // Calculate jump
+        if(jumped && !jumpCalc && (canWallJump || framesToNotWallJump != 0)) {
+            float dir = 0;
 
-        if((input.x == 1 && onRightWall || input.x == -1 && onLeftWall) && input.y != -1 && canWallJump) {
-            inputSpeed = new Vector2(0, rb.velocity.y * 0.70f);
-        } else if(input.x == 0 || !canWallJump) {
-            inputSpeed = new Vector2(0, rb.velocity.y);
-        }
+            // See which direction the player will impulse depending on the wall is grabbing or the last direction
+            if(lastFaceDir == 1 && onRightWall)
+                dir = -1;
+            else if(lastFaceDir == -1 && onLeftWall)
+                dir = 1;
+            else
+                dir = lastFaceDir;
 
-        if(jumped && !jumpCalc && onRightWall != onLeftWall && canWallJump && !IsGrounded) {
+            // Reset variables
+            jumped  = false;
             jumpCalc = true;
-            inputSpeed = new Vector2((onLeftWall ? 1 : -1) * (jumpSpeed / 2), jumpSpeed);
-            Debug.Log(inputSpeed);
+            framesToNotWallJump = 0;
+            canWallJump = false;
+
+            // Apply force
+            inputSpeed = new Vector2(dir * (jumpSpeed / 2), jumpSpeed);
         }
 
     }
@@ -199,7 +219,7 @@ public class PlayerMotor : MonoBehaviour
     void CalculateVelocity() {
         
         // Ground and jump check
-        if((jumped || frameToNotPreJump != 0) && !jumpCalc && (!OnWall || OnWall && IsGrounded)) { //If has started the jump and didn't calculate the y velocity
+        if((jumped || frameToNotPreJump != 0) && !jumpCalc && !OnWall && canJump) { //If has started the jump and didn't calculate the y velocity
 
             jumped = false;
             jumpCalc = true;
@@ -211,7 +231,7 @@ public class PlayerMotor : MonoBehaviour
             jumped = OnWall ? jumped : false;
             inputSpeed.y = OnWall ? inputSpeed.y : 0;
 
-        } else { //If is not grounded
+        } else if(!jumped) { //If is not grounded
 
             jumped = false;
             inputSpeed.y = rb.velocity.y;
@@ -220,8 +240,10 @@ public class PlayerMotor : MonoBehaviour
 
         // X velocity calc w/ friction
         if(input.x > 0) {
+            lastFaceDir = 1;
             inputSpeed.x = Mathf.Clamp(inputSpeed.x + fric, -maxSpeed, maxSpeed);
         } else if(input.x < 0) {
+            lastFaceDir = -1;
             inputSpeed.x = Mathf.Clamp(inputSpeed.x - fric, -maxSpeed, maxSpeed);
         } else {
             inputSpeed.x = Mathf.Lerp(inputSpeed.x, 0, (fric / 2) * Time.deltaTime * 30);
@@ -229,6 +251,7 @@ public class PlayerMotor : MonoBehaviour
 
     }
 
+    // Called every Update() to remove a frame from the extra frames
     void CalculateFrames() {
 
         if(framesToNotJump != 0)
