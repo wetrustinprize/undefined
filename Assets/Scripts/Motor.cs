@@ -1,9 +1,49 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
-public class PlayerMotor : MonoBehaviour
+[System.Serializable]
+public class Force {
+
+    public string Name;
+    public Vector2 ForceApplied;
+    public Vector2 ActualForce;
+    public float TimeToStop;
+    public bool ApplyGravity;
+
+    ///<param name="f">Force to be applied</param>
+    ///<param name="t">Time to the force stop</param>
+    ///<param name="g">Should calculate gravity?</param>
+    public Force(Vector2 f, float t = 0, bool g = true) {
+        Name = "noname";
+        ForceApplied = f;
+        ActualForce = f;
+        TimeToStop = t;
+        ApplyGravity = g;
+    }
+
+    ///<param name="f">Force to be applied</param>
+    ///<param name="n">Name of the force</param>
+    ///<param name="t">Time to the force stop</param>
+    ///<param name="g">Should calculate gravity?</param>
+    public Force(string n, Vector2 f, float t = 0, bool g = true) {
+        Name = n;
+        ForceApplied = f;
+        ActualForce = f;
+        TimeToStop = t;
+        ApplyGravity = g;
+    }
+
+}
+
+[RequireComponent(typeof(Rigidbody2D))]
+public class Motor : MonoBehaviour
 {
     
         #region Variables
+
+    [Header("Bypass:")]
+    public bool BypassWalk;
+    public bool BypassJump;
 
     [Header("Velocity")]
     [SerializeField]
@@ -16,32 +56,50 @@ public class PlayerMotor : MonoBehaviour
     [Header("Jump")]
     [SerializeField]
     private float jumpSpeed = 12f;
+    [SerializeField]
+    private int framesToWallJump;
+    [SerializeField]
+    private int framesToJump;
+    [SerializeField]
+    private int framesToPreJump;
 
     [Header("Ground and Wall Check")]
     [SerializeField]
     private float wallCheckDist = 0.2f;
+
+    [Space]
+
     [SerializeField]
     private Vector2 wallBoxOffset;
     [SerializeField]
     private Vector2 wallBoxSize;
+
+    [Space]
+
     [SerializeField]
-    private int framesToWallJump;
+    private Vector2 cellingBoxOffset;
+    [SerializeField]
+    private Vector2 cellingBoxSize;
+
     [Space]
 
     [SerializeField]
     private Vector2 groundBoxOffset;
     [SerializeField]
     private Vector2 groundBoxSize;
-    [SerializeField]
-    private int framesToJump;
-    [SerializeField]
-    private int framesToPreJump;
+
     [Space]
 
     [SerializeField]
     private LayerMask groundLayer;
-    public bool IsGrounded;
+    public bool OnGround;
     public bool OnWall;
+    public bool OnCelling;
+    public bool onRightWall;
+    public bool onLeftWall;
+
+    [Header("Other")]
+    public float lastFaceDir;
 
     //Script side
 
@@ -56,18 +114,11 @@ public class PlayerMotor : MonoBehaviour
 
         #region Speed Vars
     
+    private List<Force> forces = new List<Force>();
     private Vector2 inputSpeed; // Calculate in CalculateVelocity()
-    private Vector2 externalSpeed; // TODO
-    private Vector2 constantExternalSpeed; // TODO
+    private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
+    private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
     private Vector2 finalSpeed { get { return inputSpeed + externalSpeed + constantExternalSpeed; } } // Final velocity
-
-        #endregion
-
-        #region Checker Vars
-
-    private bool onRightWall;
-    private bool onLeftWall;
-    private float lastFaceDir;
 
         #endregion
 
@@ -90,16 +141,56 @@ public class PlayerMotor : MonoBehaviour
         rb.gravityScale = defaultGravityScale;
     }
 
-    //Called every frame
+    public void SetInput(Vector2 v2) {
+
+        input = v2;
+
+    }
+
+    // Jump void called when the players hits the jump button
+    // Start the pre jump frames
+    void Jump() {
+        if(BypassJump) return;
+        frameToNotPreJump = framesToPreJump;
+        if(jumped || !canJump && !canWallJump) return;
+        jumped = true;
+        frameToNotPreJump = 0;
+    }
+
+    // Called to apply a force
+    public void ApplyForce(Force f) {
+
+        forces.Add(f);
+
+    }
+
+    // Called to set the consatant speed
+    public void ApplyConstSpeed(Vector2 f) {
+        constantExternalSpeed = f;
+    }
+
+    // Called to remove a force
+    public void RemoveForce(Force f) {
+
+        if(forces.Exists(force => force == f)) forces.Remove(f);
+
+    }
+
+    // Check if a force exists by its name
+    public bool HasForce(string n) {
+        return forces.Exists(force => force.Name == n);
+    }
+
+    // Called to remove a force (using only name)
+    ///<param name="n">Name of the force</param>
+    public void RemoveForce(string n) {
+
+        if(forces.Exists(force => force.Name == n)) forces.Remove(forces.Find(force => force.Name == n));
+
+    }
+
     void Update() {
-
-        // TODO:
-        // * apply all the input commands inside PlayerController class
-
-        // Get the axis from the default input system from unity
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-        // Get the space key to jump
         if(Input.GetKeyDown(KeyCode.Space)) Jump();
     }
 
@@ -109,26 +200,16 @@ public class PlayerMotor : MonoBehaviour
         // * make a void that apply aditional velocity to the player (like explosion impulses etc...)
 
         //Do all the calculation
-        CheckIsGrounded();
-        CalculateVelocity();
+        CalculateInputVelocity();
+        CheckIsGroundedOrCelling();
         CheckNearWall();
+        CalculateJump();
+        CalculateExternalSpeed();
         DebugPlayer();
-
-        if((!canWallJump || !canJump) && jumped)
-            jumped = false;
 
         // Apply the final speed
         rb.velocity = finalSpeed;
         
-    }
-
-    // Jump void called when the players hits the jump button
-    // Start the pre jump frames
-    void Jump() {
-        frameToNotPreJump = framesToPreJump;
-        if(jumped || !canJump && !canWallJump) return;
-        jumped = true;
-        frameToNotPreJump = 0;
     }
 
         #region Checkers and Calculators
@@ -137,13 +218,17 @@ public class PlayerMotor : MonoBehaviour
     // Simple void to calculate if the player is on ground
     // Also calculates the extra frames to jump
     // NEED to be called before calculating velocity and checking wall
-    void CheckIsGrounded() {
-        Vector2 pos = (Vector2)transform.position + groundBoxOffset;
-        Vector2 siz = groundBoxSize;
+    void CheckIsGroundedOrCelling() {
+        Vector2 gpos = (Vector2)transform.position + groundBoxOffset;
+        Vector2 gsiz = groundBoxSize;
 
-        IsGrounded = Physics2D.OverlapBox(pos, siz, 0, groundLayer);
+        Vector2 cpos = (Vector2)transform.position + cellingBoxOffset;
+        Vector2 csiz = cellingBoxSize;
 
-        if(IsGrounded)
+        OnGround = Physics2D.OverlapBox(gpos, gsiz, 0, groundLayer);
+        OnCelling = Physics2D.OverlapBox(cpos, csiz, 0, groundLayer);
+
+        if(OnGround)
             framesToNotJump = framesToJump;
 
         canJump = framesToNotJump != 0 && !OnWall;
@@ -152,8 +237,7 @@ public class PlayerMotor : MonoBehaviour
     }
 
     // Void to check if is near a wall
-    // Also calculate extra frames to walljump
-    // Do the calculation of the walljump
+    // Also apply slowness
     void CheckNearWall() {
 
 
@@ -182,14 +266,43 @@ public class PlayerMotor : MonoBehaviour
             //Calculate gravity
             if(input.y != -1 && canWallJump && isFacingWall) {  //If is facing the wall and is 'grabbing' it
                 inputSpeed = new Vector2(0, rb.velocity.y * 0.70f);
-            } else if((!IsGrounded || input.y == -1) && isFacingWall) { //If is still on the wall but is holding down or not 'grabbing' a wall
+            } else if((!OnGround || input.y == -1) && isFacingWall) { //If is still on the wall but is holding down or not 'grabbing' a wall
                 inputSpeed = new Vector2(0, rb.velocity.y);
             } else { //If players moves against the wall direction
                 inputSpeed = new Vector2(inputSpeed.x, jumpCalc ? inputSpeed.y : rb.velocity.y);
             }
         }
 
-        // Calculate jump
+    }
+
+    //Do all the calculations for the jump
+    void CalculateJump() {
+
+        if((!canWallJump && !canJump) && jumped)
+            jumped = false;
+
+        if(BypassJump) return;
+
+        // Jump check
+        if((canJump || frameToNotPreJump != 0) && !jumpCalc && !OnWall && jumped) { //If has started the jump and didn't calculate the y velocity
+
+            jumped = false;
+            jumpCalc = true;
+            inputSpeed.y = jumpSpeed;
+
+        } else if(OnGround || OnWall) { //If is grounded
+
+            jumpCalc = false;
+            jumped = OnWall ? jumped : false;
+            inputSpeed.y = OnWall ? inputSpeed.y : 0;
+
+        } else if(!jumped) { //If has not jumped
+
+            jumped = false;
+            inputSpeed.y = rb.velocity.y;
+
+        }
+
         if(jumped && !jumpCalc && (canWallJump || framesToNotWallJump != 0)) {
             float dir = 0;
 
@@ -213,30 +326,54 @@ public class PlayerMotor : MonoBehaviour
 
     }
 
-    // Calculates the velocity on GROUND
-    // Do not calculate walljumps
-    // Calculate frame pre jump
-    void CalculateVelocity() {
+    // Calculates all the external speed
+    void CalculateExternalSpeed() {
+
+        if(forces == null || forces.Count == 0) return;
+        externalSpeed = Vector2.zero;
+
+        // Do gravity calculatations and stops when hit something
+        forces.ForEach(f => {
+
+            // Check is has collided
+            if(f.ActualForce.y > 0 && OnCelling) f.ActualForce.y = 0;
+            if(f.ActualForce.y < 0 && OnGround) f.ActualForce.y = 0;
+            if(f.ActualForce.x != 0 && OnWall) f.ActualForce.x = 0;
+
+            // Apply gravity
+            if(f.ActualForce.y > 0 && f.ApplyGravity) {
+                f.ActualForce += ((Vector2)Physics.gravity * rb.gravityScale) * Time.fixedDeltaTime;
+                if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
+            }
+
+            // Apply slowdown X if is on ground or if has timer
+            if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
+                f.ActualForce.x -= (f.ActualForce.x * Time.deltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
+                if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
+            }
+
+            // Apply slowdown Y
+            if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
+                f.ActualForce.y -= f.ActualForce.y * Time.deltaTime / f.TimeToStop;
+                if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
+            }
+
+        });
+
+        forces.RemoveAll(f => f.ActualForce == Vector2.zero);
+
+        forces.ForEach(f => {
+
+            externalSpeed += f.ActualForce;
+
+        });
+
+    }
+
+    // Calculates the velocity given by INPUT
+    void CalculateInputVelocity() {
         
-        // Ground and jump check
-        if((jumped || frameToNotPreJump != 0) && !jumpCalc && !OnWall && canJump) { //If has started the jump and didn't calculate the y velocity
-
-            jumped = false;
-            jumpCalc = true;
-            inputSpeed.y = jumpSpeed;
-
-        } else if(IsGrounded || OnWall) { //If is grounded
-
-            jumpCalc = false;
-            jumped = OnWall ? jumped : false;
-            inputSpeed.y = OnWall ? inputSpeed.y : 0;
-
-        } else if(!jumped) { //If is not grounded
-
-            jumped = false;
-            inputSpeed.y = rb.velocity.y;
-
-        }
+        if(BypassWalk) return;
 
         // X velocity calc w/ friction
         if(input.x > 0) {

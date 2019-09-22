@@ -243,6 +243,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1040150026}
   - component: {fileID: 1040150030}
+  - component: {fileID: 1040150032}
   - component: {fileID: 1040150029}
   - component: {fileID: 1040150031}
   - component: {fileID: 1040150027}
@@ -329,23 +330,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f68448340d6840b940cd83371d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BypassWalk: 0
+  BypassJump: 0
   maxSpeed: 9
   fric: 0.8
   defaultGravityScale: 3
   jumpSpeed: 12
+  framesToWallJump: 12
+  framesToJump: 8
+  framesToPreJump: 12
   wallCheckDist: 0.2
   wallBoxOffset: {x: 0, y: -1.03}
   wallBoxSize: {x: 1.09, y: 1.93}
-  framesToWallJump: 12
+  cellingBoxOffset: {x: 0, y: 1.2}
+  cellingBoxSize: {x: 1.05, y: 0.08}
   groundBoxOffset: {x: 0, y: -2}
   groundBoxSize: {x: 1.05, y: 0.08}
-  framesToJump: 8
-  framesToPreJump: 12
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  IsGrounded: 0
+  OnGround: 0
   OnWall: 0
+  OnCelling: 0
+  onRightWall: 0
+  onLeftWall: 0
+  lastFaceDir: 0
 --- !u!114 &1040150030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -372,6 +381,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1868547312}
   sprite: {fileID: 1868547313}
+--- !u!114 &1040150032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040150025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b5950f6beab6ac46bd15406298091cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1058484051
 GameObject:
   m_ObjectHideFlags: 0

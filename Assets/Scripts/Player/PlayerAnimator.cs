@@ -12,7 +12,7 @@ public class PlayerAnimator : MonoBehaviour
 
     //Script side vars
 
-    private PlayerMotor motor {get {return GetComponent<PlayerMotor>();}}
+    private Motor motor {get {return GetComponent<Motor>();}}
 
         #endregion
 
