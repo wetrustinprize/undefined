@@ -203,36 +203,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &720623932
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 720623933}
-  m_Layer: 0
-  m_Name: grd_Check
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &720623933
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 720623932}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.98, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1040150026}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1040150025
 GameObject:
   m_ObjectHideFlags: 0
@@ -267,7 +237,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1868547311}
-  - {fileID: 720623933}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -332,21 +301,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BypassWalk: 0
   BypassJump: 0
-  maxSpeed: 9
-  fric: 0.8
-  defaultGravityScale: 3
-  jumpSpeed: 12
-  framesToWallJump: 12
-  framesToJump: 8
-  framesToPreJump: 12
-  wallCheckDist: 0.2
-  wallBoxOffset: {x: 0, y: -1.03}
-  wallBoxSize: {x: 1.09, y: 1.93}
-  cellingBoxOffset: {x: 0, y: 1.2}
-  cellingBoxSize: {x: 1.05, y: 0.08}
-  groundBoxOffset: {x: 0, y: -2}
-  groundBoxSize: {x: 1.05, y: 0.08}
-  groundLayer:
+  BypassGravity: 0
+  MaxSpeed: 8
+  Fric: 0.65
+  DefaultGravityScale: 3
+  GroundLayer:
     serializedVersion: 2
     m_Bits: 256
   OnGround: 0
@@ -355,6 +314,13 @@ MonoBehaviour:
   onRightWall: 0
   onLeftWall: 0
   lastFaceDir: 0
+  externalForces: []
+  constantForces: []
+  slowness:
+  - Name: 
+    Value: {x: 0, y: 2}
+    Types: 02000000
+  newSlow: 1
 --- !u!114 &1040150030
 MonoBehaviour:
   m_ObjectHideFlags: 0

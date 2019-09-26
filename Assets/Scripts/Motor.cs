@@ -9,6 +9,7 @@ public class Force {
     public Vector2 ActualForce;
     public float TimeToStop;
     public bool ApplyGravity;
+    public bool applied;
 
     ///<param name="f">Force to be applied</param>
     ///<param name="t">Time to the force stop</param>
@@ -35,7 +36,54 @@ public class Force {
 
 }
 
+public enum SlowType {
+    Gravity,
+    Input,
+    External,
+    Constant
+}
+
+[System.Serializable]
+public class Slow {
+
+    public string Name;
+    public Vector2 Value;
+    public List<SlowType> Types;
+
+    ///<param name="s">Total of slowness</param>
+    public Slow(Vector2 s) {
+        Name = "noname";
+        Value = s;
+    }
+
+    ///<param name="n">Name of the slow</param>
+    ///<param name="s">Total of slowness</param>
+    ///<param name="t">Type of slowness</param>
+    public Slow(string n, Vector2 s, List<SlowType> t = null) {
+
+        Name = n;
+        Value = s;
+
+        if(t == null)
+            Types = new List<SlowType> { SlowType.Input };
+
+    }
+
+    ///<param name="n">Name of the slow</param>
+    ///<param name="s">Total of slowness</param>
+    ///<param name="t">Type of slowness</param>
+        public Slow(string n, Vector2 s, SlowType t) {
+
+        Name = n;
+        Value = s;
+        Types = new List<SlowType> { t };
+
+    }
+
+}
+
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 public class Motor : MonoBehaviour
 {
     
@@ -44,54 +92,20 @@ public class Motor : MonoBehaviour
     [Header("Bypass:")]
     public bool BypassWalk;
     public bool BypassJump;
+    public bool BypassGravity;
 
     [Header("Velocity")]
     [SerializeField]
-    private float maxSpeed = 8f;
+    private float MaxSpeed = 8f;
     [SerializeField]
-    private float fric = 0.65f;
+    private float Fric = 0.65f;
     [SerializeField]
-    private float defaultGravityScale = 3f;
-
-    [Header("Jump")]
-    [SerializeField]
-    private float jumpSpeed = 12f;
-    [SerializeField]
-    private int framesToWallJump;
-    [SerializeField]
-    private int framesToJump;
-    [SerializeField]
-    private int framesToPreJump;
-
-    [Header("Ground and Wall Check")]
-    [SerializeField]
-    private float wallCheckDist = 0.2f;
+    private float DefaultGravityScale = 3f;
 
     [Space]
 
     [SerializeField]
-    private Vector2 wallBoxOffset;
-    [SerializeField]
-    private Vector2 wallBoxSize;
-
-    [Space]
-
-    [SerializeField]
-    private Vector2 cellingBoxOffset;
-    [SerializeField]
-    private Vector2 cellingBoxSize;
-
-    [Space]
-
-    [SerializeField]
-    private Vector2 groundBoxOffset;
-    [SerializeField]
-    private Vector2 groundBoxSize;
-
-    [Space]
-
-    [SerializeField]
-    private LayerMask groundLayer;
+    private LayerMask GroundLayer;
     public bool OnGround;
     public bool OnWall;
     public bool OnCelling;
@@ -105,107 +119,163 @@ public class Motor : MonoBehaviour
 
     private Rigidbody2D rb {get { return GetComponent<Rigidbody2D>(); } }
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
-    public float verticalSpeed {get {return Mathf.Round(inputSpeed.x);}}
-    public float verticalInput {get {return Mathf.Round(input.x);}}
-    public bool isFacingWall {get {return (input.x == 1 && onRightWall || input.x == -1 && onLeftWall); } }
 
     // Input recieved by the player
     private Vector2 input;
 
         #region Speed Vars
     
-    private List<Force> forces = new List<Force>();
-    private Vector2 inputSpeed; // Calculate in CalculateVelocity()
+    public List<Force> externalForces = new List<Force>(); // List of external forces
+    public List<Force> constantForces = new List<Force>(); // List of constant external forces
+    public List<Slow> slowness = new List<Slow>(); // List of all slowness
+    private bool newSlow = false;
+    private bool resetGrav = false;
+    public Dictionary<SlowType, Vector2> totalSlowness = new Dictionary<SlowType, Vector2>() { // All slowness to be applied
+        { SlowType.Input, Vector2.one },
+        { SlowType.Gravity, Vector2.one },
+        { SlowType.External, Vector2.one },
+        { SlowType.Constant, Vector2.one }
+    };
     private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
     private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
-    private Vector2 finalSpeed { get { return inputSpeed + externalSpeed + constantExternalSpeed; } } // Final velocity
+    private Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
+    private Vector2 inputAxis;
 
         #endregion
 
-        #region Jump Vars
+        #region Colliders
 
-    private bool jumped;
-    private bool jumpCalc;
-    private bool canWallJump;
-    private bool canJump;
-    
-    // Frame stuff
-    private int framesToNotJump;
-    private int framesToNotWallJump;
-    private int frameToNotPreJump;
+    // Save all information about the colliders
+    private Vector2 _celColliderPosition; // Celling collider position
+    private Vector2 _grdColliderPosition; // Ground collider position
+    private Vector2 _walRColliderPosition; // Right wall collider position
+    private Vector2 _walLColliderPosition; // Left wall collider position
+    private Vector2 _ckcGCColliderSize; // Celling and Floor collider size
+    private Vector2 _ckcWColliderSize; // Wall collider size
+
+    //Check if the collider has changed size or not
+    private Vector2 _lastColliderSiz;
+    private Vector2 _lastColliderOffset;
 
         #endregion
+
         #endregion
 
     void Start() {
-        rb.gravityScale = defaultGravityScale;
+        rb.gravityScale = DefaultGravityScale;
+        rb.simulated = !BypassGravity;
     }
 
-    public void SetInput(Vector2 v2) {
+    // Called to apply a input
+    ///<summary>Called to move the motor using the fric and maxspeed values</summary>
+    ///<param name="input">The direction to move to</param>
+    public void ReceiveInput(Vector2 input) {
 
-        input = v2;
+        inputAxis = input;
 
-    }
-
-    // Jump void called when the players hits the jump button
-    // Start the pre jump frames
-    void Jump() {
-        if(BypassJump) return;
-        frameToNotPreJump = framesToPreJump;
-        if(jumped || !canJump && !canWallJump) return;
-        jumped = true;
-        frameToNotPreJump = 0;
     }
 
     // Called to apply a force
-    public void ApplyForce(Force f) {
+    ///<summary>Adds a new force to the motor, if already exists, adds the force to the existing</summary>
+    ///<param name="f">The force to apply</param>
+    ///<param name="c">Is it constant</param>
+    ///<param name="rg">Reset gravity?</param>
+    ///<param name="rp">Replace force?</param>
+    public void AddForce(Force f, bool c, bool rg = false, bool rp = false) {
 
-        forces.Add(f);
-
-    }
-
-    // Called to set the consatant speed
-    public void ApplyConstSpeed(Vector2 f) {
-        constantExternalSpeed = f;
-    }
-
-    // Called to remove a force
-    public void RemoveForce(Force f) {
-
-        if(forces.Exists(force => force == f)) forces.Remove(f);
+        if(c)
+            if(HasForce(f.Name, true))
+                if(rp)
+                    constantForces[constantForces.FindIndex(f2 => f2.Name == f.Name)] = f;
+                else
+                    constantForces.Find(f2 => f2.Name == f.Name).ActualForce += f.ActualForce;
+            else
+                constantForces.Add(f);
+        else
+            if(HasForce(f.Name, false))
+                if(rp)
+                    externalForces[externalForces.FindIndex(f2 => f2.Name == f.Name)] = f;
+                else
+                    externalForces.Find(f2 => f2.Name == f.Name).ActualForce += f.ActualForce;
+            else
+                externalForces.Add(f);
+            
+        if(rg) resetGrav = true;
 
     }
 
     // Check if a force exists by its name
-    public bool HasForce(string n) {
-        return forces.Exists(force => force.Name == n);
+    ///<summary>Check if has a force with the name</string>
+    ///<param name="s">Name of the force</param>
+    ///<param name="c">Is it a constant force?</param>
+    public bool HasForce(string n, bool c) {
+        if(c)
+            return constantForces.Exists(force => force.Name == n);
+        else
+            return externalForces.Exists(force => force.Name == n);
+
     }
 
     // Called to remove a force (using only name)
+    ///<summary>Remove a force by its name</summary>
     ///<param name="n">Name of the force</param>
-    public void RemoveForce(string n) {
+    ///<param name="c">Is it a constant force?</param>
+    ///<param name="rg">Reset gravity?</param>
+    public void RemoveForce(string n, bool c, bool rg) {
+        if(c)
+            constantForces.RemoveAll(force => force.Name == n);
+        else
+            externalForces.RemoveAll(force => force.Name == n);
 
-        if(forces.Exists(force => force.Name == n)) forces.Remove(forces.Find(force => force.Name == n));
+        if(rg) resetGrav = true;
 
     }
 
-    void Update() {
-        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if(Input.GetKeyDown(KeyCode.Space)) Jump();
+    //Called to add a slowness to an axis
+    ///<summary>Add a slowness</summary>
+    ///<param name="s">The slowness to apply</param>
+    ///<param name="rp">Replace the slowness?</param>
+    public void AddSlow(Slow s, bool rp = false) {
+        if(HasSlow(s.Name))
+            if(rp)
+                slowness[slowness.FindIndex(s2 => s2.Name == s.Name)] = s;
+            else
+                slowness.Find(s2 => s2.Name == s.Name).Value += s.Value;
+        else
+            slowness.Add(s);
+        
+        newSlow = true;
     }
 
-    // Called before drawing the screen
+    // Check if exists a slow by its name
+    ///<summary>Check is exists a slow with this name</summary>
+    ///<param name="n">Name of the slow</param>
+    public bool HasSlow(string n) {
+        return slowness.Exists(s => s.Name == n);
+    }
+
+    // Remove a slow by its name
+    ///<summary>Remove a slow by its name</summary>
+    ///<param name="n">Name of the slow</param>
+    public void RemoveSlow(string n) {
+        slowness.RemoveAll(s => s.Name == n);
+        newSlow = true;
+    }
+
+    // Called before drawing the screen, all the physics is called here
     void FixedUpdate() {
-        // TODO:
-        // * make a void that apply aditional velocity to the player (like explosion impulses etc...)
 
         //Do all the calculation
-        CalculateInputVelocity();
         CheckIsGroundedOrCelling();
         CheckNearWall();
-        CalculateJump();
+        CalculateSlowness();
         CalculateExternalSpeed();
-        DebugPlayer();
+        CalculateConstantSpeed();
+
+        // foreach (KeyValuePair<SlowType, Vector2> kvp in totalSlowness)
+        // {
+        //     Debug.Log(string.Format("K: {0}, V: {1}", kvp.Key.ToString(), kvp.Value));
+        // }
 
         // Apply the final speed
         rb.velocity = finalSpeed;
@@ -214,131 +284,88 @@ public class Motor : MonoBehaviour
 
         #region Checkers and Calculators
 
-
     // Simple void to calculate if the player is on ground
     // Also calculates the extra frames to jump
     // NEED to be called before calculating velocity and checking wall
     void CheckIsGroundedOrCelling() {
-        Vector2 gpos = (Vector2)transform.position + groundBoxOffset;
-        Vector2 gsiz = groundBoxSize;
+        Vector2 colliderSize = col.size;
+        Vector2 colliderOffset = col.offset;
 
-        Vector2 cpos = (Vector2)transform.position + cellingBoxOffset;
-        Vector2 csiz = cellingBoxSize;
+        // Verify if has changed values to the collider
+        if(_lastColliderOffset != colliderOffset || _lastColliderSiz != colliderSize) {
+            _grdColliderPosition = (Vector2)transform.position + new Vector2(0, -(colliderSize.y / 2)+colliderOffset.y);
+            _celColliderPosition = (Vector2)transform.position + new Vector2(0, (colliderSize.y / 2)+colliderOffset.y);
+            _ckcGCColliderSize = new Vector2(colliderSize.x * 0.98f, 0.1f);
+        }
 
-        OnGround = Physics2D.OverlapBox(gpos, gsiz, 0, groundLayer);
-        OnCelling = Physics2D.OverlapBox(cpos, csiz, 0, groundLayer);
-
-        if(OnGround)
-            framesToNotJump = framesToJump;
-
-        canJump = framesToNotJump != 0 && !OnWall;
-        
-        CalculateFrames();
+        //Check if is grounded or touching celling
+        OnGround = Physics2D.OverlapBox(_grdColliderPosition, _ckcGCColliderSize, 0, GroundLayer);
+        OnCelling = Physics2D.OverlapBox(_celColliderPosition, _ckcGCColliderSize, 0, GroundLayer);
     }
 
     // Void to check if is near a wall
     // Also apply slowness
     void CheckNearWall() {
-
+        Vector2 colliderSize = col.size;
+        Vector2 colliderOffset = col.offset;
 
         // Checking if has a wall nearby
-        Vector2 pos = (Vector2)transform.position + col.offset;
-        Vector2 siz = col.size - new Vector2(0, 0.1f);
-        
-        Vector2 wjpos = (Vector2)transform.position + wallBoxOffset;
-        Vector2 wjsiz = wallBoxSize;
+        _walRColliderPosition = (Vector2)transform.position + new Vector2((colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
+        _walLColliderPosition = (Vector2)transform.position + new Vector2(-(colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
+        _ckcWColliderSize = new Vector2(0.1f, colliderSize.y * 0.98f);
 
-        onRightWall = Physics2D.OverlapBox(pos + new Vector2(wallCheckDist, 0), siz, 0, groundLayer);
-        onLeftWall = Physics2D.OverlapBox(pos + new Vector2(-wallCheckDist, 0), siz, 0, groundLayer);
-
-        bool WallJump = Physics2D.OverlapBox(wjpos + new Vector2(wallCheckDist, 0), wjsiz, 0, groundLayer) || Physics2D.OverlapBox(wjpos + new Vector2(-wallCheckDist, 0), wjsiz, 0, groundLayer);
-
-        // If is on wall or have extra frames to jump, canWallJump will be true
-        canWallJump = WallJump || framesToNotWallJump != 0;
-
-        OnWall = onRightWall || onLeftWall;
-
-        // Do gravity calculations if is on wall
-        if(OnWall) {
-            // Give player extra frames to wall jump
-            framesToNotWallJump = framesToWallJump;
-
-            //Calculate gravity
-            if(input.y != -1 && canWallJump && isFacingWall) {  //If is facing the wall and is 'grabbing' it
-                inputSpeed = new Vector2(0, rb.velocity.y * 0.70f);
-            } else if((!OnGround || input.y == -1) && isFacingWall) { //If is still on the wall but is holding down or not 'grabbing' a wall
-                inputSpeed = new Vector2(0, rb.velocity.y);
-            } else { //If players moves against the wall direction
-                inputSpeed = new Vector2(inputSpeed.x, jumpCalc ? inputSpeed.y : rb.velocity.y);
-            }
-        }
+        onRightWall = Physics2D.OverlapBox(_walRColliderPosition, _ckcWColliderSize, 0, GroundLayer);
+        onLeftWall = Physics2D.OverlapBox(_walLColliderPosition, _ckcWColliderSize, 0, GroundLayer);
+        OnWall = onLeftWall || onRightWall;
 
     }
 
-    //Do all the calculations for the jump
-    void CalculateJump() {
+    void CalculateSlowness() {
 
-        if((!canWallJump && !canJump) && jumped)
-            jumped = false;
+        if(!newSlow) return;
+        newSlow = false;
 
-        if(BypassJump) return;
+        totalSlowness = new Dictionary<SlowType, Vector2>() { // All slowness to be applied
+            { SlowType.Input, Vector2.one },
+            { SlowType.Gravity, Vector2.one },
+            { SlowType.External, Vector2.one },
+            { SlowType.Constant, Vector2.one }
+        };
 
-        // Jump check
-        if((canJump || frameToNotPreJump != 0) && !jumpCalc && !OnWall && jumped) { //If has started the jump and didn't calculate the y velocity
+        if(slowness.Count == 0 || slowness == null) return;
 
-            jumped = false;
-            jumpCalc = true;
-            inputSpeed.y = jumpSpeed;
+        // Remove all slowness with no value
+        slowness.RemoveAll(s => s.Value == Vector2.zero);
 
-        } else if(OnGround || OnWall) { //If is grounded
+        // Apply all values
+        slowness.ForEach(s => {
 
-            jumpCalc = false;
-            jumped = OnWall ? jumped : false;
-            inputSpeed.y = OnWall ? inputSpeed.y : 0;
+            s.Types.ForEach(t => {
 
-        } else if(!jumped) { //If has not jumped
+                totalSlowness[t] += s.Value;
 
-            jumped = false;
-            inputSpeed.y = rb.velocity.y;
+            });
 
-        }
-
-        if(jumped && !jumpCalc && (canWallJump || framesToNotWallJump != 0)) {
-            float dir = 0;
-
-            // See which direction the player will impulse depending on the wall is grabbing or the last direction
-            if(lastFaceDir == 1 && onRightWall)
-                dir = -1;
-            else if(lastFaceDir == -1 && onLeftWall)
-                dir = 1;
-            else
-                dir = lastFaceDir;
-
-            // Reset variables
-            jumped  = false;
-            jumpCalc = true;
-            framesToNotWallJump = 0;
-            canWallJump = false;
-
-            // Apply force
-            inputSpeed = new Vector2(dir * (jumpSpeed / 2), jumpSpeed);
-        }
+        });
 
     }
 
     // Calculates all the external speed
     void CalculateExternalSpeed() {
 
-        if(forces == null || forces.Count == 0) return;
-        externalSpeed = Vector2.zero;
+        // Add gravity if has to simulate gravity
+        if(!OnGround && rb.simulated) if(!HasForce("grav", true)) AddForce(new Force("grav", Vector2.zero, 0, false), true);
 
-        // Do gravity calculatations and stops when hit something
-        forces.ForEach(f => {
+        externalSpeed = Vector2.zero;
+        if(externalForces == null || externalForces.Count == 0) return;
+
+        externalForces.ForEach(f => {
 
             // Check is has collided
-            if(f.ActualForce.y > 0 && OnCelling) f.ActualForce.y = 0;
-            if(f.ActualForce.y < 0 && OnGround) f.ActualForce.y = 0;
-            if(f.ActualForce.x != 0 && OnWall) f.ActualForce.x = 0;
+            if(f.ActualForce.y !=0 && f.applied && (OnCelling || OnGround)) f.ActualForce.y = 0;
+
+            if(f.ActualForce.x > 0 && onRightWall) f.ActualForce.x = 0;
+            if(f.ActualForce.x < 0 && onLeftWall) f.ActualForce.x = 0;
 
             // Apply gravity
             if(f.ActualForce.y > 0 && f.ApplyGravity) {
@@ -348,74 +375,93 @@ public class Motor : MonoBehaviour
 
             // Apply slowdown X if is on ground or if has timer
             if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
-                f.ActualForce.x -= (f.ActualForce.x * Time.deltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
+                f.ActualForce.x -= f.ActualForce.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
+
                 if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
             }
 
-            // Apply slowdown Y
+            // Apply slowdown Y if is on air of if has timer
             if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
-                f.ActualForce.y -= f.ActualForce.y * Time.deltaTime / f.TimeToStop;
+                f.ActualForce.y -= f.ActualForce.y * (Time.fixedDeltaTime / f.TimeToStop);
+
                 if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
             }
 
-        });
+            // Remove if has no values
+            if(f.ActualForce == Vector2.zero && f.Name != "input")
+            {
+                externalForces.Remove(f);
+                return;
+            }
 
-        forces.RemoveAll(f => f.ActualForce == Vector2.zero);
+            // Apply to the final external force
+            Vector2 finalForce = f.ActualForce;
 
-        forces.ForEach(f => {
-
-            externalSpeed += f.ActualForce;
+            if(f.Name != "input")
+                finalForce *= totalSlowness[SlowType.External];
+            else
+                finalForce *= totalSlowness[SlowType.Input];
+            
+            if(!f.applied) f.applied = true;
+            externalSpeed += finalForce;
 
         });
 
     }
 
-    // Calculates the velocity given by INPUT
-    void CalculateInputVelocity() {
-        
-        if(BypassWalk) return;
+    public void CalculateConstantSpeed() {
 
-        // X velocity calc w/ friction
-        if(input.x > 0) {
-            lastFaceDir = 1;
-            inputSpeed.x = Mathf.Clamp(inputSpeed.x + fric, -maxSpeed, maxSpeed);
-        } else if(input.x < 0) {
-            lastFaceDir = -1;
-            inputSpeed.x = Mathf.Clamp(inputSpeed.x - fric, -maxSpeed, maxSpeed);
-        } else {
-            inputSpeed.x = Mathf.Lerp(inputSpeed.x, 0, (fric / 2) * Time.deltaTime * 30);
-        }
+        constantExternalSpeed = Vector2.zero;
 
-    }
+        constantForces.ForEach(f => {
+            
+            // Remove forces with no value
+            if(f.ActualForce == Vector2.zero && f.Name != "grav")
+            {
+                constantForces.Remove(f);
+                return;
+            }
 
-    // Called every Update() to remove a frame from the extra frames
-    void CalculateFrames() {
+            // Calculate if is gravity force
+            if(f.Name == "grav" && resetGrav) {
+                f.ActualForce = Vector2.zero;
+                resetGrav = false;
+            }
+            
 
-        if(framesToNotJump != 0)
-            framesToNotJump--;
-        
-        if(framesToNotWallJump != 0)
-            framesToNotWallJump--;
+            if(f.Name == "grav" && !OnGround) {
+                Debug.Log("Gravity!");
+                f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * rb.gravityScale;
+            } 
+            else if(f.Name == "grav" && OnGround) {
+                Debug.Log("No Graivty :(");
+                f.ActualForce = Vector2.zero;
+            }
 
-        if(frameToNotPreJump != 0)
-            frameToNotPreJump--;
+            //Apply final speed
+            Vector2 finalForce = f.ActualForce;
 
-        
+            if(f.Name == "grav")
+                finalForce *= totalSlowness[SlowType.Gravity];
+            else
+                finalForce *= totalSlowness[SlowType.Constant];
+
+            constantExternalSpeed += finalForce;
+
+        });
 
     }
 
         #endregion
 
-    void DebugPlayer() {
-        // Debug stuff //
-        // Blue:    x velocity
-        // Green:   y velocity
-        // Red:     actual velocity
-        // Yellow:  extra velocitys
-        Debug.DrawLine(transform.position, transform.position + new Vector3(maxSpeed * input.x, 0, 0) * 0.5f, Color.blue, Time.deltaTime, false);
-        Debug.DrawLine(transform.position, transform.position + new Vector3(inputSpeed.x, 0, 0) * 0.4f, Color.red, Time.deltaTime, false);
-        Debug.DrawLine(transform.position, transform.position + new Vector3(0, inputSpeed.y, 0) * 0.5f, Color.green, Time.deltaTime, false);
-        Debug.DrawLine(transform.position, transform.position + ((Vector3)externalSpeed + (Vector3)constantExternalSpeed) * 0.3f, Color.yellow, Time.deltaTime, false);
+    public void OnDrawGizmos() {
+
+        Gizmos.DrawCube((Vector3)_grdColliderPosition, (Vector2)_ckcGCColliderSize);
+        Gizmos.DrawCube((Vector3)_celColliderPosition, (Vector2)_ckcGCColliderSize);
+
+        Gizmos.DrawCube((Vector3)_walRColliderPosition, (Vector2)_ckcWColliderSize);
+        Gizmos.DrawCube((Vector3)_walLColliderPosition, (Vector2)_ckcWColliderSize);
+
     }
 
 }

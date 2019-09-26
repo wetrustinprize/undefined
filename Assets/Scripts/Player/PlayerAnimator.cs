@@ -17,8 +17,8 @@ public class PlayerAnimator : MonoBehaviour
         #endregion
 
     void Update() {
-        float vInput = motor.verticalInput;
-        float vVel = motor.verticalSpeed;
+        float vInput = 0;
+        float vVel = 0;
 
         if(vInput != 0) sprite.flipX = vInput < 0;
         animator.SetFloat("Speed", vInput * (vInput < 0 ? -1 : 1));
