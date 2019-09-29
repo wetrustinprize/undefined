@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Untitled.Motor;
 
 [RequireComponent(typeof(Motor))]
 

@@ -320,7 +320,6 @@ MonoBehaviour:
   - Name: 
     Value: {x: 0, y: 2}
     Types: 02000000
-  newSlow: 1
 --- !u!114 &1040150030
 MonoBehaviour:
   m_ObjectHideFlags: 0
