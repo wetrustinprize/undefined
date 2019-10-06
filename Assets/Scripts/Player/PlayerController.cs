@@ -1,16 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+[DisallowMultipleComponent]
+[RequireComponent(typeof(Motor))]
+public class PlayerController : MonoBehaviour {
+
+    private Motor m { get {return GetComponent<Motor>(); } }
+
+    public void Move(InputAction.CallbackContext cb) {
+
+        m.ReceiveInput(cb.ReadValue<Vector2>());
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

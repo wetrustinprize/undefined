@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Untitled.Motor;
 
-
+[DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class Motor : MonoBehaviour
@@ -11,13 +11,12 @@ public class Motor : MonoBehaviour
         #region Variables
 
     [Header("Bypass:")]
-    public bool BypassWalk;
-    public bool BypassJump;
+    public bool BypassInput;
     public bool BypassGravity;
 
     [Header("Velocity")]
     [SerializeField]
-    private float MaxSpeed = 8f;
+    private Vector2 MaxSpeed = Vector2.one;
     [SerializeField]
     private float Fric = 0.65f;
     [SerializeField]
@@ -26,7 +25,7 @@ public class Motor : MonoBehaviour
     [Space]
 
     [SerializeField]
-    private LayerMask GroundLayer;
+    private LayerMask GroundLayer = 0;
     public bool OnGround;
     public bool OnWall;
     public bool OnCelling;
@@ -40,9 +39,6 @@ public class Motor : MonoBehaviour
 
     private Rigidbody2D rb {get { return GetComponent<Rigidbody2D>(); } }
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
-
-    // Input recieved by the player
-    private Vector2 input;
 
         #region Speed Vars
     
@@ -60,7 +56,7 @@ public class Motor : MonoBehaviour
     private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
     private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
     private Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
-    private Vector2 inputAxis;
+    private Vector2 inputAxis; // Input received by the player
 
         #endregion
 
@@ -75,16 +71,19 @@ public class Motor : MonoBehaviour
     private Vector2 _ckcWColliderSize; // Wall collider size
 
     //Check if the collider has changed size or not
-    private Vector2 _lastColliderSiz;
-    private Vector2 _lastColliderOffset;
+    private Vector2 _lastColliderSiz = Vector2.zero;
+    private Vector2 _lastColliderOffset = Vector2.zero;
 
         #endregion
 
         #endregion
 
+    // Initial setup
     void Start() {
-        rb.gravityScale = DefaultGravityScale;
-        rb.simulated = !BypassGravity;
+        rb.gravityScale = !BypassGravity ? DefaultGravityScale : 0;
+
+        AddForce(new Force("input", Vector2.zero, 0, false), false);
+        AddForce(new Force("grav", Vector2.zero, 0, false), true);
     }
 
     // Called to apply a input
@@ -193,12 +192,6 @@ public class Motor : MonoBehaviour
         CalculateExternalSpeed();
         CalculateConstantSpeed();
 
-        // foreach (KeyValuePair<SlowType, Vector2> kvp in totalSlowness)
-        // {
-        //     Debug.Log(string.Format("K: {0}, V: {1}", kvp.Key.ToString(), kvp.Value));
-        // }
-
-        // Apply the final speed
         rb.velocity = finalSpeed;
         
     }
@@ -274,39 +267,96 @@ public class Motor : MonoBehaviour
     // Calculates all the external speed
     void CalculateExternalSpeed() {
 
-        // Add gravity if has to simulate gravity
-        if(!OnGround && rb.simulated) if(!HasForce("grav", true)) AddForce(new Force("grav", Vector2.zero, 0, false), true);
-
         externalSpeed = Vector2.zero;
         if(externalForces == null || externalForces.Count == 0) return;
 
         externalForces.ForEach(f => {
 
+
+            if(f.Name != "input")
+            {
+                    #region Other external forces
+                        
+                // Apply gravity (Y)
+                if(f.ActualForce.y > 0 && f.ApplyGravity) {
+                    f.ActualForce += ((Vector2)Physics.gravity * rb.gravityScale) * Time.fixedDeltaTime;
+                    if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
+                }
+
+                // Apply slowdown X if is on ground or if has timer
+                if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
+                    f.ActualForce.x -= f.ActualForce.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
+
+                    if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
+                }
+
+                // Apply slowdown Y if is on air of if has timer
+                if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
+                    f.ActualForce.y -= f.ActualForce.y * (Time.fixedDeltaTime / f.TimeToStop);
+
+                    if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
+                }
+
+                    #endregion
+            }
+            else
+            {
+                    #region Input external force
+
+                if(BypassInput) 
+                {
+                    f.ActualForce = Vector2.zero;
+                    return;
+                }
+
+                Vector2 newSpeed = f.ActualForce;
+
+                // Calculates the new force with friction
+                float xDir = inputAxis.x > 0 ? Fric : -Fric;
+                float yDir = inputAxis.y > 0 ? Fric : -Fric;
+
+                float xSub = newSpeed.x > 0 ? -Fric : Fric;
+                float ySub = newSpeed.y > 0 ? -Fric : Fric;
+
+                // x velocity
+                if(inputAxis.x != 0)
+                    newSpeed.x = Mathf.Clamp(
+                        newSpeed.x + xDir,
+                        -MaxSpeed.x,
+                        MaxSpeed.x
+                    );
+                else if(newSpeed.x != 0)
+                    newSpeed.x = Mathf.Clamp(
+                        newSpeed.x + xSub, 
+                        xSub > 0 ? -MaxSpeed.x : 0,
+                        xSub > 0 ? 0 : MaxSpeed.x
+                    );
+
+                // y velocity
+                if(inputAxis.y != 0)
+                    newSpeed.y = Mathf.Clamp(
+                        newSpeed.y + yDir,
+                        -MaxSpeed.y,
+                        MaxSpeed.y
+                    );
+                else if(newSpeed.y != 0)
+                    newSpeed.y = Mathf.Clamp(
+                        newSpeed.y + ySub, 
+                        ySub > 0 ? -MaxSpeed.y : 0,
+                        ySub > 0 ? 0 : MaxSpeed.y
+                    );
+
+                f.ActualForce = newSpeed;
+
+                    #endregion
+            }
+
             // Check is has collided
-            if(f.ActualForce.y !=0 && f.applied && (OnCelling || OnGround)) f.ActualForce.y = 0;
+            if(f.ActualForce.y < 0 && f.applied && OnGround) f.ActualForce.y = 0;
+            if(f.ActualForce.y > 0 && f.applied && OnCelling) f.ActualForce.y = 0;
 
             if(f.ActualForce.x > 0 && onRightWall) f.ActualForce.x = 0;
             if(f.ActualForce.x < 0 && onLeftWall) f.ActualForce.x = 0;
-
-            // Apply gravity
-            if(f.ActualForce.y > 0 && f.ApplyGravity) {
-                f.ActualForce += ((Vector2)Physics.gravity * rb.gravityScale) * Time.fixedDeltaTime;
-                if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
-            }
-
-            // Apply slowdown X if is on ground or if has timer
-            if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
-                f.ActualForce.x -= f.ActualForce.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
-
-                if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
-            }
-
-            // Apply slowdown Y if is on air of if has timer
-            if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
-                f.ActualForce.y -= f.ActualForce.y * (Time.fixedDeltaTime / f.TimeToStop);
-
-                if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
-            }
 
             // Remove if has no values
             if(f.ActualForce == Vector2.zero && f.Name != "input")
@@ -351,11 +401,9 @@ public class Motor : MonoBehaviour
             
 
             if(f.Name == "grav" && !OnGround) {
-                Debug.Log("Gravity!");
                 f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * rb.gravityScale;
             } 
             else if(f.Name == "grav" && OnGround) {
-                Debug.Log("No Graivty :(");
                 f.ActualForce = Vector2.zero;
             }
 
