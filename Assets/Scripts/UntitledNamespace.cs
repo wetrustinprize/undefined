@@ -23,27 +23,27 @@ namespace Untitled
             public bool ApplyGravity;
             public bool applied;
 
-            ///<param name="f">Force to be applied</param>
-            ///<param name="t">Time to the force stop</param>
-            ///<param name="g">Should calculate gravity?</param>
-            public Force(Vector2 f, float t = 0, bool g = true) {
+            ///<param name="force">Force to be applied</param>
+            ///<param name="time">Time to the force stop</param>
+            ///<param name="gravity">Should calculate gravity?</param>
+            public Force(Vector2 force, float time = 0, bool gravity = true) {
                 Name = "noname";
-                ForceApplied = f;
-                ActualForce = f;
-                TimeToStop = t;
-                ApplyGravity = g;
+                ForceApplied = force;
+                ActualForce = force;
+                TimeToStop = time;
+                ApplyGravity = gravity;
             }
 
-            ///<param name="f">Force to be applied</param>
-            ///<param name="n">Name of the force</param>
-            ///<param name="t">Time to the force stop</param>
-            ///<param name="g">Should calculate gravity?</param>
-            public Force(string n, Vector2 f, float t = 0, bool g = true) {
-                Name = n;
-                ForceApplied = f;
-                ActualForce = f;
-                TimeToStop = t;
-                ApplyGravity = g;
+            ///<param name="force">Force to be applied</param>
+            ///<param name="name">Name of the force</param>
+            ///<param name="time">Time to the force stop</param>
+            ///<param name="gravity">Should calculate gravity?</param>
+            public Force(string name, Vector2 force, float time = 0, bool gravity = true) {
+                Name = name;
+                ForceApplied = force;
+                ActualForce = force;
+                TimeToStop = time;
+                ApplyGravity = gravity;
             }
 
         }
@@ -55,33 +55,36 @@ namespace Untitled
             public Vector2 Value;
             public List<SlowType> Types;
 
-            ///<param name="s">Total of slowness</param>
-            public Slow(Vector2 s) {
+            ///<param name="slow">Total of slowness</param>
+            public Slow(Vector2 slow, List<SlowType> type = null) {
                 Name = "noname";
-                Value = s;
+                Value = slow;
+
+                if(type == null)
+                    Types = new List<SlowType>{ SlowType.Input };
             }
 
-            ///<param name="n">Name of the slow</param>
-            ///<param name="s">Total of slowness</param>
-            ///<param name="t">Type of slowness</param>
-            public Slow(string n, Vector2 s, List<SlowType> t = null) {
+            ///<param name="name">Name of the slow</param>
+            ///<param name="slow">Total of slowness</param>
+            ///<param name="type">Type of slowness</param>
+            public Slow(string name, Vector2 slow, List<SlowType> type = null) {
 
-                Name = n;
-                Value = s;
+                Name = name;
+                Value = slow;
 
-                if(t == null)
+                if(type == null)
                     Types = new List<SlowType> { SlowType.Input };
 
             }
 
-            ///<param name="n">Name of the slow</param>
-            ///<param name="s">Total of slowness</param>
-            ///<param name="t">Type of slowness</param>
-                public Slow(string n, Vector2 s, SlowType t) {
+            ///<param name="name">Name of the slow</param>
+            ///<param name="slow">Total of slowness</param>
+            ///<param name="type">Type of slowness</param>
+                public Slow(string name, Vector2 slow, SlowType type) {
 
-                Name = n;
-                Value = s;
-                Types = new List<SlowType> { t };
+                Name = name;
+                Value = slow;
+                Types = new List<SlowType> { type };
 
             }
 

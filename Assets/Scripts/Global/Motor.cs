@@ -20,7 +20,7 @@ public class Motor : MonoBehaviour
     [SerializeField]
     private float Fric = 0.65f;
     [SerializeField]
-    private float DefaultGravityScale = 3f;
+    private float GravityScale = 3f;
 
     [Space]
 
@@ -39,6 +39,22 @@ public class Motor : MonoBehaviour
 
     private Rigidbody2D rb {get { return GetComponent<Rigidbody2D>(); } }
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
+
+        #region Events
+
+    public delegate void OnCollisionEvent();
+    public delegate void OnWallCollisionEvent(int wallDir);
+
+    public event OnCollisionEvent onTouchGround;
+    public event OnCollisionEvent onUntouchGround;
+
+    public event OnCollisionEvent onTouchCelling;
+    public event OnCollisionEvent onUntouchCelling;
+
+    public event OnWallCollisionEvent onTouchWall;
+    public event OnWallCollisionEvent onUntouchWall;
+
+        #endregion
 
         #region Speed Vars
     
@@ -80,7 +96,7 @@ public class Motor : MonoBehaviour
 
     // Initial setup
     void Start() {
-        rb.gravityScale = !BypassGravity ? DefaultGravityScale : 0;
+        GravityScale = !BypassGravity ? GravityScale : 0;
 
         AddForce(new Force("input", Vector2.zero, 0, false), false);
         AddForce(new Force("grav", Vector2.zero, 0, false), true);
@@ -95,95 +111,102 @@ public class Motor : MonoBehaviour
 
     }
 
-    // Called to apply a force
-    ///<summary>Adds a new force to the motor, if already exists, adds the force to the existing</summary>
-    ///<param name="f">The force to apply</param>
-    ///<param name="c">Is it constant</param>
-    ///<param name="rg">Reset gravity?</param>
-    ///<param name="rp">Replace force?</param>
-    public void AddForce(Force f, bool c, bool rg = false, bool rp = false) {
+    public void ResetGravity() {
+        resetGrav = true;
+    }
 
-        if(c)
-            if(HasForce(f.Name, true))
-                if(rp)
-                    constantForces[constantForces.FindIndex(f2 => f2.Name == f.Name)] = f;
+    // Called to apply a force
+    ///<summary>Adds a new force to the motor.</summary>
+    ///<param name="force">The force to apply</param>
+    ///<param name="constant">Is it constant</param>
+    ///<param name="resetGrav">Reset gravity?</param>
+    ///<param name="replaceForce">Replace force?</param>
+    public void AddForce(Force force, bool constant = false, bool resetGrav = false, bool replaceForce = false) {
+
+        if(constant)
+            if(HasForce(force.Name, true))
+                if(replaceForce)
+                    constantForces[constantForces.FindIndex(f2 => f2.Name == force.Name)] = force;
                 else
-                    constantForces.Find(f2 => f2.Name == f.Name).ActualForce += f.ActualForce;
+                    constantForces.Find(f2 => f2.Name == force.Name).ActualForce += force.ActualForce;
             else
-                constantForces.Add(f);
+                constantForces.Add(force);
         else
-            if(HasForce(f.Name, false))
-                if(rp)
-                    externalForces[externalForces.FindIndex(f2 => f2.Name == f.Name)] = f;
+            if(HasForce(force.Name, false))
+                if(replaceForce)
+                    externalForces[externalForces.FindIndex(f2 => f2.Name == force.Name)] = force;
                 else
-                    externalForces.Find(f2 => f2.Name == f.Name).ActualForce += f.ActualForce;
+                    externalForces.Find(f2 => f2.Name == force.Name).ActualForce += force.ActualForce;
             else
-                externalForces.Add(f);
+                externalForces.Add(force);
             
-        if(rg) resetGrav = true;
+        if(resetGrav) resetGrav = true;
 
     }
 
     // Check if a force exists by its name
     ///<summary>Check if has a force with the name</string>
-    ///<param name="s">Name of the force</param>
-    ///<param name="c">Is it a constant force?</param>
-    public bool HasForce(string n, bool c) {
-        if(c)
-            return constantForces.Exists(force => force.Name == n);
+    ///<param name="name">Name of the force</param>
+    ///<param name="constant">Is it a constant force?</param>
+    public bool HasForce(string name, bool constant) {
+        if(constant)
+            return constantForces.Exists(force => force.Name == name);
         else
-            return externalForces.Exists(force => force.Name == n);
+            return externalForces.Exists(force => force.Name == name);
 
     }
 
     // Called to remove a force (using only name)
     ///<summary>Remove a force by its name</summary>
-    ///<param name="n">Name of the force</param>
-    ///<param name="c">Is it a constant force?</param>
-    ///<param name="rg">Reset gravity?</param>
-    public void RemoveForce(string n, bool c, bool rg) {
-        if(c)
-            constantForces.RemoveAll(force => force.Name == n);
+    ///<param name="name">Name of the force</param>
+    ///<param name="constant">Is it a constant force?</param>
+    ///<param name="resetGrav">Reset gravity?</param>
+    public void RemoveForce(string name, bool constant = false, bool resetGrav = false) {
+        if(constant)
+            constantForces.RemoveAll(force => force.Name == name);
         else
-            externalForces.RemoveAll(force => force.Name == n);
+            externalForces.RemoveAll(force => force.Name == name);
 
-        if(rg) resetGrav = true;
+        if(resetGrav) resetGrav = true;
 
     }
 
     //Called to add a slowness to an axis
     ///<summary>Add a slowness</summary>
-    ///<param name="s">The slowness to apply</param>
-    ///<param name="rp">Replace the slowness?</param>
-    public void AddSlow(Slow s, bool rp = false) {
-        if(HasSlow(s.Name))
-            if(rp)
-                slowness[slowness.FindIndex(s2 => s2.Name == s.Name)] = s;
+    ///<param name="slow">The slowness to apply</param>
+    ///<param name="replaceSlow">Replace the slowness?</param>
+    public void AddSlow(Slow slow, bool replaceSlow = false) {
+        if(HasSlow(slow.Name))
+            if(replaceSlow)
+                slowness[slowness.FindIndex(s2 => s2.Name == slow.Name)] = slow;
             else
-                slowness.Find(s2 => s2.Name == s.Name).Value += s.Value;
+                slowness.Find(s2 => s2.Name == slow.Name).Value += slow.Value;
         else
-            slowness.Add(s);
+            slowness.Add(slow);
         
         newSlow = true;
     }
 
     // Check if exists a slow by its name
     ///<summary>Check is exists a slow with this name</summary>
-    ///<param name="n">Name of the slow</param>
-    public bool HasSlow(string n) {
-        return slowness.Exists(s => s.Name == n);
+    ///<param name="name">Name of the slow</param>
+    public bool HasSlow(string name) {
+        return slowness.Exists(s => s.Name == name);
     }
 
     // Remove a slow by its name
     ///<summary>Remove a slow by its name</summary>
-    ///<param name="n">Name of the slow</param>
-    public void RemoveSlow(string n) {
-        slowness.RemoveAll(s => s.Name == n);
+    ///<param name="name">Name of the slow</param>
+    public void RemoveSlow(string name) {
+        slowness.RemoveAll(s => s.Name == name);
         newSlow = true;
     }
 
     // Called before drawing the screen, all the physics is called here
     void FixedUpdate() {
+
+        //Check if everything is alright
+        CheckColliderChange();
 
         //Do all the calculation
         CheckIsGroundedOrCelling();
@@ -198,39 +221,119 @@ public class Motor : MonoBehaviour
 
         #region Checkers and Calculators
 
-    // Simple void to calculate if the player is on ground
-    // Also calculates the extra frames to jump
-    // NEED to be called before calculating velocity and checking wall
-    void CheckIsGroundedOrCelling() {
+    void CheckColliderChange() {
         Vector2 colliderSize = col.size;
         Vector2 colliderOffset = col.offset;
 
         // Verify if has changed values to the collider
         if(_lastColliderOffset != colliderOffset || _lastColliderSiz != colliderSize) {
-            _grdColliderPosition = (Vector2)transform.position + new Vector2(0, -(colliderSize.y / 2)+colliderOffset.y);
-            _celColliderPosition = (Vector2)transform.position + new Vector2(0, (colliderSize.y / 2)+colliderOffset.y);
+
+            // Ground and celling collider
+            _grdColliderPosition = new Vector2(0, -(colliderSize.y / 2)+colliderOffset.y);
+            _celColliderPosition = new Vector2(0, (colliderSize.y / 2)+colliderOffset.y);
             _ckcGCColliderSize = new Vector2(colliderSize.x * 0.98f, 0.1f);
+
+            // Wall collider
+            _walRColliderPosition = new Vector2((colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
+            _walLColliderPosition = new Vector2(-(colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
+            _ckcWColliderSize = new Vector2(0.1f, colliderSize.y * 0.98f);
+
+            _lastColliderOffset = colliderOffset;
+            _lastColliderSiz = colliderSize;
         }
+    }
+
+    // Simple void to calculate if the player is on ground
+    // NEED to be called before calculating velocity and checking wall
+    void CheckIsGroundedOrCelling() {
+
+        Vector2 grdPos = _grdColliderPosition + (Vector2)transform.position;
+        Vector2 celPos = _celColliderPosition + (Vector2)transform.position;
 
         //Check if is grounded or touching celling
-        OnGround = Physics2D.OverlapBox(_grdColliderPosition, _ckcGCColliderSize, 0, GroundLayer);
-        OnCelling = Physics2D.OverlapBox(_celColliderPosition, _ckcGCColliderSize, 0, GroundLayer);
+        bool ground = Physics2D.OverlapBox(grdPos, _ckcGCColliderSize, 0, GroundLayer);
+        bool celling = Physics2D.OverlapBox(celPos, _ckcGCColliderSize, 0, GroundLayer);
+
+        if(OnGround != ground)
+        {
+            OnGround = ground;
+            if(ground)
+            {
+                if(onTouchGround != null)
+                    onTouchGround();
+            }
+            else
+            {
+                if(onUntouchGround != null)
+                    onUntouchGround();
+            }
+        }
+
+        if(OnCelling != celling)
+        {
+            OnCelling = celling;
+            if(celling)
+            {
+                if(onTouchCelling != null)
+                    onTouchCelling();
+            }
+            else
+            {
+                if(onUntouchCelling != null)
+                    onUntouchCelling();
+            }
+        }
+
     }
 
     // Void to check if is near a wall
     // Also apply slowness
     void CheckNearWall() {
-        Vector2 colliderSize = col.size;
-        Vector2 colliderOffset = col.offset;
+
+        Vector2 rWallPos = _walRColliderPosition + (Vector2)transform.position;
+        Vector2 lWallPos = _walLColliderPosition + (Vector2)transform.position;
 
         // Checking if has a wall nearby
-        _walRColliderPosition = (Vector2)transform.position + new Vector2((colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
-        _walLColliderPosition = (Vector2)transform.position + new Vector2(-(colliderSize.x / 2)+colliderOffset.x, colliderOffset.y);
-        _ckcWColliderSize = new Vector2(0.1f, colliderSize.y * 0.98f);
+        bool rightwall = Physics2D.OverlapBox(rWallPos, _ckcWColliderSize, 0, GroundLayer);
+        bool leftwall = Physics2D.OverlapBox(lWallPos, _ckcWColliderSize, 0, GroundLayer);
+        bool wall = onLeftWall || onRightWall;
 
-        onRightWall = Physics2D.OverlapBox(_walRColliderPosition, _ckcWColliderSize, 0, GroundLayer);
-        onLeftWall = Physics2D.OverlapBox(_walLColliderPosition, _ckcWColliderSize, 0, GroundLayer);
-        OnWall = onLeftWall || onRightWall;
+        if(OnWall != wall || rightwall != onRightWall || leftwall != onLeftWall)
+        {
+
+            if(onRightWall != rightwall) 
+            {
+                if(rightwall) 
+                {
+                    if(onTouchWall != null)
+                        onTouchWall(1);
+                }
+                else
+                {
+                    if(onUntouchWall != null)
+                        onUntouchWall(1);
+                }
+            }
+            
+            if(onLeftWall != leftwall) 
+            {
+                if(leftwall)
+                {
+                    if(onTouchWall != null)
+                        onTouchWall(-1);
+                }
+                else
+                {
+                    if(onUntouchWall != null)
+                        onUntouchWall(-1);
+                }
+            }
+
+            OnWall = wall;
+            onRightWall = rightwall;
+            onLeftWall = leftwall;
+
+        }
 
     }
 
@@ -279,20 +382,20 @@ public class Motor : MonoBehaviour
                         
                 // Apply gravity (Y)
                 if(f.ActualForce.y > 0 && f.ApplyGravity) {
-                    f.ActualForce += ((Vector2)Physics.gravity * rb.gravityScale) * Time.fixedDeltaTime;
+                    f.ActualForce += ((Vector2)Physics.gravity * GravityScale) * Time.fixedDeltaTime;
                     if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
                 }
 
                 // Apply slowdown X if is on ground or if has timer
                 if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
-                    f.ActualForce.x -= f.ActualForce.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
+                    f.ActualForce.x -= f.ForceApplied.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
 
                     if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
                 }
 
                 // Apply slowdown Y if is on air of if has timer
                 if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
-                    f.ActualForce.y -= f.ActualForce.y * (Time.fixedDeltaTime / f.TimeToStop);
+                    f.ActualForce.y -= f.ForceApplied.y * (Time.fixedDeltaTime / f.TimeToStop);
 
                     if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
                 }
@@ -358,12 +461,11 @@ public class Motor : MonoBehaviour
             if(f.ActualForce.x > 0 && onRightWall) f.ActualForce.x = 0;
             if(f.ActualForce.x < 0 && onLeftWall) f.ActualForce.x = 0;
 
-            // Remove if has no values
-            if(f.ActualForce == Vector2.zero && f.Name != "input")
-            {
-                externalForces.Remove(f);
-                return;
-            }
+        });
+
+        externalForces.RemoveAll(f => (f.ActualForce == Vector2.zero && f.Name != "input"));
+
+        externalForces.ForEach(f => {
 
             // Apply to the final external force
             Vector2 finalForce = f.ActualForce;
@@ -376,6 +478,7 @@ public class Motor : MonoBehaviour
             if(!f.applied) f.applied = true;
             externalSpeed += finalForce;
 
+
         });
 
     }
@@ -384,14 +487,11 @@ public class Motor : MonoBehaviour
 
         constantExternalSpeed = Vector2.zero;
 
+        if(constantForces == null || constantForces.Count == 0) return;
+
+        constantForces.RemoveAll(f => (f.ActualForce == Vector2.zero && f.Name != "grav"));
+
         constantForces.ForEach(f => {
-            
-            // Remove forces with no value
-            if(f.ActualForce == Vector2.zero && f.Name != "grav")
-            {
-                constantForces.Remove(f);
-                return;
-            }
 
             // Calculate if is gravity force
             if(f.Name == "grav" && resetGrav) {
@@ -399,9 +499,8 @@ public class Motor : MonoBehaviour
                 resetGrav = false;
             }
             
-
             if(f.Name == "grav" && !OnGround) {
-                f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * rb.gravityScale;
+                f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * GravityScale * totalSlowness[SlowType.Gravity];
             } 
             else if(f.Name == "grav" && OnGround) {
                 f.ActualForce = Vector2.zero;
@@ -410,11 +509,10 @@ public class Motor : MonoBehaviour
             //Apply final speed
             Vector2 finalForce = f.ActualForce;
 
-            if(f.Name == "grav")
-                finalForce *= totalSlowness[SlowType.Gravity];
-            else
+            if(f.Name != "grav")
                 finalForce *= totalSlowness[SlowType.Constant];
 
+            
             constantExternalSpeed += finalForce;
 
         });
@@ -425,11 +523,23 @@ public class Motor : MonoBehaviour
 
     public void OnDrawGizmos() {
 
-        Gizmos.DrawCube((Vector3)_grdColliderPosition, (Vector2)_ckcGCColliderSize);
-        Gizmos.DrawCube((Vector3)_celColliderPosition, (Vector2)_ckcGCColliderSize);
+        Vector3 grdPos = (Vector3)_grdColliderPosition + transform.position;
+        Vector3 celPos = (Vector3)_celColliderPosition + transform.position;
 
-        Gizmos.DrawCube((Vector3)_walRColliderPosition, (Vector2)_ckcWColliderSize);
-        Gizmos.DrawCube((Vector3)_walLColliderPosition, (Vector2)_ckcWColliderSize);
+        Vector3 wallLPos = (Vector3)_walLColliderPosition + transform.position;
+        Vector3 wallRPos = (Vector3)_walRColliderPosition + transform.position;
+
+        Gizmos.color = OnGround ? Color.green : Color.grey;
+        Gizmos.DrawCube(grdPos, _ckcGCColliderSize);
+
+        Gizmos.color = OnCelling ? Color.green : Color.grey;
+        Gizmos.DrawCube(celPos, _ckcGCColliderSize);
+
+        Gizmos.color = onLeftWall ? Color.green : Color.grey;
+        Gizmos.DrawCube(wallLPos, _ckcWColliderSize);
+
+        Gizmos.color = onRightWall ? Color.green : Color.grey;
+        Gizmos.DrawCube(wallRPos, _ckcWColliderSize);
 
     }
 

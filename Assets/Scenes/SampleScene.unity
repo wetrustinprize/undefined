@@ -212,10 +212,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1040150026}
-  - component: {fileID: 1040150032}
   - component: {fileID: 1040150030}
   - component: {fileID: 1040150029}
   - component: {fileID: 1040150031}
+  - component: {fileID: 1040150032}
+  - component: {fileID: 1040150033}
   - component: {fileID: 1040150027}
   - component: {fileID: 1040150028}
   m_Layer: 0
@@ -233,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1040150025}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.873, z: 0}
+  m_LocalPosition: {x: 6.78, y: 1.873, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1868547311}
@@ -281,7 +282,7 @@ Rigidbody2D:
   m_Mass: 3.4553
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 2
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -301,9 +302,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BypassInput: 0
   BypassGravity: 0
-  MaxSpeed: 8
-  Fric: 0.65
-  DefaultGravityScale: 3
+  MaxSpeed: {x: 8, y: 0}
+  Fric: 1
+  GravityScale: 3
   GroundLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -315,10 +316,7 @@ MonoBehaviour:
   lastFaceDir: 0
   externalForces: []
   constantForces: []
-  slowness:
-  - Name: 
-    Value: {x: 0, y: 2}
-    Types: 02000000
+  slowness: []
 --- !u!114 &1040150030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +329,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dea5873fd5ffaf94fbc42f17c7a45eca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanMove: 1
+  CanJump: 1
+  CanDash: 1
 --- !u!114 &1040150031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,46 +355,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1040150025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Script: {fileID: 11500000, guid: 4b5950f6beab6ac46bd15406298091cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: aa3c2c34be97d9c4b9b90eb630612a91,
-    type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceLostEvent, Unity.InputSystem,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+DeviceRegainedEvent, Unity.InputSystem,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1040150030}
-        m_MethodName: Move
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.InputSystem.PlayerInput+ActionEvent, Unity.InputSystem,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_ActionId: 4a3ec640-a8d1-4896-891b-2d8a451fd959
-    m_ActionName: Player Controller/Move
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: 93ec0338-49de-41dd-a1b6-9348214e0ce2
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+--- !u!114 &1040150033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040150025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8344ef9f65fabf4daa9da652ffb63bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JumpForce: {x: 0, y: 20}
+  WallJumpForce: {x: 12, y: 20}
 --- !u!1 &1058484051
 GameObject:
   m_ObjectHideFlags: 0
