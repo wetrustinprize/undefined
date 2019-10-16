@@ -302,8 +302,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BypassInput: 0
   BypassGravity: 0
-  MaxSpeed: {x: 8, y: 0}
-  Fric: 1
+  MaxSpeed: {x: 11, y: 0}
+  Fric: 1.5
   GravityScale: 3
   GroundLayer:
     serializedVersion: 2
@@ -314,6 +314,7 @@ MonoBehaviour:
   onRightWall: 0
   onLeftWall: 0
   lastFaceDir: 0
+  inputAxis: {x: 0, y: 0}
   externalForces: []
   constantForces: []
   slowness: []
@@ -358,6 +359,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5950f6beab6ac46bd15406298091cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dashForce: {x: 170, y: 0}
+  dashDuration: 0.1
+  dashCooldown: 3
+  applyCooldown: 1
+  dashTimer: 0
 --- !u!114 &1040150033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,8 +376,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8344ef9f65fabf4daa9da652ffb63bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JumpForce: {x: 0, y: 20}
-  WallJumpForce: {x: 12, y: 20}
+  JumpForce: {x: 0, y: 25}
+  WallJumpForce: {x: 10, y: 30}
+  maxWallJumps: 1
+  allowWallJumps: 1
+  allowGroundJumps: 1
 --- !u!1 &1058484051
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +514,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4157379951990487406, guid: 809352c876196dd41ad4ccad446d2cae,
+  m_Sprite: {fileID: -4842604653423950379, guid: 6106399eb99cf1e41a89980deed2070d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

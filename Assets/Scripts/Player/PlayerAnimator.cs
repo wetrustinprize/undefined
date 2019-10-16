@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Motor))]
+[DisallowMultipleComponent]
 public class PlayerAnimator : MonoBehaviour
 {
     
         #region Variables
 
+    [Header("Animator References")]
     [SerializeField]
     private Animator animator;
     [SerializeField]
@@ -17,7 +20,7 @@ public class PlayerAnimator : MonoBehaviour
         #endregion
 
     void Update() {
-        float vInput = 0;
+        float vInput = Input.GetAxisRaw("Horizontal");
         float vVel = 0;
 
         if(vInput != 0) sprite.flipX = vInput < 0;

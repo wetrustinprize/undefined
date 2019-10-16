@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using Untitled.Motor;
 
@@ -34,6 +35,7 @@ public class Motor : MonoBehaviour
 
     [Header("Other")]
     public float lastFaceDir;
+    public Vector2 inputAxis; // Input received by the player
 
     //Script side
 
@@ -42,17 +44,16 @@ public class Motor : MonoBehaviour
 
         #region Events
 
-    public delegate void OnCollisionEvent();
-    public delegate void OnWallCollisionEvent(int wallDir);
+    public event Action onTouchGround;
+    public event Action onUntouchGround;
 
-    public event OnCollisionEvent onTouchGround;
-    public event OnCollisionEvent onUntouchGround;
+    public event Action onTouchCelling;
+    public event Action onUntouchCelling;
 
-    public event OnCollisionEvent onTouchCelling;
-    public event OnCollisionEvent onUntouchCelling;
+    public event Action<Vector2> onReceiveInput;
 
-    public event OnWallCollisionEvent onTouchWall;
-    public event OnWallCollisionEvent onUntouchWall;
+    public event Action<int> onTouchWall;
+    public event Action<int> onUntouchWall;
 
         #endregion
 
@@ -72,7 +73,6 @@ public class Motor : MonoBehaviour
     private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
     private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
     private Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
-    private Vector2 inputAxis; // Input received by the player
 
         #endregion
 
@@ -96,6 +96,7 @@ public class Motor : MonoBehaviour
 
     // Initial setup
     void Start() {
+        lastFaceDir = 1;
         GravityScale = !BypassGravity ? GravityScale : 0;
 
         AddForce(new Force("input", Vector2.zero, 0, false), false);
@@ -108,6 +109,12 @@ public class Motor : MonoBehaviour
     public void ReceiveInput(Vector2 input) {
 
         inputAxis = input;
+
+        if(onReceiveInput != null)
+            onReceiveInput(input.normalized);
+
+        if(input.normalized.x != 0)
+            lastFaceDir = input.normalized.x;
 
     }
 
@@ -154,6 +161,21 @@ public class Motor : MonoBehaviour
         else
             return externalForces.Exists(force => force.Name == name);
 
+    }
+
+    // Get an existing force
+    ///<summary>Gets and existing force</string>
+    ///<param name="name">Name of the force</param>
+    ///<param name="constant">Is it a constant force?</param>
+    public Force GetForce(string name, bool constant = false) {
+
+        if(constant && HasForce(name, constant))
+            return constantForces.Find(force => force.Name == name);
+        else if(!constant)
+            return externalForces.Find(force => force.Name == name);
+        else
+            return null;
+            
     }
 
     // Called to remove a force (using only name)
@@ -386,18 +408,10 @@ public class Motor : MonoBehaviour
                     if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
                 }
 
-                // Apply slowdown X if is on ground or if has timer
-                if(f.ActualForce.x != 0 && OnGround && f.ApplyGravity || f.ActualForce.x != 0 && f.TimeToStop != 0) {
-                    f.ActualForce.x -= f.ForceApplied.x * (Time.fixedDeltaTime / (f.TimeToStop != 0 ? f.TimeToStop : 0.3f));
-
-                    if(f.ForceApplied.normalized.x < 0 ? f.ActualForce.x >= 0 : f.ActualForce.x <= 0) f.ActualForce.x = 0;
-                }
-
-                // Apply slowdown Y if is on air of if has timer
-                if(f.ActualForce.y != 0 && f.TimeToStop != 0) {
-                    f.ActualForce.y -= f.ForceApplied.y * (Time.fixedDeltaTime / f.TimeToStop);
-
-                    if(f.ForceApplied.normalized.y < 0 ? f.ActualForce.y >= 0 : f.ActualForce.y <= 0) f.ActualForce.y = 0;
+                if(f.TimeToStop != 0 && f.Timer <= f.TimeToStop)
+                {
+                    f.Timer += Time.deltaTime;
+                    f.ActualForce -= f.ForceApplied * (Time.deltaTime / f.TimeToStop);
                 }
 
                     #endregion
@@ -464,6 +478,7 @@ public class Motor : MonoBehaviour
         });
 
         externalForces.RemoveAll(f => (f.ActualForce == Vector2.zero && f.Name != "input"));
+        externalForces.RemoveAll(f => (f.TimeToStop != 0 && f.Timer > f.TimeToStop));
 
         externalForces.ForEach(f => {
 
