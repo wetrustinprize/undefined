@@ -38,6 +38,18 @@ TextureImporter:
   - first:
       213: 3831278352133472700
     second: alana_run8
+  - first:
+      213: 1299577003083161639
+    second: alana_air1
+  - first:
+      213: -1564822646730367895
+    second: alana_drift1
+  - first:
+      213: -7905468520276803109
+    second: alana_dash1
+  - first:
+      213: -1934059990353546801
+    second: alana_wall1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -373,7 +385,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -381,6 +393,90 @@ TextureImporter:
       bones: []
       spriteID: bdba5eb79e696f146bd0fec51607de24
       internalID: 3831278352133472700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_air1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce82952f053b2464188e42e63da86c12
+      internalID: 1299577003083161639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_drift1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 383
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd51f4a8de8e1be4bbbaee32d19582c3
+      internalID: -1564822646730367895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_dash1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 319
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f802834a286b06243be6acc672ac3c47
+      internalID: -7905468520276803109
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_wall1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 512
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62534b61caca1cc4aadfc2f07b705866
+      internalID: -1934059990353546801
       vertices: []
       indices: 
       edges: []
