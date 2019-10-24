@@ -26,6 +26,7 @@ public class Jump : MonoBehaviour
     private bool groundJumped;
 
     private int wallJumps = 0;
+    public bool canWallJump { get { return wallJumps < maxWallJumps; } }
 
     #endregion
 
@@ -50,7 +51,7 @@ public class Jump : MonoBehaviour
             dir += JumpForce;
             groundJumped = true;
         }
-        else if(m.OnWall && m.onRightWall != m.onLeftWall && wallJumps < maxWallJumps && allowWallJumps) // Wall jump
+        else if(m.OnWall && m.onRightWall != m.onLeftWall && canWallJump && allowWallJumps) // Wall jump
         {
             Vector2 wallDir = WallJumpForce;
             wallDir.x *= m.onRightWall ? -1 : 1;
@@ -67,7 +68,7 @@ public class Jump : MonoBehaviour
         }
 
         if(dir != Vector2.zero)
-            m.AddForce(new Force("jump", dir, 3f), false, true, true);
+            m.AddForce(new Force("jump", dir), false, true, true);
         m.RemoveSlow("wallSlow");
 
     }
@@ -93,21 +94,28 @@ public class Jump : MonoBehaviour
     void Grounded() {
 
         m.RemoveForce("jump");
+        m.RemoveSlow("wallSlow");
 
         wallJumps = 0;
 
         if(groundJumped)
+        {
             groundJumped = false;
-        
+        }
+
     }
 
     // Called when OnTouchWall is called
     void OnWall(int dir) {
 
         m.ResetGravity();
-        Slow s = new Slow("wallSlow", new Vector2(0, -0.9f), SlowType.Gravity);
-        
-        m.AddSlow(s, true);
+        float totalSlow = canWallJump ? -0.9f : -0.3f;
+        Slow s = new Slow("wallSlow", new Vector2(0, totalSlow), SlowType.Gravity);
+
+        if(m.inputAxis.x == dir)
+        {
+            m.AddSlow(s, true);
+        }
         m.RemoveForce("jump");
 
     }

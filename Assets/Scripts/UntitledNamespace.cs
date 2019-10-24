@@ -30,7 +30,7 @@ namespace Untitled
             public Force(Vector2 force, float time = 0, bool gravity = true) {
                 Name = "noname";
                 ForceApplied = force;
-                ActualForce = force;
+                ActualForce = force / (time != 0 ? time : 1);
                 TimeToStop = time;
                 ApplyGravity = gravity;
             }
@@ -42,7 +42,7 @@ namespace Untitled
             public Force(string name, Vector2 force, float time = 0, bool gravity = true) {
                 Name = name;
                 ForceApplied = force;
-                ActualForce = force;
+                ActualForce = force / (time != 0 ? time : 1);
                 TimeToStop = time;
                 ApplyGravity = gravity;
             }

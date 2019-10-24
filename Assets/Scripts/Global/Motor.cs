@@ -17,7 +17,7 @@ public class Motor : MonoBehaviour
 
     [Header("Velocity")]
     [SerializeField]
-    private Vector2 MaxSpeed = Vector2.one;
+    public Vector2 MaxSpeed = Vector2.one;
     [SerializeField]
     private float Fric = 0.65f;
     [SerializeField]
@@ -26,7 +26,7 @@ public class Motor : MonoBehaviour
     [Space]
 
     [SerializeField]
-    private LayerMask GroundLayer = 0;
+    private LayerMask CollisionLayer = 0;
     public bool OnGround;
     public bool OnWall;
     public bool OnCelling;
@@ -273,8 +273,8 @@ public class Motor : MonoBehaviour
         Vector2 celPos = _celColliderPosition + (Vector2)transform.position;
 
         //Check if is grounded or touching celling
-        bool ground = Physics2D.OverlapBox(grdPos, _ckcGCColliderSize, 0, GroundLayer);
-        bool celling = Physics2D.OverlapBox(celPos, _ckcGCColliderSize, 0, GroundLayer);
+        bool ground = Physics2D.OverlapBox(grdPos, _ckcGCColliderSize, 0, CollisionLayer);
+        bool celling = Physics2D.OverlapBox(celPos, _ckcGCColliderSize, 0, CollisionLayer);
 
         if(OnGround != ground)
         {
@@ -316,8 +316,8 @@ public class Motor : MonoBehaviour
         Vector2 lWallPos = _walLColliderPosition + (Vector2)transform.position;
 
         // Checking if has a wall nearby
-        bool rightwall = Physics2D.OverlapBox(rWallPos, _ckcWColliderSize, 0, GroundLayer);
-        bool leftwall = Physics2D.OverlapBox(lWallPos, _ckcWColliderSize, 0, GroundLayer);
+        bool rightwall = Physics2D.OverlapBox(rWallPos, _ckcWColliderSize, 0, CollisionLayer);
+        bool leftwall = Physics2D.OverlapBox(lWallPos, _ckcWColliderSize, 0, CollisionLayer);
         bool wall = onLeftWall || onRightWall;
 
         if(OnWall != wall || rightwall != onRightWall || leftwall != onLeftWall)
@@ -410,8 +410,7 @@ public class Motor : MonoBehaviour
 
                 if(f.TimeToStop != 0 && f.Timer <= f.TimeToStop)
                 {
-                    f.Timer += Time.deltaTime;
-                    f.ActualForce -= f.ForceApplied * (Time.deltaTime / f.TimeToStop);
+                    f.Timer += Time.fixedDeltaTime;
                 }
 
                     #endregion
@@ -478,7 +477,7 @@ public class Motor : MonoBehaviour
         });
 
         externalForces.RemoveAll(f => (f.ActualForce == Vector2.zero && f.Name != "input"));
-        externalForces.RemoveAll(f => (f.TimeToStop != 0 && f.Timer > f.TimeToStop));
+        externalForces.RemoveAll(f => (f.TimeToStop != 0 && f.Timer >= f.TimeToStop));
 
         externalForces.ForEach(f => {
 
