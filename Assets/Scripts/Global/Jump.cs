@@ -20,13 +20,23 @@ public class Jump : MonoBehaviour
     public bool allowWallJumps = true;
     public bool allowGroundJumps = true;
 
+    [Header("Wall slow settings")]
+    public bool applyWallSlow = true;
+    public float normalWallSlow = -0.9f;
+    public float noWallJumpSlow = -0.3f;
+
     // Script-side variables
     private Motor m { get { return GetComponent<Motor>(); } }
 
     private bool groundJumped;
 
     private int wallJumps = 0;
-    public bool canWallJump { get { return wallJumps < maxWallJumps; } }
+    
+    public bool canWallJump { get { return wallJumps < maxWallJumps && m.OnWall && m.onRightWall != m.onLeftWall && allowWallJumps; } }
+    public bool canGroundJump { get { return m.OnGround && !groundJumped && allowGroundJumps; } }
+
+    public bool hasGroundJumped { get { return groundJumped; } }
+    public bool hasWallJumped { get { return wallJumps == maxWallJumps; } }
 
     #endregion
 
@@ -41,35 +51,52 @@ public class Jump : MonoBehaviour
 
         #region Functions
 
+    ///<summary>Forces a ground jump</summary>
+    public void GroundJump() {
+
+        Vector2 dir = Vector2.zero;
+
+        dir += JumpForce;
+        groundJumped = true;
+
+        m.AddForce(new Force("jump", dir), false, true, true);
+        m.RemoveSlow("wallSlow");
+
+    }
+
+    ///<summary>Force a walljump</summary>
+    ///<param name="dirToJump">0 = auto, 1 = right, -1 = left</param>
+    public void WallJump(int dirToJump = 0) {
+
+        Vector2 dir = WallJumpForce;
+        int directionToJump = dirToJump != 0 ? dirToJump : (m.onRightWall ? -1 : 1);
+        dir.x *= directionToJump;
+
+        if(m.inputAxis.x != (int)Mathf.Clamp(dir.x, -1, 1) && m.inputAxis.x != 0)
+        {
+            dir.x = 0;
+        }
+
+        wallJumps++;
+
+        m.AddForce(new Force("jump", dir), false, true, true);
+        m.RemoveSlow("wallSlow");
+
+    }
+
     // Function to execute the jump
     public void Execute() {
 
         Vector2 dir = Vector2.zero;
         
-        if(m.OnGround && !groundJumped && allowGroundJumps) // Ground jump
+        if(canGroundJump) // Ground jump
         {
-            dir += JumpForce;
-            groundJumped = true;
+            GroundJump();
         }
-        else if(m.OnWall && m.onRightWall != m.onLeftWall && canWallJump && allowWallJumps) // Wall jump
+        else if(canWallJump) // Wall jump
         {
-            Vector2 wallDir = WallJumpForce;
-            wallDir.x *= m.onRightWall ? -1 : 1;
-
-            if(m.inputAxis.x != (int)Mathf.Clamp(wallDir.x, -1, 1) && m.inputAxis.x != 0)
-            {
-                wallDir.x = 0;
-            }
-
-            dir += wallDir;
-
-            wallJumps++;
-
+            WallJump();
         }
-
-        if(dir != Vector2.zero)
-            m.AddForce(new Force("jump", dir), false, true, true);
-        m.RemoveSlow("wallSlow");
 
     }
 
@@ -109,14 +136,17 @@ public class Jump : MonoBehaviour
     void OnWall(int dir) {
 
         m.ResetGravity();
-        float totalSlow = canWallJump ? -0.9f : -0.3f;
+        m.RemoveForce("jump");
+
+        if(!applyWallSlow) return;
+
+        float totalSlow = canWallJump ? normalWallSlow : noWallJumpSlow;
         Slow s = new Slow("wallSlow", new Vector2(0, totalSlow), SlowType.Gravity);
 
         if(m.inputAxis.x == dir)
         {
             m.AddSlow(s, true);
         }
-        m.RemoveForce("jump");
 
     }
 

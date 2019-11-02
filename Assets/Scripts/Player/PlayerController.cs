@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(Jump))]
 [RequireComponent(typeof(Dash))]
+[RequireComponent(typeof(PlayerJump))]
 public class PlayerController : MonoBehaviour {
 
         #region Variables
@@ -16,6 +17,7 @@ public class PlayerController : MonoBehaviour {
     // Script side variables
     private Motor motor { get {return GetComponent<Motor>(); } }
     private Jump jump { get { return GetComponent<Jump>(); } }
+    private PlayerJump pjump { get {return GetComponent<PlayerJump>(); } }
     private Dash dash { get { return GetComponent<Dash>(); } }
     private PlayerInput inputs;
 
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour {
         inputs.Player.Move.performed += cb => { PerformWalk(cb.ReadValue<Vector2>()); };
         inputs.Player.Move.canceled += cb => { PerformWalk(Vector2.zero, true); };
 
-        inputs.Player.Jump.performed += cb => { if(CanJump) jump.Execute(); };
+        inputs.Player.Jump.performed += cb => { if(CanJump) pjump.Execute(); };
 
         inputs.Player.Dash.performed += cb => { if(CanDash) dash.Execute(); };
 

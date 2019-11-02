@@ -128,7 +128,7 @@ public class Motor : MonoBehaviour
     ///<param name="constant">Is it constant</param>
     ///<param name="resetGrav">Reset gravity?</param>
     ///<param name="replaceForce">Replace force?</param>
-    public void AddForce(Force force, bool constant = false, bool resetGrav = false, bool replaceForce = false) {
+    public void AddForce(Force force, bool constant = false, bool resetGravi = false, bool replaceForce = false) {
 
         if(constant)
             if(HasForce(force.Name, true))
@@ -147,7 +147,7 @@ public class Motor : MonoBehaviour
             else
                 externalForces.Add(force);
             
-        if(resetGrav) resetGrav = true;
+        if(resetGravi) resetGrav = true;
 
     }
 
