@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Follow settings")]
     public GameObject lookAt;
+    public float distance;
 
     [Header("Look ahead settings:")]
     public float lookAheadDistance;
@@ -82,7 +83,7 @@ public class CameraController : MonoBehaviour
         actPos = (Vector2)lookAt.transform.position;
 
         newPos = actPos + lookAheadValue;
-        newPos.z = -10;
+        newPos.z = distance;
 
     }
 
