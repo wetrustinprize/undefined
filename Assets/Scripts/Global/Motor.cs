@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Untitled.Motor;
+using Undefined.Motor;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -72,7 +72,7 @@ public class Motor : MonoBehaviour
     };
     private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
     private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
-    private Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
+    public Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
 
         #endregion
 
@@ -273,8 +273,22 @@ public class Motor : MonoBehaviour
         Vector2 celPos = _celColliderPosition + (Vector2)transform.position;
 
         //Check if is grounded or touching celling
-        bool ground = Physics2D.OverlapBox(grdPos, _ckcGCColliderSize, 0, CollisionLayer);
-        bool celling = Physics2D.OverlapBox(celPos, _ckcGCColliderSize, 0, CollisionLayer);
+        bool ground = false;
+        bool celling = false;
+
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(grdPos, _ckcGCColliderSize, 0, CollisionLayer))
+        {
+            if(c.gameObject == this.gameObject) continue;
+            ground = true;
+            break;
+        }
+
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(celPos, _ckcGCColliderSize, 0, CollisionLayer))
+        {
+            if(c.gameObject == this.gameObject) continue;
+            celling = true;
+            break;
+        }
 
         if(OnGround != ground)
         {
@@ -316,9 +330,23 @@ public class Motor : MonoBehaviour
         Vector2 lWallPos = _walLColliderPosition + (Vector2)transform.position;
 
         // Checking if has a wall nearby
-        bool rightwall = Physics2D.OverlapBox(rWallPos, _ckcWColliderSize, 0, CollisionLayer);
-        bool leftwall = Physics2D.OverlapBox(lWallPos, _ckcWColliderSize, 0, CollisionLayer);
+        bool rightwall = false;
+        bool leftwall = false;
         bool wall = onLeftWall || onRightWall;
+
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(lWallPos, _ckcWColliderSize, 0, CollisionLayer))
+        {
+            if(c.gameObject == this.gameObject) continue;
+            leftwall = true;
+            break;
+        }
+
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(rWallPos, _ckcWColliderSize, 0, CollisionLayer))
+        {
+            if(c.gameObject == this.gameObject) continue;
+            rightwall = true;
+            break;
+        }
 
         if(OnWall != wall || rightwall != onRightWall || leftwall != onLeftWall)
         {
