@@ -21,8 +21,10 @@ public class PlayerAnimator : MonoBehaviour
 
     void Update() {
         float vInput = motor.inputAxis.x;
-        float vVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
-        float vDir = vVel > 0 ? 1 : -1;
+        float hVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
+        float vDir = hVel > 0 ? 1 : -1;
+
+        float vVel = motor.finalSpeed.y / 15;
 
         bool onAir = !motor.OnGround;
         bool drifting = vInput != 0 ? (vDir != vInput) : false;
@@ -43,7 +45,8 @@ public class PlayerAnimator : MonoBehaviour
 
             sprite.flipX = flip;
         }
-        animator.SetFloat("SpeedH", Mathf.Abs(vVel));
+        animator.SetFloat("SpeedH", Mathf.Abs(hVel));
+        animator.SetFloat("SpeedV", vVel);
         animator.SetFloat("Input", Mathf.Abs(vInput));
         animator.SetBool("OnAir", onAir);
         animator.SetBool("Drift", drifting);

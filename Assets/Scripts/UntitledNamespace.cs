@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace Untitled
+namespace Undefined
 {
 
     namespace Motor
