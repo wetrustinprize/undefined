@@ -40,6 +40,14 @@ public class PlayerInput : IInputActionCollection
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""4d7e3bc0-3d65-48f7-8ab2-5c24ac66cd8a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -68,7 +76,7 @@ public class PlayerInput : IInputActionCollection
                 {
                     ""name"": ""up"",
                     ""id"": ""15e3eff1-b9df-42a8-b465-87014800fd15"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -79,7 +87,7 @@ public class PlayerInput : IInputActionCollection
                 {
                     ""name"": ""down"",
                     ""id"": ""b8472b81-28f6-4610-bc1c-b6c00689718a"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -90,7 +98,7 @@ public class PlayerInput : IInputActionCollection
                 {
                     ""name"": ""left"",
                     ""id"": ""b89ce5e2-9626-47a3-90a6-065c02df6079"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -101,7 +109,7 @@ public class PlayerInput : IInputActionCollection
                 {
                     ""name"": ""right"",
                     ""id"": ""a52f7397-6175-46d4-a390-ad4b600f3fed"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -134,7 +142,7 @@ public class PlayerInput : IInputActionCollection
                 {
                     ""name"": """",
                     ""id"": ""477616c7-5315-4d89-80ba-e110b3f8923f"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -152,6 +160,17 @@ public class PlayerInput : IInputActionCollection
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81fe1fac-d3bc-47c2-a0ad-a849910df2ca"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -163,6 +182,7 @@ public class PlayerInput : IInputActionCollection
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
     }
 
     ~PlayerInput()
@@ -215,6 +235,7 @@ public class PlayerInput : IInputActionCollection
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Attack;
     public struct PlayerActions
     {
         private PlayerInput m_Wrapper;
@@ -222,6 +243,7 @@ public class PlayerInput : IInputActionCollection
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -240,6 +262,9 @@ public class PlayerInput : IInputActionCollection
                 Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
                 Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -253,6 +278,9 @@ public class PlayerInput : IInputActionCollection
                 Dash.started += instance.OnDash;
                 Dash.performed += instance.OnDash;
                 Dash.canceled += instance.OnDash;
+                Attack.started += instance.OnAttack;
+                Attack.performed += instance.OnAttack;
+                Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -262,5 +290,6 @@ public class PlayerInput : IInputActionCollection
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }
