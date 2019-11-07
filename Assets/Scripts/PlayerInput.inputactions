@@ -28,6 +28,14 @@
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "4d7e3bc0-3d65-48f7-8ab2-5c24ac66cd8a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -56,7 +64,7 @@
                 {
                     "name": "up",
                     "id": "15e3eff1-b9df-42a8-b465-87014800fd15",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -67,7 +75,7 @@
                 {
                     "name": "down",
                     "id": "b8472b81-28f6-4610-bc1c-b6c00689718a",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -78,7 +86,7 @@
                 {
                     "name": "left",
                     "id": "b89ce5e2-9626-47a3-90a6-065c02df6079",
-                    "path": "<Keyboard>/a",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -89,7 +97,7 @@
                 {
                     "name": "right",
                     "id": "a52f7397-6175-46d4-a390-ad4b600f3fed",
-                    "path": "<Keyboard>/d",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -122,7 +130,7 @@
                 {
                     "name": "",
                     "id": "477616c7-5315-4d89-80ba-e110b3f8923f",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/leftShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -138,6 +146,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "81fe1fac-d3bc-47c2-a0ad-a849910df2ca",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
