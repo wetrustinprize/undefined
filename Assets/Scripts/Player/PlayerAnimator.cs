@@ -13,11 +13,37 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField]
     private SpriteRenderer sprite;
 
+    [Header("Camera Refereces")]
+    [SerializeField]
+    private CameraController cam;
+
     //Script side vars
 
     private Motor motor { get { return GetComponent<Motor>(); } }
 
+    private bool attacked;
+
         #endregion
+
+    void Start() {
+
+        GetComponent<Attack>().onPerform += AttackAnim;
+        GetComponent<Attack>().onAttack += AttackEffect;
+
+    }
+
+    void AttackAnim() {
+
+        attacked = true;
+
+    }
+
+    void AttackEffect() {
+
+        Vector2 dir = new Vector2(0.3f * motor.lastFaceDir, 0);
+        cam.Push(dir, 0, 0.1f);
+
+    }
 
     void Update() {
         float vInput = motor.inputAxis.x;
@@ -28,7 +54,7 @@ public class PlayerAnimator : MonoBehaviour
 
         bool onAir = !motor.OnGround;
         bool drifting = vInput != 0 ? (vDir != vInput) : false;
-        bool onWall = motor.OnWall && motor.HasSlow("wallSlow");
+        bool onWall = motor.OnWall && !motor.OnGround;
         bool dashing = motor.HasForce("dash", false);
 
         if(vInput != 0) {
@@ -52,6 +78,9 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("Drift", drifting);
         animator.SetBool("OnWall", onWall);
         animator.SetBool("Dashing", dashing);
+        animator.SetBool("Attack", attacked);
+
+        if(attacked) attacked = false;
     }
 
 }
