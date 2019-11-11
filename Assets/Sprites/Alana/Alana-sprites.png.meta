@@ -40,7 +40,7 @@ TextureImporter:
     second: alana_run8
   - first:
       213: 1299577003083161639
-    second: alana_air1
+    second: alana_air_up1
   - first:
       213: -1564822646730367895
     second: alana_drift1
@@ -52,13 +52,25 @@ TextureImporter:
     second: alana_wall1
   - first:
       213: 4122268585832339028
-    second: alana_air2
+    second: alana_air_up2
   - first:
       213: 6411331126434408536
-    second: alana_air3
+    second: alana_air_up3
   - first:
       213: -7804083549764379787
     second: Alana-sprites_0
+  - first:
+      213: 6984928047971047246
+    second: alana_air_middle
+  - first:
+      213: -499328166624987153
+    second: alana_air_down1
+  - first:
+      213: -4833794768959731113
+    second: alana_air_down2
+  - first:
+      213: 4198568820226766625
+    second: alana_air_down3
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -407,7 +419,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alana_air1
+      name: alana_air_up1
       rect:
         serializedVersion: 2
         x: 0
@@ -491,7 +503,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alana_air2
+      name: alana_air_up2
       rect:
         serializedVersion: 2
         x: 64
@@ -512,7 +524,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: alana_air3
+      name: alana_air_up3
       rect:
         serializedVersion: 2
         x: 128
@@ -541,7 +553,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -549,6 +561,90 @@ TextureImporter:
       bones: []
       spriteID: be8df3699023b0c47a1f9642001359d9
       internalID: -7804083549764379787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_air_middle
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a69b6ea174082f4fba2b96d22b71b28
+      internalID: 6984928047971047246
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_air_down1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0afc09b65ce9373459f1bb77d91ac4a4
+      internalID: -499328166624987153
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_air_down2
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 92fe60079d4a57f4097dee924f0443d7
+      internalID: -4833794768959731113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: alana_air_down3
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 448
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55bf6c8852f758d4f8905e91ba45094a
+      internalID: 4198568820226766625
       vertices: []
       indices: 
       edges: []
