@@ -36,6 +36,7 @@ public class Motor : MonoBehaviour
     [Header("Other")]
     public float lastFaceDir;
     public Vector2 inputAxis; // Input received by the player
+    
 
     //Script side
 
@@ -438,6 +439,7 @@ public class Motor : MonoBehaviour
 
                 if(f.TimeToStop != 0 && f.Timer <= f.TimeToStop)
                 {
+                    f.ActualForce = ((f.ForceApplied / f.TimeToStop) * 1.65f) * (1 - Mathf.Pow((f.Timer / f.TimeToStop), 2));
                     f.Timer += Time.fixedDeltaTime;
                 }
 
