@@ -10,18 +10,18 @@ public class PlayerJump : MonoBehaviour
         #region Variables
 
     [Header("Extra Frames")]
-    public float extraFramesGroundJump;
-    public float extraFramesWallJump;
+    public float extraTimeGroundJump;
+    public float extraTimeWallJump;
 
     // Script side variables
-    private float framesToGroundJump;
-    private float framesToWallJump;
+    private float timeToGroundJump;
+    private float timeToWallJump;
 
     private bool countWallJump;
     private bool countGroundJump;
 
-    private bool canWallJump { get { return (framesToWallJump > 0); } }
-    private bool canGroundJump { get { return (framesToGroundJump > 0); } }
+    private bool canWallJump { get { return (timeToWallJump > 0); } }
+    private bool canGroundJump { get { return (timeToGroundJump > 0); } }
 
     private Motor motor { get { return GetComponent<Motor>(); } }
     private Jump jump { get {return GetComponent<Jump>(); } }
@@ -40,11 +40,11 @@ public class PlayerJump : MonoBehaviour
 
     public void Update() {
 
-        if(countWallJump && framesToWallJump > 0)
-            framesToWallJump = Mathf.Clamp(framesToWallJump - Time.deltaTime, 0, extraFramesWallJump);
+        if(countWallJump && timeToWallJump > 0)
+            timeToWallJump = Mathf.Clamp(timeToWallJump - Time.deltaTime, 0, extraTimeWallJump);
 
-        if(countGroundJump && framesToGroundJump > 0)
-            framesToGroundJump = Mathf.Clamp(framesToGroundJump - Time.deltaTime, 0, extraFramesGroundJump);
+        if(countGroundJump && timeToGroundJump > 0)
+            timeToGroundJump = Mathf.Clamp(timeToGroundJump - Time.deltaTime, 0, extraTimeGroundJump);
 
     }
 
@@ -59,8 +59,8 @@ public class PlayerJump : MonoBehaviour
 
     void GroundRestart() {
 
-        framesToGroundJump = extraFramesGroundJump;
-        framesToWallJump = 0;
+        timeToGroundJump = extraTimeGroundJump;
+        timeToWallJump = motor.OnWall ? extraTimeWallJump : 0;
 
         countGroundJump = false;
 
@@ -68,9 +68,9 @@ public class PlayerJump : MonoBehaviour
 
     void WallRestart() {
 
-        framesToWallJump = extraFramesWallJump;
-
+        timeToWallJump = extraTimeWallJump;
         countWallJump = false;
+
 
     }
 
