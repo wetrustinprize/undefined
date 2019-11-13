@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Undefined.Motor;
+using Undefined.Force;
 
 [RequireComponent(typeof(Motor))]
 [DisallowMultipleComponent]

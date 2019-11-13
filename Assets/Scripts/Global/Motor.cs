@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-using Undefined.Motor;
+using Undefined.Force;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Rigidbody2D))]
@@ -25,8 +25,7 @@ public class Motor : MonoBehaviour
 
     [Space]
 
-    [SerializeField]
-    private LayerMask CollisionLayer = 0;
+    public LayerMask CollisionLayer = 0;
     public bool OnGround;
     public bool OnWall;
     public bool OnCelling;
@@ -34,7 +33,7 @@ public class Motor : MonoBehaviour
     public bool onLeftWall;
 
     [Header("Other")]
-    public float lastFaceDir;
+    public int lastFaceDir;
     public Vector2 inputAxis; // Input received by the player
     
 
@@ -87,6 +86,12 @@ public class Motor : MonoBehaviour
     private Vector2 _ckcGCColliderSize; // Celling and Floor collider size
     private Vector2 _ckcWColliderSize; // Wall collider size
 
+    public Vector2 CellingColliderPosition { get { return _celColliderPosition; } }
+    public Vector2 GroundColliderPosition { get { return _grdColliderPosition; } }
+    public Vector2[] WallsColliderPosition { get { return new Vector2[] {_walRColliderPosition, _walLColliderPosition}; } }
+    public Vector2 GroundCellingColliderSize { get { return _ckcGCColliderSize; } }
+    public Vector2 WallColliderSize { get { return _ckcWColliderSize; } }
+
     //Check if the collider has changed size or not
     private Vector2 _lastColliderSiz = Vector2.zero;
     private Vector2 _lastColliderOffset = Vector2.zero;
@@ -115,7 +120,7 @@ public class Motor : MonoBehaviour
             onReceiveInput(input.normalized);
 
         if(input.normalized.x != 0)
-            lastFaceDir = input.normalized.x;
+            lastFaceDir = (int)input.normalized.x;
 
     }
 

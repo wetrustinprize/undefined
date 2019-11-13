@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Undefined.Motor;
+using Undefined.Force;
 using System;
 
 [DisallowMultipleComponent]
@@ -25,6 +25,9 @@ public class Attack : MonoBehaviour
     public event Action onAttack;
     public event Action onPerform;
 
+    // Other
+    public bool canAttack { get { return actCoolDown == 0; } }
+
     // Script side
     private Motor m { get {return GetComponent<Motor>(); } }
     private float actCoolDown = 0f;
@@ -49,7 +52,8 @@ public class Attack : MonoBehaviour
 
         actCoolDown = coolDown;
 
-        Vector2 dir = offset * m.lastFaceDir;
+        Vector2 dir = offset;
+        dir.x *= m.lastFaceDir;
         bool calledAttack = false;
         Collider2D[] hits = Physics2D.OverlapBoxAll((Vector2)transform.position + dir, size, 0f, aliveLayes);
 
@@ -88,7 +92,8 @@ public class Attack : MonoBehaviour
 
     void OnDrawGizmos() {
 
-        Vector2 dir = offset * m.lastFaceDir;
+        Vector2 dir = offset;
+        dir.x *= m.lastFaceDir;
         Vector3 pos = transform.position + (Vector3)dir;
 
         Gizmos.color = new Color(1, 1, 1, 0.8f);
