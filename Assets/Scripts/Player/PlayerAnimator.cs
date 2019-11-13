@@ -7,6 +7,10 @@ public class PlayerAnimator : MonoBehaviour
     
         #region Variables
 
+    [Header("Animator Settings")]
+    [SerializeField]
+    private float driftThreshold;
+
     [Header("Animator References")]
     [SerializeField]
     private Animator animator;
@@ -60,13 +64,21 @@ public class PlayerAnimator : MonoBehaviour
         if(vInput != 0) {
             bool flip = false;
 
-            if(!onWall)
+            if(!onWall && !onAir)
             {
-                flip = vInput < 0;
+
+                if(vInput < 0)
+                    flip = hVel < driftThreshold;
+                else
+                    flip = !(hVel > driftThreshold);
+            }
+            else if(onWall)
+            {
+                flip = motor.onRightWall ? false : true;
             }
             else
             {
-                flip = motor.onRightWall ? false : true;
+                flip = vInput < 0;
             }
 
             sprite.flipX = flip;
