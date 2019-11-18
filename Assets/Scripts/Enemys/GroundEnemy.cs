@@ -21,8 +21,6 @@ public class GroundEnemy : MonoBehaviour
 
         bool flip = AIDetection.Edge(direction, motor, this.gameObject);
 
-        Debug.Log(AIDetection.LimitedVision(0.5f,motor.lastFaceDir,this.gameObject, Mathf.Infinity, motor.CollisionLayer, test));
-
         if(flip)
             direction.x *= -1;
         else
