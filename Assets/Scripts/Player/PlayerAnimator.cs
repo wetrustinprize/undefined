@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Motor))]
 [DisallowMultipleComponent]
 public class PlayerAnimator : MonoBehaviour
 {
@@ -9,7 +8,17 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Animator Settings")]
     [SerializeField]
+    private Motor motor;
+    [SerializeField]
     private float driftThreshold;
+
+    [Header("Particles")]
+    [SerializeField]
+    private GameObject dustParticles;
+    [SerializeField]
+    private GameObject dashParticles;
+    [SerializeField]
+    private Transform dustSpawnTransform;
 
     [Header("Animator References")]
     [SerializeField]
@@ -21,11 +30,10 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField]
     private CameraController cam;
 
-    //Script side vars
-
-    private Motor motor { get { return GetComponent<Motor>(); } }
+    //Script side var
 
     private bool attacked;
+    private bool dashParticleSpawned;
 
         #endregion
 
@@ -46,6 +54,37 @@ public class PlayerAnimator : MonoBehaviour
 
         Vector2 dir = new Vector2(0.3f * motor.lastFaceDir, 0);
         cam.Push(dir, 0, 0.1f);
+
+    }
+
+    public void DustParticles() {
+
+        Vector3 pos = dustSpawnTransform.position;
+
+        Quaternion rot = Quaternion.identity;
+
+        float offset = dustSpawnTransform.localPosition.x;
+
+        if(motor.lastFaceDir == -1)
+        {
+            pos.x -= offset*2;
+            rot.y = 180;
+        }
+
+        GameObject.Instantiate(dustParticles, pos, rot);
+
+    }
+
+    public void DashParticles() {
+
+        Quaternion rot = Quaternion.identity;
+
+        if(motor.lastFaceDir == 1)
+        {
+            rot.y = 180;
+        }
+
+        GameObject.Instantiate(dashParticles, transform.parent.position, rot, transform);
 
     }
 
@@ -91,6 +130,15 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("OnWall", onWall);
         animator.SetBool("Dashing", dashing);
         animator.SetBool("Attack", attacked);
+
+        if(!dashParticleSpawned && dashing)
+        {
+            dashParticleSpawned = true;
+            DashParticles();
+        } else if(dashParticles && !dashing)
+        {
+            dashParticleSpawned = false;
+        }
 
         if(attacked) attacked = false;
     }
