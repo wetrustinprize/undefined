@@ -10,6 +10,8 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField]
     private Motor motor;
     [SerializeField]
+    private Attack attack;
+    [SerializeField]
     private float driftThreshold;
 
     [Header("Particles")]
@@ -39,8 +41,8 @@ public class PlayerAnimator : MonoBehaviour
 
     void Start() {
 
-        GetComponent<Attack>().onPerform += AttackAnim;
-        GetComponent<Attack>().onAttack += AttackEffect;
+        attack.onPerform += AttackAnim;
+        attack.onAttack += AttackEffect;
 
     }
 
@@ -89,17 +91,20 @@ public class PlayerAnimator : MonoBehaviour
     }
 
     void Update() {
+        // Gets all velocity info
         float vInput = motor.inputAxis.x;
         float hVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
         float vDir = hVel > 0 ? 1 : -1;
 
         float vVel = motor.finalSpeed.y / 15;
 
+        // Get all states
         bool onAir = !motor.OnGround;
         bool drifting = vInput != 0 ? (vDir != vInput) : false;
         bool onWall = motor.OnWall && !motor.OnGround;
         bool dashing = motor.HasForce("dash", false);
 
+        // Check if should flip
         if(vInput != 0) {
             bool flip = false;
 
@@ -111,7 +116,7 @@ public class PlayerAnimator : MonoBehaviour
                 else
                     flip = !(hVel > driftThreshold);
             }
-            else if(onWall)
+            else if(onWall && !onAir)
             {
                 flip = motor.onRightWall ? false : true;
             }
@@ -122,6 +127,13 @@ public class PlayerAnimator : MonoBehaviour
 
             sprite.flipX = flip;
         }
+        else if(sprite.flipX && motor.lastFaceDir == 1 && !attacked)
+        {
+            sprite.flipX = false;
+        }
+
+
+        // Send values to the animator
         animator.SetFloat("SpeedH", Mathf.Abs(hVel));
         animator.SetFloat("SpeedV", vVel);
         animator.SetFloat("Input", Mathf.Abs(vInput));
