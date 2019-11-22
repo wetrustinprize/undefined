@@ -21,6 +21,10 @@ public class Attack : MonoBehaviour
     public float pushForce;
     public float pushTime;
 
+    [Header("Slow Settings")]
+    public Slow attackerSlow;
+    public float attackerSlowTimer;
+
     // Events
     public event Action onAttack;
     public event Action onPerform;
@@ -29,16 +33,29 @@ public class Attack : MonoBehaviour
     public bool canAttack { get { return actCoolDown == 0; } }
 
     // Script side
-    private Motor m { get {return GetComponent<Motor>(); } }
+    private Motor motor { get {return GetComponent<Motor>(); } }
     private float actCoolDown = 0f;
+    private float actAttackSlowTimer = 0f;
 
         #endregion
 
+
+    void Start() {
+        attackerSlow.Name = "attacker_slow";
+    }
 
     void Update() {
 
         if(actCoolDown != 0)
             actCoolDown = Mathf.Clamp(actCoolDown - Time.deltaTime, 0, actCoolDown);
+
+        if(actAttackSlowTimer != 0)
+        {
+            actAttackSlowTimer = Mathf.Clamp(actAttackSlowTimer - Time.deltaTime, 0, actAttackSlowTimer);
+
+            if(actAttackSlowTimer <= 0 && motor.HasSlow("attacker_slow"))
+                motor.RemoveSlow("attacker_slow");
+        }
 
     }
 
@@ -53,9 +70,12 @@ public class Attack : MonoBehaviour
         actCoolDown = coolDown;
 
         Vector2 dir = offset;
-        dir.x *= m.lastFaceDir;
+        dir.x *= motor.lastFaceDir;
         bool calledAttack = false;
         Collider2D[] hits = Physics2D.OverlapBoxAll((Vector2)transform.position + dir, size, 0f, aliveLayes);
+
+        motor.AddSlow(attackerSlow, true);
+        actAttackSlowTimer = attackerSlowTimer;
 
         if(hits.Length > 0) {
 
@@ -93,7 +113,7 @@ public class Attack : MonoBehaviour
     void OnDrawGizmos() {
 
         Vector2 dir = offset;
-        dir.x *= m.lastFaceDir;
+        dir.x *= motor.lastFaceDir;
         Vector3 pos = transform.position + (Vector3)dir;
 
         Gizmos.color = new Color(1, 1, 1, 0.8f);
