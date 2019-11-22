@@ -266,18 +266,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.4196353}
+  m_Offset: {x: 0, y: -0.09}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.6666667, y: 5.3333335}
+    oldSize: {x: 4, y: 4}
     newSize: {x: 4, y: 4}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.204854, y: 4.4802523}
+  m_Size: {x: 3.43, y: 3.8}
   m_EdgeRadius: 0
 --- !u!212 &570482335
 SpriteRenderer:
@@ -317,7 +317,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7527423588169679472, guid: 00e932f4daa1e5e479abddbf8604c2d1,
+  m_Sprite: {fileID: -5623194428626525839, guid: 0559e468edf19aa4aba760d6ba3fa209,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -434,8 +434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157b33bd867a5104da6356dfb3ed7053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: -0.4196353}
-  size: {x: 3.58, y: 5.08}
+  offset: {x: 0, y: -0.03}
+  size: {x: 4.09, y: 4.2}
   aliveLayes:
     serializedVersion: 2
     m_Bits: 512
@@ -443,6 +443,11 @@ MonoBehaviour:
   coolDown: 0.3
   pushForce: 5
   pushTime: 0.2
+  attackerSlow:
+    Name: 
+    Value: {x: 0, y: 0}
+    Types: 
+  attackerSlowTimer: 0
 --- !u!1 &598129877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,9 +1028,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   Damage: 1
-  coolDown: 1
+  coolDown: 0.33
   pushForce: 2
   pushTime: 0.1
+  attackerSlow:
+    Name: 
+    Value: {x: -1, y: 0}
+    Types: 01000000
+  attackerSlowTimer: 0.28
 --- !u!114 &1040150036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1403,7 +1413,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606746871}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.95, y: 9.35, z: 0}
+  m_LocalPosition: {x: 5.9, y: 9.35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1500,13 +1510,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -4842604653423950379, guid: 6106399eb99cf1e41a89980deed2070d,
+  m_Sprite: {fileID: -3316288299421370325, guid: 6106399eb99cf1e41a89980deed2070d,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.64, y: 0.64}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1525,6 +1535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   motor: {fileID: 1040150029}
+  attack: {fileID: 1040150035}
   driftThreshold: 0
   dustParticles: {fileID: 6325475096907384661, guid: 1520a9fb334ece845806f04a0efd2fa8,
     type: 3}
