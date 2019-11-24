@@ -12,6 +12,8 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField]
     private Attack attack;
     [SerializeField]
+    private Jump jump;
+    [SerializeField]
     private float driftThreshold;
 
     [Header("Particles")]
@@ -101,22 +103,30 @@ public class PlayerAnimator : MonoBehaviour
         // Get all states
         bool onAir = !motor.OnGround;
         bool drifting = vInput != 0 ? (vDir != vInput) : false;
-        bool onWall = motor.OnWall && !motor.OnGround;
+        bool onWall = motor.OnWall;
+        bool canWallJump = jump.canWallJump;
         bool dashing = motor.HasForce("dash", false);
 
         // Check if should flip
         if(vInput != 0) {
             bool flip = false;
 
-            if(!onWall && !onAir)
+            if(!onAir)
             {
 
-                if(vInput < 0)
-                    flip = hVel < driftThreshold;
+                if(!onWall)
+                {
+                    if(vInput < 0)
+                        flip = hVel < driftThreshold;
+                    else
+                        flip = !(hVel > driftThreshold);
+                }
                 else
-                    flip = !(hVel > driftThreshold);
+                {
+                    flip = vInput < 0;
+                }
             }
-            else if(onWall && !onAir)
+            else if(onWall && onAir && canWallJump)
             {
                 flip = motor.onRightWall ? false : true;
             }
@@ -139,7 +149,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetFloat("Input", Mathf.Abs(vInput));
         animator.SetBool("OnAir", onAir);
         animator.SetBool("Drift", drifting);
-        animator.SetBool("OnWall", onWall);
+        animator.SetBool("OnWall", onWall && canWallJump && onAir);
         animator.SetBool("Dashing", dashing);
         animator.SetBool("Attack", attacked);
 

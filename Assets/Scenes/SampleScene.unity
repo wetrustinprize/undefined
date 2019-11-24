@@ -1536,6 +1536,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   motor: {fileID: 1040150029}
   attack: {fileID: 1040150035}
+  jump: {fileID: 1040150033}
   driftThreshold: 0
   dustParticles: {fileID: 6325475096907384661, guid: 1520a9fb334ece845806f04a0efd2fa8,
     type: 3}
