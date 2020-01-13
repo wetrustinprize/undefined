@@ -59,9 +59,9 @@ public class Motor : MonoBehaviour
 
         #region Speed Vars
     
-    public List<Force> externalForces = new List<Force>(); // List of external forces
-    public List<Force> constantForces = new List<Force>(); // List of constant external forces
-    public List<Slow> slowness = new List<Slow>(); // List of all slowness
+    public List<Force> externalForces = new List<Force>();  // List of external forces
+    public List<Force> constantForces = new List<Force>();  // List of constant external forces
+    public List<Slow> slowness = new List<Slow>();          // List of all slowness
     private bool newSlow = false;
     private bool resetGrav = false;
     public Dictionary<SlowType, Vector2> totalSlowness = new Dictionary<SlowType, Vector2>() { // All slowness to be applied
@@ -70,21 +70,21 @@ public class Motor : MonoBehaviour
         { SlowType.External, Vector2.one },
         { SlowType.Constant, Vector2.one }
     };
-    private Vector2 externalSpeed; // Calculate in CalculateExternalSpeed()
-    private Vector2 constantExternalSpeed; // Calculate in CalculateConstantSpeed()
-    public Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } } // Final velocity
+    private Vector2 externalSpeed;                                                          // Calculate in CalculateExternalSpeed()
+    private Vector2 constantExternalSpeed;                                                  // Calculate in CalculateConstantSpeed()
+    public Vector2 finalSpeed { get { return  externalSpeed + constantExternalSpeed; } }    // Final velocity
 
         #endregion
 
         #region Colliders
 
     // Save all information about the colliders
-    private Vector2 _celColliderPosition; // Celling collider position
-    private Vector2 _grdColliderPosition; // Ground collider position
-    private Vector2 _walRColliderPosition; // Right wall collider position
-    private Vector2 _walLColliderPosition; // Left wall collider position
-    private Vector2 _ckcGCColliderSize; // Celling and Floor collider size
-    private Vector2 _ckcWColliderSize; // Wall collider size
+    private Vector2 _celColliderPosition;   // Celling collider position
+    private Vector2 _grdColliderPosition;   // Ground collider position
+    private Vector2 _walRColliderPosition;  // Right wall collider position
+    private Vector2 _walLColliderPosition;  // Left wall collider position
+    private Vector2 _ckcGCColliderSize;     // Celling and Floor collider size
+    private Vector2 _ckcWColliderSize;      // Wall collider size
 
     public Vector2 CellingColliderPosition { get { return _celColliderPosition; } }
     public Vector2 GroundColliderPosition { get { return _grdColliderPosition; } }
@@ -134,27 +134,38 @@ public class Motor : MonoBehaviour
     ///<param name="constant">Is it constant</param>
     ///<param name="resetGrav">Reset gravity?</param>
     ///<param name="replaceForce">Replace force?</param>
-    public void AddForce(Force force, bool constant = false, bool resetGravi = false, bool replaceForce = false) {
-
+    public void AddForce(Force force, bool constant = false, bool resetGvt = false, bool replaceForce = false) {
+        
+        ref List<Force> list = ref externalForces;
         if(constant)
-            if(HasForce(force.Name, true))
-                if(replaceForce)
-                    constantForces[constantForces.FindIndex(f2 => f2.Name == force.Name)] = force;
-                else
-                    constantForces.Find(f2 => f2.Name == force.Name).ActualForce += force.ActualForce;
-            else
-                constantForces.Add(force);
-        else
-            if(HasForce(force.Name, false))
-                if(replaceForce)
-                    externalForces[externalForces.FindIndex(f2 => f2.Name == force.Name)] = force;
-                else
-                    externalForces.Find(f2 => f2.Name == force.Name).ActualForce += force.ActualForce;
-            else
-                externalForces.Add(force);
-            
-        if(resetGravi) resetGrav = true;
+            list = ref constantForces;
 
+        if(HasForce(force.Name, constant))
+        {
+            int index = list.FindIndex(f2 => f2.Name == force.Name);
+            if(replaceForce) {
+                list[index] = force;
+            }
+            else
+            {
+                list[index].ActualForce += force.ForceApplied;
+                list[index].ForceApplied += force.ForceApplied;
+                if(force.TimeToStop != 0)
+                {
+                    list[index].TimeToStop = force.TimeToStop;
+                    list[index].Timer = 0;
+                }
+            }
+            if(resetGvt)
+            {
+                resetGrav = true;
+                list[index].Gravity = Vector2.zero;
+            }
+        }
+        else
+        {
+            list.Add(force);
+        }
     }
 
     // Check if a force exists by its name
@@ -162,10 +173,11 @@ public class Motor : MonoBehaviour
     ///<param name="name">Name of the force</param>
     ///<param name="constant">Is it a constant force?</param>
     public bool HasForce(string name, bool constant) {
+        ref List<Force> list = ref externalForces;
         if(constant)
-            return constantForces.Exists(force => force.Name == name);
-        else
-            return externalForces.Exists(force => force.Name == name);
+            list = ref constantForces;
+
+        return list.Exists(force => force.Name == name);
 
     }
 
@@ -174,11 +186,12 @@ public class Motor : MonoBehaviour
     ///<param name="name">Name of the force</param>
     ///<param name="constant">Is it a constant force?</param>
     public Force GetForce(string name, bool constant = false) {
+        ref List<Force> list = ref externalForces;
+        if(constant)
+            list = ref constantForces;
 
-        if(constant && HasForce(name, constant))
-            return constantForces.Find(force => force.Name == name);
-        else if(!constant)
-            return externalForces.Find(force => force.Name == name);
+        if(HasForce(name, constant))
+            return list.Find(force => force.Name == name);
         else
             return null;
             
@@ -190,11 +203,11 @@ public class Motor : MonoBehaviour
     ///<param name="constant">Is it a constant force?</param>
     ///<param name="resetGrav">Reset gravity?</param>
     public void RemoveForce(string name, bool constant = false, bool resetGrav = false) {
+        ref List<Force> list = ref externalForces;
         if(constant)
-            constantForces.RemoveAll(force => force.Name == name);
-        else
-            externalForces.RemoveAll(force => force.Name == name);
+            list = ref constantForces;
 
+        list.RemoveAll(force => force.Name == name);
         if(resetGrav) resetGrav = true;
 
     }
@@ -426,26 +439,31 @@ public class Motor : MonoBehaviour
     // Calculates all the external speed
     void CalculateExternalSpeed() {
 
+        // Resets the external speed
         externalSpeed = Vector2.zero;
+
+        // Checks if the list is null or empty
         if(externalForces == null || externalForces.Count == 0) return;
 
+        // Calculates speed
         externalForces.ForEach(f => {
 
-
+            // If is not the input force
             if(f.Name != "input")
             {
                     #region Other external forces
                         
-                // Apply gravity (Y)
-                if(f.ActualForce.y > 0 && f.ApplyGravity) {
-                    f.ActualForce += ((Vector2)Physics.gravity * GravityScale) * Time.fixedDeltaTime;
-                    if(f.ActualForce.y <= 0) f.ActualForce.y = 0;
-                }
-
+                // Smooth slow down if has timer
                 if(f.TimeToStop != 0 && f.Timer <= f.TimeToStop)
                 {
-                    f.ActualForce = ((f.ForceApplied / f.TimeToStop) * 1.65f) * (1 - Mathf.Pow((f.Timer / f.TimeToStop), 2));
+                    float p = 1 - (f.Timer / f.TimeToStop);
+                    f.ActualForce = f.ForceApplied * p * 2/f.TimeToStop;
                     f.Timer += Time.fixedDeltaTime;
+                }
+
+                // Apply gravity (Y)
+                if(f.ActualForce.y > 0 && f.ApplyGravity) {
+                    f.Gravity += ((Vector2)Physics.gravity * GravityScale) * Time.fixedDeltaTime;
                 }
 
                     #endregion
@@ -503,11 +521,15 @@ public class Motor : MonoBehaviour
             }
 
             // Check is has collided
-            if(f.ActualForce.y < 0 && f.applied && OnGround) f.ActualForce.y = 0;
-            if(f.ActualForce.y > 0 && f.applied && OnCelling) f.ActualForce.y = 0;
+            if((f.ActualForce.y < 0 && f.applied && OnGround) || (f.ActualForce.y > 0 && f.applied && OnCelling)) {
+                f.ActualForce.y = 0;
+                f.Gravity.y = 0;
+            }
 
-            if(f.ActualForce.x > 0 && onRightWall) f.ActualForce.x = 0;
-            if(f.ActualForce.x < 0 && onLeftWall) f.ActualForce.x = 0;
+            if((f.ActualForce.x > 0 && onRightWall) || (f.ActualForce.x < 0 && onLeftWall)) {
+                f.ActualForce.x = 0;
+                f.Gravity.x = 0;
+            }
 
         });
 
@@ -517,7 +539,7 @@ public class Motor : MonoBehaviour
         externalForces.ForEach(f => {
 
             // Apply to the final external force
-            Vector2 finalForce = f.ActualForce;
+            Vector2 finalForce = f.FinalForce;
 
             if(f.Name != "input")
                 finalForce *= totalSlowness[SlowType.External];
@@ -532,34 +554,43 @@ public class Motor : MonoBehaviour
 
     }
 
-    public void CalculateConstantSpeed() {
+    ///<summary>Calculates all the constant speed of the motor</summary>
+    void CalculateConstantSpeed() {
 
+        // Resets the original value of the constant speed
         constantExternalSpeed = Vector2.zero;
 
+        // Checks if the list is null or is empty
         if(constantForces == null || constantForces.Count == 0) return;
 
+        // Removes all zero vector forces
         constantForces.RemoveAll(f => (f.ActualForce == Vector2.zero && f.Name != "grav"));
 
+        // Calculates all constant speeds
         constantForces.ForEach(f => {
 
-            // Calculate if is gravity force
-            if(f.Name == "grav" && resetGrav) {
-                f.ActualForce = Vector2.zero;
-                resetGrav = false;
-            }
-            
-            if(f.Name == "grav" && !OnGround) {
-                f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * GravityScale * totalSlowness[SlowType.Gravity];
-            } 
-            else if(f.Name == "grav" && OnGround) {
-                f.ActualForce = Vector2.zero;
+            if(f.Name == "grav")
+            {
+                if(resetGrav) {
+                    f.Gravity = Vector2.zero;
+                    resetGrav = false;
+                }
+                else
+                {
+                    if(!OnGround)
+                        f.Gravity += (Vector2)Physics.gravity * Time.fixedDeltaTime * GravityScale;
+                    else
+                        f.Gravity = Vector2.zero;
+                }
             }
 
             //Apply final speed
-            Vector2 finalForce = f.ActualForce;
+            Vector2 finalForce = f.FinalForce;
 
             if(f.Name != "grav")
                 finalForce *= totalSlowness[SlowType.Constant];
+            else
+                finalForce *= totalSlowness[SlowType.Gravity];
 
             
             constantExternalSpeed += finalForce;
@@ -570,6 +601,7 @@ public class Motor : MonoBehaviour
 
         #endregion
 
+    // Called to draw gizmos on the editor
     public void OnDrawGizmos() {
 
         Vector3 grdPos = (Vector3)_grdColliderPosition + transform.position;
