@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Undefined
 {
-
     namespace Force
     {
+        ///<summary>The type of the force, will be used when calculated in Motor</summary>
         public enum SlowType {
             Gravity,
             Input,
@@ -19,9 +19,14 @@ namespace Undefined
             public string Name;
             public Vector2 ForceApplied;
             public Vector2 ActualForce;
+            public Vector2 Gravity;
+            public Vector2 FinalForce { get { return Gravity + ActualForce; } }
             public float TimeToStop;
+
+            ///<summary>The time the force should be (0,0,0)</summary>
             public float Timer;
             public bool ApplyGravity;
+            ///<summary>Tells if the force has been aplied at least once</summary>
             public bool applied;
 
             ///<param name="force">Force to be applied</param>
@@ -30,9 +35,10 @@ namespace Undefined
             public Force(Vector2 force, float time = 0, bool gravity = true) {
                 Name = "noname";
                 ForceApplied = force;
-                ActualForce = force / (time != 0 ? time : 1);
+                ActualForce = (time != 0 ? Vector2.zero : force);
                 TimeToStop = time;
                 ApplyGravity = gravity;
+                Gravity = Vector2.zero;
             }
 
             ///<param name="force">Force to be applied</param>
@@ -42,9 +48,10 @@ namespace Undefined
             public Force(string name, Vector2 force, float time = 0, bool gravity = true) {
                 Name = name;
                 ForceApplied = force;
-                ActualForce = force / (time != 0 ? time : 1);
+                ActualForce = (time != 0 ? Vector2.zero : force);
                 TimeToStop = time;
                 ApplyGravity = gravity;
+                Gravity = Vector2.zero;
             }
 
             ///<summary>Returns the force direction</summary>
