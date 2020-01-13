@@ -18,11 +18,9 @@ public class Dash : MonoBehaviour
     public float dashCooldown = 3f;
     public bool applyCooldown = true;
 
-    [Header("Other")]
-    public float dashTimer = 0f;
-
     // Script side variables
     Motor m {get {return GetComponent<Motor>();}}
+    private float dashTimer = 0f;
 
         #endregion
 
@@ -40,7 +38,8 @@ public class Dash : MonoBehaviour
         if(dashTimer > 0 && applyCooldown) return;
 
         Force f = new Force("dash", dashForce * m.lastFaceDir, dashDuration);
-        m.AddForce(f, false, true);
+        m.AddForce(f, false, true, true);
+        m.RemoveForce("jump");
         dashTimer = dashCooldown;
 
     }
