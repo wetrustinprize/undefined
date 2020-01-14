@@ -13,10 +13,14 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private float driftThreshold;      // The threshold to play the drift animation
 
     [Header("Particles")]
-    [SerializeField] private GameObject dustParticles;          // The dust particles when walking/running
-    [SerializeField] private ParticleSystem wallParticles;      // The wall dust particles when walking/running
-    [SerializeField] private GameObject dashParticles;          // The dash particles when dashing
     [SerializeField] private Transform dustSpawnTransform;      // The dust particles transform
+    [SerializeField] private GameObject dustParticles;          // The dust particles when walking/running
+    [Space]
+    [SerializeField] private GameObject wallJumpDustParticles;  // The dust particles when walljumping
+    [SerializeField] private ParticleSystem wallParticles;      // The wall dust particles when walking/running
+    [SerializeField] private float wallSlideParticlesVel;       // The velocity required to enable the wall slide particles
+    [Space]
+    [SerializeField] private GameObject dashParticles;          // The dash particles when dashing
 
     [Header("Animator References")]
     [SerializeField] private Animator animator;             // Reference to the animator
@@ -40,10 +44,32 @@ public class PlayerAnimator : MonoBehaviour
         attack.onPerform += AttackAnim;
         attack.onAttack += AttackEffect;
 
+        // Setup the jump event
+        jump.OnWallJump += WallJumpEffect;
+
         // Sets the initial transform of the wall particle
         wallParticleDefaultX = wallParticles.gameObject.transform.localPosition.x;
 
     }
+
+        #region Jump Events
+
+    void WallJumpEffect() {
+
+        Vector3 pos = wallParticles.transform.position;
+
+        Quaternion rot;
+
+        if(motor.lastFaceDir == 1)
+            rot = Quaternion.Euler(0, 0, -90);
+        else
+            rot = Quaternion.Euler(0, 0, 90);
+
+        GameObject.Instantiate(wallJumpDustParticles, pos, rot);
+        
+    }
+
+        #endregion
 
         #region Attack Events
 
@@ -138,7 +164,7 @@ public class PlayerAnimator : MonoBehaviour
             }
             else if(onWall && onAir && canWallJump)
             {
-                flip = motor.onRightWall ? false : true;
+                flip = motor.OnRightWall ? false : true;
             }
             else
             {
@@ -172,7 +198,7 @@ public class PlayerAnimator : MonoBehaviour
         Vector2 pos = wallParticles.gameObject.transform.localPosition;
         wallParticles.gameObject.transform.localPosition = new Vector2(wallParticleDefaultX * (sprite.flipX ? -1 : 1), pos.y);
 
-        if(!(onWall && onAir && canWallJump))
+        if(!(onWall && onAir && canWallJump && vVel < -wallSlideParticlesVel))
             wallParticles.Play(true);
 
         // Spawns and checks the dash particles
