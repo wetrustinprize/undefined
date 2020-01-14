@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using Undefined.Force;
 
 [RequireComponent(typeof(Motor))]
@@ -25,6 +26,10 @@ public class Jump : MonoBehaviour
     public float normalWallSlow = -0.9f;
     public float noWallJumpSlow = -0.3f;
 
+    // Actions
+    public Action OnJump;
+    public Action OnWallJump;
+
     // Script-side variables
     private Motor m { get { return GetComponent<Motor>(); } }
 
@@ -32,7 +37,7 @@ public class Jump : MonoBehaviour
 
     private int wallJumps = 0;
     
-    public bool canWallJump { get { return wallJumps < maxWallJumps && m.OnWall && m.onRightWall != m.onLeftWall && allowWallJumps; } }
+    public bool canWallJump { get { return wallJumps < maxWallJumps && m.OnRightWall != m.OnLeftWall && allowWallJumps; } }
     public bool canGroundJump { get { return m.OnGround && !groundJumped && allowGroundJumps; } }
 
     public bool hasGroundJumped { get { return groundJumped; } }
@@ -61,6 +66,7 @@ public class Jump : MonoBehaviour
 
         m.AddForce(new Force("jump", dir), false, true, true);
         m.RemoveSlow("wallSlow");
+        OnJump?.Invoke();
 
     }
 
@@ -69,7 +75,7 @@ public class Jump : MonoBehaviour
     public void WallJump(int dirToJump = 0) {
 
         Vector2 dir = WallJumpForce;
-        int directionToJump = dirToJump != 0 ? dirToJump : (m.onRightWall ? -1 : 1);
+        int directionToJump = dirToJump != 0 ? dirToJump : (m.OnRightWall ? -1 : 1);
         dir.x *= directionToJump;
 
         if(m.inputAxis.x != (int)Mathf.Clamp(dir.x, -1, 1) && m.inputAxis.x != 0)
@@ -79,8 +85,10 @@ public class Jump : MonoBehaviour
 
         wallJumps++;
 
+        m.ResetGravity();
         m.AddForce(new Force("jump", dir), false, true, true);
         m.RemoveSlow("wallSlow");
+        OnWallJump?.Invoke();
 
     }
 
@@ -100,10 +108,21 @@ public class Jump : MonoBehaviour
 
     }
 
+    void WallSlowRemove(Vector2 input) {
+        if(!m.HasSlow("wallSlow")) return;
+        
+        int dir = 0;
+        dir += m.OnRightWall ? 1 : 0;
+        dir -= m.OnLeftWall ? 1 : 0;
+
+        if(input.x != dir)
+            m.RemoveSlow("wallSlow");
+    }
+
     // Function to remove horizontal force on air
     void AirStrafe(Vector2 input) {
         
-        if(m.GetForce("jump") == null) return;
+        if(!m.HasForce("jump", false)) return;
         if(m.OnGround) return;
         
         float dir = m.GetForce("jump").Direction().x;
@@ -135,7 +154,8 @@ public class Jump : MonoBehaviour
     // Called when OnTouchWall is called
     void OnWall(int dir) {
 
-        m.ResetGravity();
+        if(canWallJump)
+            m.ResetGravity();
         m.RemoveForce("jump");
 
         if(!applyWallSlow) return;
@@ -143,7 +163,7 @@ public class Jump : MonoBehaviour
         float totalSlow = canWallJump ? normalWallSlow : noWallJumpSlow;
         Slow s = new Slow("wallSlow", new Vector2(0, totalSlow), SlowType.Gravity);
 
-        if(m.inputAxis.x == dir)
+        if(m.inputAxis.x == dir && totalSlow != 0)
         {
             m.AddSlow(s, true);
         }
