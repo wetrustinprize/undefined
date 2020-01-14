@@ -29,8 +29,8 @@ public class Motor : MonoBehaviour
     public bool OnGround;
     public bool OnWall;
     public bool OnCelling;
-    public bool onRightWall;
-    public bool onLeftWall;
+    public bool OnRightWall;
+    public bool OnLeftWall;
 
     [Header("Other")]
     public int lastFaceDir;
@@ -116,8 +116,7 @@ public class Motor : MonoBehaviour
 
         inputAxis = input;
 
-        if(onReceiveInput != null)
-            onReceiveInput(input.normalized);
+        onReceiveInput?.Invoke(input.normalized);
 
         if(input.normalized.x != 0)
             lastFaceDir = (int)input.normalized.x;
@@ -351,7 +350,7 @@ public class Motor : MonoBehaviour
         // Checking if has a wall nearby
         bool rightwall = false;
         bool leftwall = false;
-        bool wall = onLeftWall || onRightWall;
+        bool wall = OnLeftWall || OnRightWall;
 
         foreach(Collider2D c in Physics2D.OverlapBoxAll(lWallPos, _ckcWColliderSize, 0, CollisionLayer))
         {
@@ -367,40 +366,31 @@ public class Motor : MonoBehaviour
             break;
         }
 
-        if(OnWall != wall || rightwall != onRightWall || leftwall != onLeftWall)
+        if(OnWall != wall || rightwall != OnRightWall || leftwall != OnLeftWall)
         {
 
-            if(onRightWall != rightwall) 
-            {
-                if(rightwall) 
-                {
-                    if(onTouchWall != null)
-                        onTouchWall(1);
-                }
-                else
-                {
-                    if(onUntouchWall != null)
-                        onUntouchWall(1);
-                }
-            }
-            
-            if(onLeftWall != leftwall) 
-            {
-                if(leftwall)
-                {
-                    if(onTouchWall != null)
-                        onTouchWall(-1);
-                }
-                else
-                {
-                    if(onUntouchWall != null)
-                        onUntouchWall(-1);
-                }
-            }
+            int wallSide = 0;
+            wallSide += OnRightWall != rightwall ? 1 : 0;
+            wallSide -= OnLeftWall != leftwall ? 1 : 0;
+
+            bool touch = false;
+            touch = rightwall && OnRightWall != rightwall || leftwall && OnLeftWall != leftwall;
 
             OnWall = wall;
-            onRightWall = rightwall;
-            onLeftWall = leftwall;
+            OnRightWall = rightwall;
+            OnLeftWall = leftwall;
+
+            if(wallSide != 0) 
+            {
+                if(touch)
+                {
+                    onTouchWall?.Invoke(wallSide);
+                }
+                else
+                {
+                    onUntouchWall?.Invoke(wallSide);
+                }
+            }
 
         }
 
@@ -428,7 +418,10 @@ public class Motor : MonoBehaviour
 
             s.Types.ForEach(t => {
 
-                totalSlowness[t] += s.Value;
+                totalSlowness[t] = new Vector2(
+                    Mathf.Clamp(totalSlowness[t].x + s.Value.x, 0, Mathf.Infinity),
+                    Mathf.Clamp(totalSlowness[t].y + s.Value.y, 0, Mathf.Infinity)
+                );
 
             });
 
@@ -526,7 +519,7 @@ public class Motor : MonoBehaviour
                 f.Gravity.y = 0;
             }
 
-            if((f.ActualForce.x > 0 && onRightWall) || (f.ActualForce.x < 0 && onLeftWall)) {
+            if((f.ActualForce.x > 0 && OnRightWall) || (f.ActualForce.x < 0 && OnLeftWall)) {
                 f.ActualForce.x = 0;
                 f.Gravity.x = 0;
             }
@@ -539,7 +532,7 @@ public class Motor : MonoBehaviour
         externalForces.ForEach(f => {
 
             // Apply to the final external force
-            Vector2 finalForce = f.FinalForce;
+            Vector2 finalForce = f.ActualForce + f.Gravity * totalSlowness[SlowType.Gravity];
 
             if(f.Name != "input")
                 finalForce *= totalSlowness[SlowType.External];
@@ -616,10 +609,10 @@ public class Motor : MonoBehaviour
         Gizmos.color = OnCelling ? Color.green : Color.grey;
         Gizmos.DrawCube(celPos, _ckcGCColliderSize);
 
-        Gizmos.color = onLeftWall ? Color.green : Color.grey;
+        Gizmos.color = OnLeftWall ? Color.green : Color.grey;
         Gizmos.DrawCube(wallLPos, _ckcWColliderSize);
 
-        Gizmos.color = onRightWall ? Color.green : Color.grey;
+        Gizmos.color = OnRightWall ? Color.green : Color.grey;
         Gizmos.DrawCube(wallRPos, _ckcWColliderSize);
 
     }
