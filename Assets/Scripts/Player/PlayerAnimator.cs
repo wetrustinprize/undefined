@@ -6,10 +6,13 @@ public class PlayerAnimator : MonoBehaviour
     
         #region Variables
 
-    [Header("Animator Settings")]
+    [Header("References")]
     [SerializeField] private Motor motor;               // Reference to the Player Motor component
     [SerializeField] private Attack attack;             // Reference to the Attack component
     [SerializeField] private Jump jump;                 // Reference to the Jump component
+    [SerializeField] private Alive alive;               // Referente to the Alive component
+
+    [Header("Animator Settings")]
     [SerializeField] private float driftThreshold;      // The threshold to play the drift animation
 
     [Header("Particles")]
@@ -43,6 +46,9 @@ public class PlayerAnimator : MonoBehaviour
         // Setup the attack events
         attack.onPerform += AttackAnim;
         attack.onAttack += AttackEffect;
+        
+        // Setup the alive events
+        alive.onDamage += DamageEffect;
 
         // Setup the jump event
         jump.OnWallJump += WallJumpEffect;
@@ -51,6 +57,16 @@ public class PlayerAnimator : MonoBehaviour
         wallParticleDefaultX = wallParticles.gameObject.transform.localPosition.x;
 
     }
+
+        #region Alive Events
+
+    private void DamageEffect() {
+
+        cam.Shake(1, 1, 0.3f, Vector2.one);
+
+    }
+
+        #endregion
 
         #region Jump Events
 
@@ -90,6 +106,8 @@ public class PlayerAnimator : MonoBehaviour
 
         #endregion
 
+        #region Particles
+
     // Called to create the dust particles
     public void DustParticles() {
 
@@ -124,6 +142,8 @@ public class PlayerAnimator : MonoBehaviour
         GameObject.Instantiate(dashParticles, transform.parent.position, rot, transform);
 
     }
+
+        #endregion
 
     // Updates the animator
     void Update() {
