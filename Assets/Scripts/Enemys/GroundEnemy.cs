@@ -31,12 +31,6 @@ public class GroundEnemy : MonoBehaviour
 
     }
 
-    void EdgeDetection() {
-
-
-
-    }
-
     void OnDrawGizmos() {
 
         AIDetection.Debug.Edge(direction, motor, this.gameObject);
