@@ -25,7 +25,6 @@ public class Dash : MonoBehaviour
         #endregion
 
     // Update is called once per frame
-
     void Update() {
 
         if(dashTimer > 0)
@@ -44,6 +43,9 @@ public class Dash : MonoBehaviour
 
     }
 
+    ///<summary>Executes a custom dash</summary>
+    ///<param name="dash">The direction to dash</param>
+    ///<param name="time">The time to the dash complete</param>
     public void Execute(Vector2 dash, float time) {
 
         if(dashTimer > 0 && applyCooldown) return;
