@@ -84,30 +84,32 @@ public class Attack : MonoBehaviour
 
                 if(!calledAttack)
                 {
-                    if(onAttack != null) {
-                        onAttack();
-                    }
+                    onAttack?.Invoke();
                 }
 
-                Alive a;
-                Motor m;
-
-                if(c.TryGetComponent<Alive>(out a)) {
-                    a.TakeDamage(Damage);
-                    if(c.TryGetComponent<Motor>(out m)) {
-                        
-                        Vector2 direction = ((Vector2)transform.position - (Vector2)c.transform.position).normalized * -1;
-                        direction += new Vector2(0, 0.5f);
-                        Force f = new Force("attack", direction * pushForce, pushTime, true);
-
-                        m.AddForce(f);
-                    }
+                if(c.TryGetComponent<Alive>(out Alive a)) {
+                    DirectAttack(a, c.transform);
                 }
 
             }
 
         }
 
+    }
+
+    ///<summary>Executes a attack on a specific Alive</summary>
+    ///<param name="alive">The alive component to attack</param>
+    ///<param name="collider">Collider to calculate push</param>
+    public void DirectAttack(Alive alive, Transform aliveTrans = null) {
+        alive.TakeDamage(Damage);
+        if(alive.TryGetComponent<Motor>(out Motor m) && aliveTrans != null) {
+            
+            Vector2 direction = ((Vector2)transform.position - (Vector2)aliveTrans.position).normalized * -1;
+            direction += new Vector2(0, 0.5f);
+            Force f = new Force("attack", direction * pushForce, pushTime, true);
+
+            m.AddForce(f, false, true, true);
+        }
     }
 
     void OnDrawGizmos() {
