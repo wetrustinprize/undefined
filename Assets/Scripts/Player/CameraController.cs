@@ -102,8 +102,8 @@ public class CameraController : MonoBehaviour
 
         if(shake_Timer <= 0) return;
 
-        float x = Mathf.Sin(Time.time * shake_Velocity);
-        float y = Mathf.Cos(Time.time * 2 * shake_Velocity);
+        float x = Mathf.Sin(Time.time * Random.value * shake_Velocity);
+        float y = Mathf.Cos(Time.time * Random.value * 2 * shake_Velocity);
 
         float timePercentage = shake_Timer / shake_MaxTimer;
         float strength = shake_Strength * timePercentage;
@@ -158,8 +158,8 @@ public class CameraController : MonoBehaviour
 
         shake_Strength = strength;
         shake_Velocity = velocity;
-        shake_Timer = time;
         shake_MaxTimer = time;
+        shake_Timer = time;
         shake_Axis = axis;
 
     }
