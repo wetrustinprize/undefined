@@ -7,18 +7,20 @@ public class Alive : MonoBehaviour
 
         #region Variables
 
-    [SerializeField]
-    private int maxHealth;
+    [SerializeField] private int maxHealth;                         // The maximun HP this Alive can have
+    [SerializeField] private int health;                            // The current HP this Alive have
+    [SerializeField] private float defense;                         // His defense (from 0% to 100%)
 
-    public int health;
-    public float defese;
+    // Public variables
+    public int Health { get { return health; } }                    // Public acess to the health variable
+    public int MaxHealth { get { return maxHealth; } }              // Public acess to the maxHealth variable
+    public float Defense { get { return defense; } }                // Public acess to the defense variable
 
     // Events
-
-    public float realDefense { get {return 1-(defese/100); } }
-    public event Action onHeal;
-    public event Action onDamage;
-    public event Action onDie;
+    public float realDefense { get {return 1-(defense/100); } }     // Returns the real defense
+    public event Action onHeal;                                     // Called when the Alive heals
+    public event Action onDamage;                                   // Called when the Alive takes damage
+    public event Action onDie;                                      // Called when the Alive dies (health < 0)
 
         #endregion
 
@@ -29,40 +31,37 @@ public class Alive : MonoBehaviour
     }
 
     ///<summary>Takes damage.</summary>
-    ///<param name="d">Damage to receive</param>
-    public void TakeDamage(int d) {
+    ///<param name="damage">Damage to receive</param>
+    public void TakeDamage(int damage) {
 
-        if(d == 0) return;
+        if(damage == 0) return;
 
-        if(d > 0)
+        if(damage > 0)
         {
-            d = (int)(d * realDefense);
+            damage = (int)(damage * realDefense);
         }
 
-        health -= d;
+        health -= damage;
 
         if(health <= 0) {
-            if(onDie != null)
-                onDie();
+            onDie?.Invoke();
         } else {
-            if(d > 0)
+            if(damage > 0)
             {
-                if(onDamage != null)
-                    onDamage();
+                onDamage?.Invoke();
             }
-            else if(d < 0)
+            else if(damage < 0)
             {
-                if(onHeal != null)
-                    onHeal();
+                onHeal?.Invoke();
             }
         }
 
     }
 
     ///<summary>Heals.</summary>
-    ///<param name="h">Health to heal</param>
-    public void Heal(int h) {
-        TakeDamage(-h);
+    ///<param name="value">Health to heal</param>
+    public void Heal(int value) {
+        TakeDamage(-value);
     }
 
 }
