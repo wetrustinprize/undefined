@@ -14,6 +14,15 @@ TextureImporter:
   - first:
       213: -2826812978284380995
     second: health_bar_3
+  - first:
+      213: -5506001247669054298
+    second: health_bar_4
+  - first:
+      213: -226232787675596455
+    second: health_bar_5
+  - first:
+      213: 3104916492769151354
+    second: health_bar_6
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -106,7 +115,7 @@ TextureImporter:
         width: 176
         height: 12
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -127,7 +136,7 @@ TextureImporter:
         width: 34
         height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -148,7 +157,7 @@ TextureImporter:
         width: 34
         height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -169,7 +178,7 @@ TextureImporter:
         width: 34
         height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

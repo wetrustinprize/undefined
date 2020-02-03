@@ -1,14 +1,15 @@
 // GENERATED AUTOMATICALLY FROM 'Assets/Scripts/PlayerInput.inputactions'
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public class PlayerInput : IInputActionCollection
+public class @PlayerInput : IInputActionCollection, IDisposable
 {
-    private InputActionAsset asset;
-    public PlayerInput()
+    public InputActionAsset asset { get; }
+    public @PlayerInput()
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""PlayerInput"",
@@ -185,7 +186,7 @@ public class PlayerInput : IInputActionCollection
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
     }
 
-    ~PlayerInput()
+    public void Dispose()
     {
         UnityEngine.Object.Destroy(asset);
     }
@@ -238,8 +239,8 @@ public class PlayerInput : IInputActionCollection
     private readonly InputAction m_Player_Attack;
     public struct PlayerActions
     {
-        private PlayerInput m_Wrapper;
-        public PlayerActions(PlayerInput wrapper) { m_Wrapper = wrapper; }
+        private @PlayerInput m_Wrapper;
+        public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
@@ -253,34 +254,34 @@ public class PlayerInput : IInputActionCollection
         {
             if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
             {
-                Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
-                Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
-                Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
+                @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
             {
-                Move.started += instance.OnMove;
-                Move.performed += instance.OnMove;
-                Move.canceled += instance.OnMove;
-                Jump.started += instance.OnJump;
-                Jump.performed += instance.OnJump;
-                Jump.canceled += instance.OnJump;
-                Dash.started += instance.OnDash;
-                Dash.performed += instance.OnDash;
-                Dash.canceled += instance.OnDash;
-                Attack.started += instance.OnAttack;
-                Attack.performed += instance.OnAttack;
-                Attack.canceled += instance.OnAttack;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
