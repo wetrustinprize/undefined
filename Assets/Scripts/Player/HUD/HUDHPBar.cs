@@ -85,9 +85,18 @@ public class HUDHPBar : MonoBehaviour
         if(lastExplodedBarReminder != lastExplodedBar)
         {
             Instantiate(hpBreakParticle, hpBars[lastExplodedBar].transform);
+            hpAnimator.SetTrigger("DamagedBreak");
+        }
+        else if(percentage < 0.5f)
+        {
+            hpAnimator.SetTrigger("DamagedMedium");
+        }
+        else
+        {
+            hpAnimator.SetTrigger("Damaged");
         }
 
-        hpAnimator.SetTrigger("Damaged");
+        hpAnimator.SetFloat("DamagedPercentage", 1 - percentage);
 
     }
 }
