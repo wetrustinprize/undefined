@@ -38,6 +38,7 @@ public class PlayerAnimator : MonoBehaviour
     private bool dashParticleSpawned;
     private float wallParticleDefaultX;
     private float squishPercentage;
+    private float lastInput;
 
         #endregion
 
@@ -145,6 +146,10 @@ public class PlayerAnimator : MonoBehaviour
 
         #endregion
 
+    public void Flip(bool flip) {
+        sprite.flipX = flip;
+    }
+
     // Updates the animator
     void Update() {
         // Gets all velocity info
@@ -157,58 +162,46 @@ public class PlayerAnimator : MonoBehaviour
 
         // Get all states
         bool onAir = !motor.OnGround;
-        bool drifting = vInput != 0 ? (vDir != vInput) : false;
+        bool drifting = vInput != lastInput && vInput != 0 && Mathf.Abs(hVel) > driftThreshold;
         bool onWall = motor.OnWall;
         bool canWallJump = jump.canWallJump;
         bool dashing = motor.HasForce("dash", false);
 
+        lastInput = vInput;
+
         // Check if should flip
-            #region Flip
+        
         if(vInput != 0) {
-            bool flip = false;
-
-            if(!onAir)
+            if(onAir && onWall && onAir && canWallJump)
             {
-
-                if(!onWall)
-                {
-                    if(vInput < 0)
-                        flip = hVel < driftThreshold;
-                    else
-                        flip = !(hVel > driftThreshold);
-                }
-                else
-                {
-                    flip = vInput < 0;
-                }
+                Flip(!motor.OnRightWall);
             }
-            else if(onWall && onAir && canWallJump)
+            else if(!onAir)
             {
-                flip = motor.OnRightWall ? false : true;
+                Flip(vInput < 0);
             }
             else
             {
-                flip = vInput < 0;
+                Flip(motor.lastFaceDir == -1);
             }
-
-            sprite.flipX = flip;
         }
         else if(sprite.flipX && motor.lastFaceDir == 1 && !attacked)
         {
-            sprite.flipX = false;
+            Flip(false);
         }
-            #endregion
-
 
         // Send values to the animator
         animator.SetFloat("SpeedH", Mathf.Abs(hVel));
         animator.SetFloat("SpeedV", vVel);
         animator.SetFloat("Input", Mathf.Abs(vInput));
         animator.SetBool("OnAir", onAir);
-        animator.SetBool("Drift", drifting);
         animator.SetBool("OnWall", onWall && canWallJump && onAir);
-        animator.SetBool("Dashing", dashing);
-        animator.SetBool("Attack", attacked);
+        
+        animator.SetBool("Drift", drifting);
+
+        //if(drifting)    animator.SetTrigger("Drift");
+        if(dashing)     animator.SetTrigger("Dash");
+        if(attacked)    animator.SetTrigger("Attack");
 
         // Squish effect
         squishPercentage = Mathf.Lerp(squishPercentage, Mathf.Clamp(vVel / -70, 0, 1), Time.fixedDeltaTime);
@@ -218,8 +211,7 @@ public class PlayerAnimator : MonoBehaviour
         Vector2 pos = wallParticles.gameObject.transform.localPosition;
         wallParticles.gameObject.transform.localPosition = new Vector2(wallParticleDefaultX * (sprite.flipX ? -1 : 1), pos.y);
 
-        if(!(onWall && onAir && canWallJump && vVel < -wallSlideParticlesVel))
-            wallParticles.Play(true);
+        if(!(onWall && onAir && canWallJump && vVel < -wallSlideParticlesVel)) wallParticles.Play();
 
         // Spawns and checks the dash particles
         if(!dashParticleSpawned && dashing)
