@@ -22,6 +22,9 @@ public class Dash : MonoBehaviour
     Motor m {get {return GetComponent<Motor>();}}
     private float dashTimer = 0f;
 
+    // Public acess variables
+    public float CurrentCooldown { get { return dashTimer; } }
+
         #endregion
 
     // Update is called once per frame
