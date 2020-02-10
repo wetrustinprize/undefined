@@ -8,18 +8,18 @@ public class CameraController : MonoBehaviour
 
 
     [Header("Follow settings")]
-    public GameObject lookAt;
-    public float distance;
+    [SerializeField] private GameObject lookAt;
+    [SerializeField] private float size;
 
     [Header("Look ahead settings:")]
-    public float lookAheadDistance;
-    public float lookAheadStartTimeSpeed;
-    public float lookAheadEndTimeSpeed;
-    public float lookAheadTime;
+    [SerializeField] private float lookAheadDistance;
+    [SerializeField] private float lookAheadStartTimeSpeed;
+    [SerializeField] private float lookAheadEndTimeSpeed;
+    [SerializeField] private float lookAheadTime;
 
     [Header("Vertical look ahead settings:")]
-    public float gravityScale;
-    public AnimationCurve gravityScaleCurve;
+    [SerializeField] private float gravityScale;
+    [SerializeField] private AnimationCurve gravityScaleCurve;
 
     // Script-side
     private bool isPlayer { get { return lookAt.GetComponent<PlayerController>(); } }
@@ -28,10 +28,18 @@ public class CameraController : MonoBehaviour
     private float dir { get { return playerMotor.lastFaceDir; } }
 
     private Vector3 newPos = Vector2.zero;
-    private Vector2 actPos;
+
+    private Camera thisCam;
 
     private Vector2 lookAheadValue;
     private float timeMovingCamera;
+
+        #region Camera Size
+
+    private float currentSize;
+    private float resizeTime;
+
+        #endregion
 
         #region Camera Shake
 
@@ -58,6 +66,17 @@ public class CameraController : MonoBehaviour
         #endregion
 
 
+    void Start() {
+
+        // Initial size
+        currentSize = size;
+        resizeTime = 1;
+
+        // Get the camera component
+        thisCam = GetComponent<Camera>();
+
+    }
+
     void Update() {
 
         if(isPlayer)
@@ -65,8 +84,13 @@ public class CameraController : MonoBehaviour
 
         CameraShake();
         CameraPush();
+        SizeLerp();
+
+        newPos += new Vector3(0,0, -1);
 
         transform.position = newPos;
+        thisCam.orthographicSize = currentSize;
+        
 
     }
 
@@ -118,6 +142,12 @@ public class CameraController : MonoBehaviour
 
     }
 
+    void SizeLerp() {
+
+        currentSize = Mathf.Lerp(currentSize, size, Time.deltaTime / resizeTime);
+
+    }
+
     void LookAhead() {
 
         float horizontalLookAhead = 0;
@@ -144,14 +174,23 @@ public class CameraController : MonoBehaviour
 
     void CameraGoto() {
 
-        actPos = (Vector2)lookAt.transform.position;
-
-        newPos = actPos + lookAheadValue;
-        newPos.z = distance;
+        newPos = (Vector2)lookAt.transform.position + lookAheadValue;
 
     }
 
         #endregion
+
+    ///<summary>Changes the transform to the camera look at</summary>
+    public void LookAt(Transform newLookAt) {
+        lookAt = newLookAt.gameObject;
+    }
+
+    ///<summary>Changes the size of the camera</summary>
+    public void Resize(float newSize, float time = -1) {
+        size = newSize;
+        resizeTime = time < 0 ? resizeTime : time;
+        
+    }
 
     ///<summary>Makes tha camera shake</summary>
     public void Shake(float velocity, float strength, float time, Vector2 axis) {
