@@ -256,6 +256,7 @@ public class Motor : MonoBehaviour
         CalculateConstantSpeed();
 
         rb.velocity = finalSpeed;
+        if(resetGrav) resetGrav = false;
         
     }
 
@@ -455,8 +456,11 @@ public class Motor : MonoBehaviour
                 }
 
                 // Apply gravity (Y)
-                if(f.ActualForce.y > 0 && f.ApplyGravity) {
+                if(f.ActualForce.y > 0 && f.ApplyGravity && !resetGrav) {
                     f.Gravity += ((Vector2)Physics.gravity * GravityScale) * Time.fixedDeltaTime;
+                }
+                else if(resetGrav) {
+                    f.Gravity = Vector2.zero;
                 }
 
                     #endregion
@@ -566,7 +570,6 @@ public class Motor : MonoBehaviour
             {
                 if(resetGrav) {
                     f.Gravity = Vector2.zero;
-                    resetGrav = false;
                 }
                 else
                 {
