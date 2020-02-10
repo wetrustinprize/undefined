@@ -49,6 +49,30 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Ghost"",
+                    ""type"": ""Button"",
+                    ""id"": ""baf3250d-6725-4ce5-9ad8-08b28a3c6775"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Teleport"",
+                    ""type"": ""Button"",
+                    ""id"": ""03d650ee-0ded-4878-a69f-a8ce624a9065"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""TeleportPosition"",
+                    ""type"": ""Button"",
+                    ""id"": ""5effec77-8926-4ac3-b97c-5068ee068085"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -77,7 +101,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""15e3eff1-b9df-42a8-b465-87014800fd15"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -88,7 +112,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""b8472b81-28f6-4610-bc1c-b6c00689718a"",
-                    ""path"": ""<Keyboard>/downArrow"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -99,7 +123,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""b89ce5e2-9626-47a3-90a6-065c02df6079"",
-                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -110,7 +134,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""a52f7397-6175-46d4-a390-ad4b600f3fed"",
-                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -165,11 +189,66 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""81fe1fac-d3bc-47c2-a0ad-a849910df2ca"",
-                    ""path"": ""<Keyboard>/z"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04b37b65-c2f4-4d3a-a7d7-6742bade608e"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ghost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3a131ac5-6df0-4e04-9eea-8f6727c525c5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Ghost"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87a70361-4c31-4f2f-8d87-066b4a399ac2"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cab3da15-93e1-4771-8962-09d92a622ed0"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""502d5aa6-9c5b-4d44-bcd8-ab0f7ff48a72"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TeleportPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -184,6 +263,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Ghost = m_Player.FindAction("Ghost", throwIfNotFound: true);
+        m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
+        m_Player_TeleportPosition = m_Player.FindAction("TeleportPosition", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -237,6 +319,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Ghost;
+    private readonly InputAction m_Player_Teleport;
+    private readonly InputAction m_Player_TeleportPosition;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -245,6 +330,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Ghost => m_Wrapper.m_Player_Ghost;
+        public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
+        public InputAction @TeleportPosition => m_Wrapper.m_Player_TeleportPosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +354,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @Ghost.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGhost;
+                @Ghost.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGhost;
+                @Ghost.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnGhost;
+                @Teleport.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                @Teleport.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                @Teleport.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
+                @TeleportPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
+                @TeleportPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
+                @TeleportPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -282,6 +379,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Ghost.started += instance.OnGhost;
+                @Ghost.performed += instance.OnGhost;
+                @Ghost.canceled += instance.OnGhost;
+                @Teleport.started += instance.OnTeleport;
+                @Teleport.performed += instance.OnTeleport;
+                @Teleport.canceled += instance.OnTeleport;
+                @TeleportPosition.started += instance.OnTeleportPosition;
+                @TeleportPosition.performed += instance.OnTeleportPosition;
+                @TeleportPosition.canceled += instance.OnTeleportPosition;
             }
         }
     }
@@ -292,5 +398,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnGhost(InputAction.CallbackContext context);
+        void OnTeleport(InputAction.CallbackContext context);
+        void OnTeleportPosition(InputAction.CallbackContext context);
     }
 }
