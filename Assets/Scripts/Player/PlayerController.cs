@@ -11,10 +11,18 @@ public class PlayerController : MonoBehaviour {
 
         #region Variables
 
+    [Header("Movement")]
     public bool CanMove = true;
     public bool CanJump = true;
-    public bool CanDash = true;
+
+    [Header("Attack")]
     public bool CanAttack = true;
+
+    [Header("Skills")]
+    public bool CanSkills = true;
+    public bool CanDash = true;
+    public bool CanTeleport = true;
+    public bool CanGhost = true;
 
     // Script side variables
     private Motor motor { get {return GetComponent<Motor>(); } }
@@ -22,6 +30,8 @@ public class PlayerController : MonoBehaviour {
     private PlayerJump pjump { get {return GetComponent<PlayerJump>(); } }
     private Dash dash { get { return GetComponent<Dash>(); } }
     private Attack attack { get {return GetComponent<Attack>(); } }
+    private PlayerTeleport teleport { get { return GetComponent<PlayerTeleport>(); } }
+
     private PlayerInput inputs;
 
         #endregion
@@ -40,15 +50,23 @@ public class PlayerController : MonoBehaviour {
 
     void Start() {
 
+        // Movement
         inputs.Player.Move.performed += cb => { PerformWalk(cb.ReadValue<Vector2>()); };
         inputs.Player.Move.canceled += cb => { PerformWalk(Vector2.zero, true); };
-
         inputs.Player.Jump.performed += cb => { if(CanJump) pjump.Execute(); };
 
-        inputs.Player.Dash.performed += cb => { if(CanDash) dash.Execute(); };
-
+        // Attack
         inputs.Player.Attack.performed += cb => { if(CanAttack) attack.Execute(); };
 
+        // Skills
+            // Dash
+        inputs.Player.Dash.performed += cb => { if(CanDash && CanSkills) dash.Execute(); };
+
+            // Teleport
+        inputs.Player.Teleport.started += cb => { teleport.StartPerforming(); };
+        inputs.Player.Teleport.canceled += cb => { teleport.StopPerforming(); };
+        inputs.Player.TeleportPosition.performed += cb => { teleport.UpdateArrow(cb.ReadValue<Vector2>()); };
+        inputs.Player.Jump.performed += cb => { teleport.CancelPerfoming(); };
     }
 
     public void PerformWalk(Vector2 dir, bool force = false) {
