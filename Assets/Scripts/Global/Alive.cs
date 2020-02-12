@@ -44,6 +44,7 @@ public class Alive : MonoBehaviour
         health -= damage;
 
         if(health <= 0) {
+            onDamage?.Invoke();
             onDie?.Invoke();
         } else {
             if(damage > 0)
