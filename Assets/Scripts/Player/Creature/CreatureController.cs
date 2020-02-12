@@ -24,10 +24,16 @@ public class CreatureController : MonoBehaviour
     [Header("Bouncing")]
     [SerializeField] private float bounce_Slowing;          // Slow percentage of each bounce
     [SerializeField] private int bounce_Max;                // Maximun bounces
+    [SerializeField] private int bounce_Min;                // Min bounces to the player teleport (used for sfx)
     [SerializeField] private Vector2 bounce_Dir;            // The direction to fly towards
     [SerializeField] private float bounce_Velocity;         // The velocity of the fly
     [SerializeField] private float bounce_MaxDist;          // Maximung distance to fly
+    [SerializeField] private float bounce_MaxPlayerDist;    // Maximung distance from player
     [SerializeField] private LayerMask bounce_Layers;       // The layers to perform the raycast
+
+    [Header("SFX")]
+    [SerializeField] private AudioClip bounce_NoTeleportSFX;    // Bounce SFX (can't teleport)
+    [SerializeField] private AudioClip bounce_TeleportSFX;      // Bounce SFX (can teleport)
 
     // Events
     public Action OnBounceEnd;                      // Called when bounce ends
@@ -92,6 +98,12 @@ public class CreatureController : MonoBehaviour
 
     }
 
+    public void SetMinBounces(int min) {
+        
+        bounce_Min = min;
+
+    }
+
     public void Bounce(Vector2 direction) {
 
         if(direction == Vector2.zero) return;
@@ -106,6 +118,7 @@ public class CreatureController : MonoBehaviour
         ChangeState(CreatureState.Bouncing);
 
     }
+
     public void ChangeState(CreatureState newState) {
 
         switch(state)
@@ -128,6 +141,8 @@ public class CreatureController : MonoBehaviour
 
         #endregion
 
+        #region Private functions
+
     void Move(Vector2 position) {
 
         Vector2 difference = position - (Vector2)transform.position;
@@ -141,25 +156,44 @@ public class CreatureController : MonoBehaviour
 
     }
 
+        #endregion
+
+        #region Behaviours
 
     void BouncingBehaviour() {
 
+        // Checks distances
         if(bounceActualDist > bounce_MaxDist) { ChangeState(CreatureState.Following); return; }
+        if(Vector2.Distance(transform.position, player.transform.position) > bounce_MaxPlayerDist) { ChangeState(CreatureState.Following); return; }
 
+        // Raycast
         RaycastHit2D hit = Physics2D.Raycast(transform.position, bounce_Dir, bounce_Velocity * Time.fixedDeltaTime, bounce_Layers);
 
-        if(hit.collider) { 
-            bounce_Dir = bounce_Dir - 2 * (bounce_Dir * hit.normal) * hit.normal; 
+        // Bounce
+        if(hit.collider) {
+
+            // Check total bounce
             bounceActualBounces++; 
-            bounceActualVelocity *= bounce_Slowing; 
+            if(bounceActualBounces >= bounce_Max) { ChangeState(CreatureState.Following); return; }
+
+            // Reflect direction
+            bounce_Dir = bounce_Dir - 2 * (bounce_Dir * hit.normal) * hit.normal; 
+            bounceActualVelocity *= bounce_Slowing;
+
+            // Play sfx
+            if(bounceActualBounces < bounce_Min)
+                CameraController.main.PlayAudio2D(bounce_NoTeleportSFX);
+            else if(bounceActualBounces == bounce_Min)
+                CameraController.main.PlayAudio2D(bounce_TeleportSFX);
         }
 
-        if(bounceActualBounces >= bounce_Max) { ChangeState(CreatureState.Following); return; }
-
+        // Calculate direction
         Vector3 dir = (Vector3)(bounce_Dir * bounceActualVelocity) * Time.fixedDeltaTime;
-        bounceActualDist += Mathf.Abs(dir.x + dir.y);
 
+        // Adds up distance
+        bounceActualDist += Mathf.Abs(dir.x) + Mathf.Abs(dir.y);
 
+        // Moves the creature
         Move(transform.position + dir);
 
     }
@@ -176,5 +210,7 @@ public class CreatureController : MonoBehaviour
         );
 
     }
+
+        #endregion
 
 }

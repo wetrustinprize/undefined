@@ -34,13 +34,17 @@ public class PlayerTeleport : MonoBehaviour
 
     void Start() {
 
-        // Gets the creature
+        // Initial creature bounce config
         creature = GameObject.FindWithTag("Creature").GetComponent<CreatureController>();
-        creature.OnBounceEnd += StartCountdown;
-
-        playerMotor = GetComponent<Motor>();
 
         creature.SetMaxBounces(min_bounces + 2);
+        creature.SetMinBounces(min_bounces);
+        
+        creature.OnBounceEnd += StartCountdown;
+
+        // Gets the player motor
+        playerMotor = GetComponent<Motor>();
+
 
     }
 
