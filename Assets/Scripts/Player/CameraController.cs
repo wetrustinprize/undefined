@@ -47,6 +47,7 @@ public class CameraController : MonoBehaviour
     private float shake_Velocity;
     private float shake_MaxTimer;
     private float shake_Timer;
+    private float shake_Timer_Max;
     private Vector2 shake_Axis;
     private Vector2 shake_Final;
 
@@ -60,6 +61,12 @@ public class CameraController : MonoBehaviour
     private float push_GoMaxTimer;
     private float push_ReturnTimer;
     private float push_ReturnMaxTimer;
+
+        #endregion
+
+        #region Static
+
+    public static CameraController main { get { return GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();} }
 
         #endregion
 
@@ -94,7 +101,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-        #region Calculator
+        #region Calculatios
 
     void PlayerFollow() {
         
@@ -134,7 +141,7 @@ public class CameraController : MonoBehaviour
 
         Vector2 shake = new Vector2(x * strength, y * strength);
 
-        shake_Final = Vector2.Lerp(shake_Final, shake_Axis * shake, Time.deltaTime / 0.2f);
+        shake_Final = Vector2.Lerp(shake_Final, shake_Axis * shake, Time.deltaTime / 0.2f) * (shake_Timer / shake_Timer_Max);
         
         shake_Timer -= Time.deltaTime;
 
@@ -180,6 +187,15 @@ public class CameraController : MonoBehaviour
 
         #endregion
 
+        #region Public Functions
+
+    ///<summary>Plays a 2D audio.</summary>
+    public void PlayAudio2D(AudioClip clip) {
+
+        GetComponent<AudioSource>().PlayOneShot(clip);
+
+    }
+
     ///<summary>Changes the transform to the camera look at</summary>
     public void LookAt(Transform newLookAt) {
         lookAt = newLookAt.gameObject;
@@ -199,6 +215,7 @@ public class CameraController : MonoBehaviour
         shake_Velocity = velocity;
         shake_MaxTimer = time;
         shake_Timer = time;
+        shake_Timer_Max = time;
         shake_Axis = axis;
 
     }
@@ -217,5 +234,7 @@ public class CameraController : MonoBehaviour
         push_GoTimer = 0;
 
     }
+
+        #endregion
 
 }

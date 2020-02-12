@@ -29,10 +29,9 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private Animator animator;             // Reference to the animator
     [SerializeField] private SpriteRenderer sprite;         // Reference to the sprite renderer
 
-    [Header("Camera Refereces")]
-    [SerializeField] private CameraController cam;          // Reference to the camera controller
 
     //Script side var
+    private CameraController cam { get { return CameraController.main; } }
 
     private bool attacked;
     private bool dashParticleSpawned;
