@@ -114,6 +114,8 @@ public class Attack : MonoBehaviour
 
     void OnDrawGizmos() {
 
+        if(!GetComponent<Motor>()) return;
+
         Vector2 dir = offset;
         dir.x *= motor.lastFaceDir;
         Vector3 pos = transform.position + (Vector3)dir;
