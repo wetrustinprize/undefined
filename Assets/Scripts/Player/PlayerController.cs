@@ -4,9 +4,12 @@ using UnityEngine;
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(Jump))]
 [RequireComponent(typeof(Dash))]
-[RequireComponent(typeof(PlayerJump))]
 [RequireComponent(typeof(Attack))]
 [RequireComponent(typeof(Alive))]
+
+[RequireComponent(typeof(PlayerJump))]
+[RequireComponent(typeof(PlayerTeleport))]
+[RequireComponent(typeof(PlayerExplosion))]
 public class PlayerController : MonoBehaviour {
 
         #region Variables
@@ -31,8 +34,13 @@ public class PlayerController : MonoBehaviour {
     private Dash dash { get { return GetComponent<Dash>(); } }
     private Attack attack { get {return GetComponent<Attack>(); } }
     private PlayerTeleport teleport { get { return GetComponent<PlayerTeleport>(); } }
+    private PlayerExplosion explosion { get { return GetComponent<PlayerExplosion>(); } }
 
+    // Script side
     private PlayerInput inputs;
+
+    private float totalAttackSeconds;
+    private bool holdingAttack;
 
         #endregion
 
@@ -48,6 +56,10 @@ public class PlayerController : MonoBehaviour {
         inputs.Disable();
     }
 
+    void Update() {
+        if(holdingAttack) HoldingAttackBehaviour();
+    }
+
     void Start() {
 
         // Movement
@@ -56,7 +68,8 @@ public class PlayerController : MonoBehaviour {
         inputs.Player.Jump.performed += cb => { if(CanJump) pjump.Execute(); };
 
         // Attack
-        inputs.Player.Attack.performed += cb => { if(CanAttack) attack.Execute(); };
+        inputs.Player.Attack.started += cb => { if(CanAttack) holdingAttack = true; };
+        inputs.Player.Attack.canceled += cb => { AttackBehaviour(); };
 
         // Skills
             // Dash
@@ -69,7 +82,32 @@ public class PlayerController : MonoBehaviour {
         inputs.Player.Jump.performed += cb => { teleport.CancelPerfoming(); };
     }
 
-    public void PerformWalk(Vector2 dir, bool force = false) {
+    void HoldingAttackBehaviour() {
+
+        totalAttackSeconds += Time.deltaTime;
+
+    }
+
+    void AttackBehaviour() {
+
+        holdingAttack = false;
+
+        if(CanAttack)
+        {
+            if(totalAttackSeconds < 0.35f) {
+                attack.Execute();
+            }
+            else
+            {
+                explosion.Execute();
+            }
+        }
+
+        totalAttackSeconds = 0;
+
+    }
+
+    void PerformWalk(Vector2 dir, bool force = false) {
 
         if(!CanMove && !force) return;
 
