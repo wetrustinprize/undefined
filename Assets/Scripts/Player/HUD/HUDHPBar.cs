@@ -45,7 +45,7 @@ public class HUDHPBar : MonoBehaviour
         for(int i = 0; i < hpBars.Length; i++) {
 
             float myPercentage = (1/(float)hpBars.Length) * (i + 1);
-            Debug.Log(myPercentage);
+
 
             if(myPercentage > percentage + thresholdToBroken) {
                 if(i < lastExplodedBar)
