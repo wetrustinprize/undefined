@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     private bool isPlayer { get { return lookAt.GetComponent<PlayerController>(); } }
     private Motor playerMotor { get { return lookAt.GetComponent<Motor>(); } }
     private bool isWalking { get { return playerMotor.GetForce("input").ActualForce.x != 0; } }
-    private float dir { get { return playerMotor.lastFaceDir; } }
+    private float dir { get { return playerMotor.LastFacingDir; } }
 
     private Vector3 newPos = Vector2.zero;
 

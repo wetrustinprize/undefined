@@ -9,21 +9,21 @@ public class Attack : MonoBehaviour
         #region Variables
 
     [Header("Raycast Settings")]
-    public Vector2 offset;
-    public Vector2 size;
-    public LayerMask aliveLayes;
+    [SerializeField] private Vector2 offset;
+    [SerializeField] private Vector2 size;
+    [SerializeField] private LayerMask aliveLayes;
 
     [Header("Attack Settings")]
-    public int Damage;
-    public float coolDown;
+    [SerializeField] private int Damage;
+    [SerializeField] private float coolDown;
 
     [Header("Force Settings")]
-    public float pushForce;
-    public float pushTime;
+    [SerializeField] private float pushForce;
+    [SerializeField] private float pushTime;
 
     [Header("Slow Settings")]
-    public Slow attackerSlow;
-    public float attackerSlowTimer;
+    [SerializeField] private Slow attackerSlow;
+    [SerializeField] private float attackerSlowTimer;
 
     // Events
     public event Action onAttack;
@@ -70,7 +70,7 @@ public class Attack : MonoBehaviour
         actCoolDown = coolDown;
 
         Vector2 dir = offset;
-        dir.x *= motor.lastFaceDir;
+        dir.x *= motor.LastFacingDir;
         bool calledAttack = false;
         Collider2D[] hits = Physics2D.OverlapBoxAll((Vector2)transform.position + dir, size, 0f, aliveLayes);
 
@@ -117,7 +117,7 @@ public class Attack : MonoBehaviour
         if(!GetComponent<Motor>()) return;
 
         Vector2 dir = offset;
-        dir.x *= motor.lastFaceDir;
+        dir.x *= motor.LastFacingDir;
         Vector3 pos = transform.position + (Vector3)dir;
 
         Gizmos.color = new Color(1, 1, 1, 0.8f);

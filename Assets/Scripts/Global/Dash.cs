@@ -10,13 +10,13 @@ public class Dash : MonoBehaviour
         #region Variables
 
     [Header("Dash Settings")]
-    public Vector2 dashForce = Vector2.zero;
+    [SerializeField] private Vector2 dashForce = Vector2.zero;
 
     [Space]
 
-    public float dashDuration = 3f;
-    public float dashCooldown = 3f;
-    public bool applyCooldown = true;
+    [SerializeField] private float dashDuration = 3f;
+    [SerializeField] private float dashCooldown = 3f;
+    [SerializeField] private bool applyCooldown = true;
 
     // Script side variables
     Motor m {get {return GetComponent<Motor>();}}
@@ -39,7 +39,7 @@ public class Dash : MonoBehaviour
         
         if(dashTimer > 0 && applyCooldown) return;
 
-        Force f = new Force("dash", dashForce * m.lastFaceDir, dashDuration);
+        Force f = new Force("dash", dashForce * m.LastFacingDir, dashDuration);
         m.AddForce(f, false, true, true);
         m.RemoveForce("jump");
         dashTimer = dashCooldown;
@@ -53,7 +53,7 @@ public class Dash : MonoBehaviour
 
         if(dashTimer > 0 && applyCooldown) return;
 
-        Force f = new Force("dash", dash * m.lastFaceDir, time);
+        Force f = new Force("dash", dash * m.LastFacingDir, time);
 
         m.AddForce(f, false, true);
 

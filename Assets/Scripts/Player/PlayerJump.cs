@@ -10,8 +10,8 @@ public class PlayerJump : MonoBehaviour
         #region Variables
 
     [Header("Extra Frames")]
-    public float extraTimeGroundJump;
-    public float extraTimeWallJump;
+    [SerializeField] private float extraTimeGroundJump;
+    [SerializeField] private float extraTimeWallJump;
 
     // Script side variables
     private float timeToGroundJump;
@@ -50,9 +50,9 @@ public class PlayerJump : MonoBehaviour
 
     public void Execute() {
 
-        if(canGroundJump && !jump.hasGroundJumped)
+        if(canGroundJump && !jump.HasGroundJumped)
             jump.GroundJump();
-        else if(canWallJump && !jump.hasWallJumped)
+        else if(canWallJump && !jump.HasWallJumped)
             jump.WallJump();
 
     }

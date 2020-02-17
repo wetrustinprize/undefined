@@ -12,35 +12,49 @@ public class Motor : MonoBehaviour
         #region Variables
 
     [Header("Bypass:")]
-    public bool BypassInput;
-    public bool BypassGravity;
+    [SerializeField] private bool bypassInput;
+    [SerializeField] private bool bypassGravity;
 
     [Header("Velocity")]
-    [SerializeField]
-    public Vector2 MaxSpeed = Vector2.one;
-    [SerializeField]
-    private float Fric = 0.65f;
-    [SerializeField]
-    private float GravityScale = 3f;
+    [SerializeField] private Vector2 maxSpeed = Vector2.one;
+    [SerializeField] private float fric = 0.65f;
+    [SerializeField] private float gravityScale = 3f;
 
     [Space]
 
-    public LayerMask CollisionLayer = 0;
-    public bool OnGround;
-    public bool OnWall;
-    public bool OnCelling;
-    public bool OnRightWall;
-    public bool OnLeftWall;
+    [SerializeField] private LayerMask collisionLayer = 0;
+    [SerializeField] private bool onGround;
+    [SerializeField] private bool onWall;
+    [SerializeField] private bool onCelling;
+    [SerializeField] private bool onRightWall;
+    [SerializeField] private bool onLeftWall;
 
     [Header("Other")]
-    public int lastFaceDir;
-    public Vector2 inputAxis; // Input received by the player
+    [SerializeField] private int lastFaceDir;
+    [SerializeField] private Vector2 inputAxis; // Input received by the player
     
 
     //Script side
 
     private Rigidbody2D rb {get { return GetComponent<Rigidbody2D>(); } }
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
+
+        #region Public Acess Variables
+
+    public LayerMask CollisionLayer { get { return collisionLayer; } }
+
+    public Vector2 MaxSpeed { get { return maxSpeed; } }
+    public Vector2 InputAxis { get { return inputAxis; } }
+
+    public int LastFacingDir { get { return lastFaceDir; } }
+
+    public bool OnGround { get { return onGround; } }
+
+    public bool OnWall { get { return onWall; } }
+    public bool OnRightWall { get { return onRightWall; } }
+    public bool OnLeftWall { get { return onLeftWall; } }
+
+        #endregion
 
         #region Events
 
@@ -59,12 +73,12 @@ public class Motor : MonoBehaviour
 
         #region Speed Vars
     
-    public List<Force> externalForces = new List<Force>();  // List of external forces
-    public List<Force> constantForces = new List<Force>();  // List of constant external forces
-    public List<Slow> slowness = new List<Slow>();          // List of all slowness
-    private bool newSlow = false;
-    private bool resetGrav = false;
-    public Dictionary<SlowType, Vector2> totalSlowness = new Dictionary<SlowType, Vector2>() { // All slowness to be applied
+    [SerializeField] private List<Force> externalForces = new List<Force>();  // List of external forces
+    [SerializeField] private List<Force> constantForces = new List<Force>();  // List of constant external forces
+    [SerializeField] private List<Slow> slowness = new List<Slow>();          // List of all slowness
+    [SerializeField] private bool newSlow = false;
+    [SerializeField] private bool resetGrav = false;
+    [SerializeField] private Dictionary<SlowType, Vector2> totalSlowness = new Dictionary<SlowType, Vector2>() { // All slowness to be applied
         { SlowType.Input, Vector2.one },
         { SlowType.Gravity, Vector2.one },
         { SlowType.External, Vector2.one },
@@ -86,11 +100,13 @@ public class Motor : MonoBehaviour
     private Vector2 _ckcGCColliderSize;     // Celling and Floor collider size
     private Vector2 _ckcWColliderSize;      // Wall collider size
 
+    // Information about where is colliding
     public Vector2 CellingColliderPosition { get { return _celColliderPosition; } }
     public Vector2 GroundColliderPosition { get { return _grdColliderPosition; } }
     public Vector2[] WallsColliderPosition { get { return new Vector2[] {_walRColliderPosition, _walLColliderPosition}; } }
     public Vector2 GroundCellingColliderSize { get { return _ckcGCColliderSize; } }
     public Vector2 WallColliderSize { get { return _ckcWColliderSize; } }
+
 
     //Check if the collider has changed size or not
     private Vector2 _lastColliderSiz = Vector2.zero;
@@ -103,7 +119,7 @@ public class Motor : MonoBehaviour
     // Initial setup
     void Start() {
         lastFaceDir = 1;
-        GravityScale = !BypassGravity ? GravityScale : 0;
+        gravityScale = !bypassGravity ? gravityScale : 0;
 
         AddForce(new Force("input", Vector2.zero, 0, false), false);
         AddForce(new Force("grav", Vector2.zero, 0, false), true);
@@ -123,9 +139,20 @@ public class Motor : MonoBehaviour
 
     }
 
+        #region Public Functions
+
+    public void SetNewMaxSpeed(Vector2 newMaxSpeed) {
+
+        maxSpeed = newMaxSpeed;
+
+    }
+
+    ///<summary>Resets tha gravity</summary>
     public void ResetGravity() {
         resetGrav = true;
     }
+
+        #region Force Related
 
     // Called to apply a force
     ///<summary>Adds a new force to the motor.</summary>
@@ -211,6 +238,10 @@ public class Motor : MonoBehaviour
 
     }
 
+        #endregion
+
+        #region Slow Related
+
     //Called to add a slowness to an axis
     ///<summary>Add a slowness</summary>
     ///<param name="slow">The slowness to apply</param>
@@ -241,6 +272,10 @@ public class Motor : MonoBehaviour
         slowness.RemoveAll(s => s.Name == name);
         newSlow = true;
     }
+
+        #endregion
+
+        #endregion
 
     // Called before drawing the screen, all the physics is called here
     void FixedUpdate() {
@@ -295,23 +330,23 @@ public class Motor : MonoBehaviour
         bool ground = false;
         bool celling = false;
 
-        foreach(Collider2D c in Physics2D.OverlapBoxAll(grdPos, _ckcGCColliderSize, 0, CollisionLayer))
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(grdPos, _ckcGCColliderSize, 0, collisionLayer))
         {
             if(c.gameObject == this.gameObject) continue;
             ground = true;
             break;
         }
 
-        foreach(Collider2D c in Physics2D.OverlapBoxAll(celPos, _ckcGCColliderSize, 0, CollisionLayer))
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(celPos, _ckcGCColliderSize, 0, collisionLayer))
         {
             if(c.gameObject == this.gameObject) continue;
             celling = true;
             break;
         }
 
-        if(OnGround != ground)
+        if(onGround != ground)
         {
-            OnGround = ground;
+            onGround = ground;
             if(ground)
             {
                 if(onTouchGround != null)
@@ -324,9 +359,9 @@ public class Motor : MonoBehaviour
             }
         }
 
-        if(OnCelling != celling)
+        if(onCelling != celling)
         {
-            OnCelling = celling;
+            onCelling = celling;
             if(celling)
             {
                 if(onTouchCelling != null)
@@ -351,35 +386,35 @@ public class Motor : MonoBehaviour
         // Checking if has a wall nearby
         bool rightwall = false;
         bool leftwall = false;
-        bool wall = OnLeftWall || OnRightWall;
+        bool wall = onLeftWall || onRightWall;
 
-        foreach(Collider2D c in Physics2D.OverlapBoxAll(lWallPos, _ckcWColliderSize, 0, CollisionLayer))
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(lWallPos, _ckcWColliderSize, 0, collisionLayer))
         {
             if(c.gameObject == this.gameObject) continue;
             leftwall = true;
             break;
         }
 
-        foreach(Collider2D c in Physics2D.OverlapBoxAll(rWallPos, _ckcWColliderSize, 0, CollisionLayer))
+        foreach(Collider2D c in Physics2D.OverlapBoxAll(rWallPos, _ckcWColliderSize, 0, collisionLayer))
         {
             if(c.gameObject == this.gameObject) continue;
             rightwall = true;
             break;
         }
 
-        if(OnWall != wall || rightwall != OnRightWall || leftwall != OnLeftWall)
+        if(onWall != wall || rightwall != onRightWall || leftwall != onLeftWall)
         {
 
             int wallSide = 0;
-            wallSide += OnRightWall != rightwall ? 1 : 0;
-            wallSide -= OnLeftWall != leftwall ? 1 : 0;
+            wallSide += onRightWall != rightwall ? 1 : 0;
+            wallSide -= onLeftWall != leftwall ? 1 : 0;
 
             bool touch = false;
-            touch = rightwall && OnRightWall != rightwall || leftwall && OnLeftWall != leftwall;
+            touch = rightwall && onRightWall != rightwall || leftwall && onLeftWall != leftwall;
 
-            OnWall = wall;
-            OnRightWall = rightwall;
-            OnLeftWall = leftwall;
+            onWall = wall;
+            onRightWall = rightwall;
+            onLeftWall = leftwall;
 
             if(wallSide != 0) 
             {
@@ -457,7 +492,7 @@ public class Motor : MonoBehaviour
 
                 // Apply gravity (Y)
                 if(f.ActualForce.y > 0 && f.ApplyGravity && !resetGrav) {
-                    f.Gravity += ((Vector2)Physics.gravity * GravityScale) * Time.fixedDeltaTime;
+                    f.Gravity += ((Vector2)Physics.gravity * gravityScale) * Time.fixedDeltaTime;
                 }
                 else if(resetGrav) {
                     f.Gravity = Vector2.zero;
@@ -469,7 +504,7 @@ public class Motor : MonoBehaviour
             {
                     #region Input external force
 
-                if(BypassInput) 
+                if(bypassInput) 
                 {
                     f.ActualForce = Vector2.zero;
                     return;
@@ -478,38 +513,38 @@ public class Motor : MonoBehaviour
                 Vector2 newSpeed = f.ActualForce;
 
                 // Calculates the new force with friction
-                float xDir = inputAxis.x > 0 ? Fric : -Fric;
-                float yDir = inputAxis.y > 0 ? Fric : -Fric;
+                float xDir = inputAxis.x > 0 ? fric : -fric;
+                float yDir = inputAxis.y > 0 ? fric : -fric;
 
-                float xSub = newSpeed.x > 0 ? -Fric : Fric;
-                float ySub = newSpeed.y > 0 ? -Fric : Fric;
+                float xSub = newSpeed.x > 0 ? -fric : fric;
+                float ySub = newSpeed.y > 0 ? -fric : fric;
 
                 // x velocity
                 if(inputAxis.x != 0)
                     newSpeed.x = Mathf.Clamp(
                         newSpeed.x + xDir,
-                        -MaxSpeed.x,
-                        MaxSpeed.x
+                        -maxSpeed.x,
+                        maxSpeed.x
                     );
                 else if(newSpeed.x != 0)
                     newSpeed.x = Mathf.Clamp(
                         newSpeed.x + xSub, 
-                        xSub > 0 ? -MaxSpeed.x : 0,
-                        xSub > 0 ? 0 : MaxSpeed.x
+                        xSub > 0 ? -maxSpeed.x : 0,
+                        xSub > 0 ? 0 : maxSpeed.x
                     );
 
                 // y velocity
                 if(inputAxis.y != 0)
                     newSpeed.y = Mathf.Clamp(
                         newSpeed.y + yDir,
-                        -MaxSpeed.y,
-                        MaxSpeed.y
+                        -maxSpeed.y,
+                        maxSpeed.y
                     );
                 else if(newSpeed.y != 0)
                     newSpeed.y = Mathf.Clamp(
                         newSpeed.y + ySub, 
-                        ySub > 0 ? -MaxSpeed.y : 0,
-                        ySub > 0 ? 0 : MaxSpeed.y
+                        ySub > 0 ? -maxSpeed.y : 0,
+                        ySub > 0 ? 0 : maxSpeed.y
                     );
 
                 f.ActualForce = newSpeed;
@@ -518,12 +553,12 @@ public class Motor : MonoBehaviour
             }
 
             // Check is has collided
-            if((f.ActualForce.y < 0 && f.applied && OnGround) || (f.ActualForce.y > 0 && f.applied && OnCelling)) {
+            if((f.ActualForce.y < 0 && f.applied && onGround) || (f.ActualForce.y > 0 && f.applied && onCelling)) {
                 f.ActualForce.y = 0;
                 f.Gravity.y = 0;
             }
 
-            if((f.ActualForce.x > 0 && OnRightWall) || (f.ActualForce.x < 0 && OnLeftWall)) {
+            if((f.ActualForce.x > 0 && onRightWall) || (f.ActualForce.x < 0 && onLeftWall)) {
                 f.ActualForce.x = 0;
                 f.Gravity.x = 0;
             }
@@ -573,8 +608,8 @@ public class Motor : MonoBehaviour
                 }
                 else
                 {
-                    if(!OnGround)
-                        f.Gravity += (Vector2)Physics.gravity * Time.fixedDeltaTime * GravityScale;
+                    if(!onGround)
+                        f.Gravity += (Vector2)Physics.gravity * Time.fixedDeltaTime * gravityScale;
                     else
                         f.Gravity = Vector2.zero;
                 }
@@ -606,16 +641,16 @@ public class Motor : MonoBehaviour
         Vector3 wallLPos = (Vector3)_walLColliderPosition + transform.position;
         Vector3 wallRPos = (Vector3)_walRColliderPosition + transform.position;
 
-        Gizmos.color = OnGround ? Color.green : Color.grey;
+        Gizmos.color = onGround ? Color.green : Color.grey;
         Gizmos.DrawCube(grdPos, _ckcGCColliderSize);
 
-        Gizmos.color = OnCelling ? Color.green : Color.grey;
+        Gizmos.color = onCelling ? Color.green : Color.grey;
         Gizmos.DrawCube(celPos, _ckcGCColliderSize);
 
-        Gizmos.color = OnLeftWall ? Color.green : Color.grey;
+        Gizmos.color = onLeftWall ? Color.green : Color.grey;
         Gizmos.DrawCube(wallLPos, _ckcWColliderSize);
 
-        Gizmos.color = OnRightWall ? Color.green : Color.grey;
+        Gizmos.color = onRightWall ? Color.green : Color.grey;
         Gizmos.DrawCube(wallRPos, _ckcWColliderSize);
 
     }

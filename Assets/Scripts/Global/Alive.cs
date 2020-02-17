@@ -30,6 +30,21 @@ public class Alive : MonoBehaviour
 
     }
 
+    public void SetNewMaxHealth(int newMaxHealth, bool resetHealth = false) {
+
+        maxHealth = newMaxHealth;
+
+        if(resetHealth)
+            health = newMaxHealth;
+
+    }
+
+    public void SetNewArmor(int newArmor) {
+
+        defense = newArmor;
+
+    }
+
     ///<summary>Takes damage.</summary>
     ///<param name="damage">Damage to receive</param>
     public void TakeDamage(int damage) {

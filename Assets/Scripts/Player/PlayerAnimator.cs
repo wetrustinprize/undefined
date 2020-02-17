@@ -76,7 +76,7 @@ public class PlayerAnimator : MonoBehaviour
 
         Quaternion rot;
 
-        if(motor.lastFaceDir == 1)
+        if(motor.LastFacingDir == 1)
             rot = Quaternion.Euler(0, 0, -90);
         else
             rot = Quaternion.Euler(0, 0, 90);
@@ -99,7 +99,7 @@ public class PlayerAnimator : MonoBehaviour
     // Called when hits something
     void AttackEffect() {
 
-        Vector2 dir = new Vector2(0.3f * motor.lastFaceDir, 0);
+        Vector2 dir = new Vector2(0.3f * motor.LastFacingDir, 0);
         cam.Push(dir, 0, 0.1f);
 
     }
@@ -119,7 +119,7 @@ public class PlayerAnimator : MonoBehaviour
 
         float offset = dustSpawnTransform.localPosition.x;
 
-        if(motor.lastFaceDir == -1)
+        if(motor.LastFacingDir == -1)
         {
             pos.x -= offset*2;
             rot.y = 180;
@@ -134,7 +134,7 @@ public class PlayerAnimator : MonoBehaviour
 
         Quaternion rot = Quaternion.identity;
 
-        if(motor.lastFaceDir == 1)
+        if(motor.LastFacingDir == 1)
         {
             rot.y = 180;
         }
@@ -152,10 +152,10 @@ public class PlayerAnimator : MonoBehaviour
     // Updates the animator
     void Update() {
         // Gets all velocity info
-        float vInput = motor.inputAxis.x;
+        float vInput = motor.InputAxis.x;
         float hVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
         float vDir = hVel > 0 ? 1 : -1;
-        float vFace = motor.lastFaceDir;
+        float vFace = motor.LastFacingDir;
 
         float vVel = motor.finalSpeed.y;
 
@@ -163,7 +163,7 @@ public class PlayerAnimator : MonoBehaviour
         bool onAir = !motor.OnGround;
         bool drifting = vInput != lastInput && vInput != 0 && Mathf.Abs(hVel) > driftThreshold;
         bool onWall = motor.OnWall;
-        bool canWallJump = jump.canWallJump;
+        bool canWallJump = jump.CanWallJump;
         bool dashing = motor.HasForce("dash", false);
 
         lastInput = vInput;
@@ -181,10 +181,10 @@ public class PlayerAnimator : MonoBehaviour
             }
             else
             {
-                Flip(motor.lastFaceDir == -1);
+                Flip(motor.LastFacingDir == -1);
             }
         }
-        else if(sprite.flipX && motor.lastFaceDir == 1 && !attacked)
+        else if(sprite.flipX && motor.LastFacingDir == 1 && !attacked)
         {
             Flip(false);
         }

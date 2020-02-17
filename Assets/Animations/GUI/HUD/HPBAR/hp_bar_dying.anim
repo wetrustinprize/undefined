@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: hp_bar_idle
+  m_Name: hp_bar_dying
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -22,9 +22,36 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 474.5
-        inSlope: 41.249996
-        outSlope: 41.249996
+        value: 0
+        inSlope: 74.99999
+        outSlope: 74.99999
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.13333334
+        value: 10
+        inSlope: -2.5000076
+        outSlope: -2.5000076
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.38333333
+        value: -10
+        inSlope: 2.8571358
+        outSlope: 2.8571358
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5
+        value: 0
+        inSlope: 85.71428
+        outSlope: 85.71428
         tangentMode: 34
         weightedMode: 2
         inWeight: 0.33333334
@@ -57,7 +84,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0
+    m_StopTime: 0.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -78,9 +105,36 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 474.5
-        inSlope: 41.249996
-        outSlope: 41.249996
+        value: 0
+        inSlope: 74.99999
+        outSlope: 74.99999
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.13333334
+        value: 10
+        inSlope: -2.5000076
+        outSlope: -2.5000076
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.38333333
+        value: -10
+        inSlope: 2.8571358
+        outSlope: 2.8571358
+        tangentMode: 34
+        weightedMode: 2
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.5
+        value: 0
+        inSlope: 85.71428
+        outSlope: 85.71428
         tangentMode: 34
         weightedMode: 2
         inWeight: 0.33333334
