@@ -6,19 +6,14 @@ public class HUDItemDetails : MonoBehaviour {
 
         #region Variables
 
-    [Header("HUD Inventory")]
-    [SerializeField] private HUDInventory inventory_Manager;
-
     [Header("UI Components")]
     [SerializeField] private Image itemIcon;
     [SerializeField] private Text itemName;
     [SerializeField] private Text itemDescription;
     [SerializeField] private Text itemStats;
+    [SerializeField] private Text buttonText;
 
     // Script side
-    private ItemObject selectedItem;
-    private int selectedIndex;
-
     private CanvasGroup group;
 
         #endregion
@@ -35,12 +30,9 @@ public class HUDItemDetails : MonoBehaviour {
 
     }
 
-    public void Setup(ItemObject item = null, int index = 0) {
+    public void ShowItemInfo(ItemObject item = null, bool equipedItem = false) {
 
-        selectedItem = item;
-        selectedIndex = index;
-
-        if(selectedItem == null)
+        if(item == null)
         {
             group.interactable = false;
             group.alpha = 0f;
@@ -48,10 +40,11 @@ public class HUDItemDetails : MonoBehaviour {
         }
         else
         {
-            itemIcon.sprite = selectedItem.icon;
-            itemName.text = selectedItem.itemName.ToUpper();
-            itemDescription.text = $"<i>{selectedItem.description}</i>";
-            itemStats.text = $"<b>Stats:</b>\n{selectedItem.statsDescription}";
+            itemIcon.sprite = item.icon;
+            itemName.text = item.itemName.ToUpper();
+            itemDescription.text = $"<i>{item.description}</i>";
+            itemStats.text = $"<b>Stats:</b>\n{item.statsDescription}";
+            buttonText.text = equipedItem ? "Unequip" : "Equip";
 
             group.interactable = true;
             group.alpha = 1f;

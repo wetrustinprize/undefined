@@ -14,7 +14,7 @@ public class HUDItemInfo : MonoBehaviour
     public ItemObject myItem;
 
     // Script side
-    HUDItemDetails itemDetailsManager;
+    HUDInventory invManager;
 
 
         #endregion
@@ -27,15 +27,15 @@ public class HUDItemInfo : MonoBehaviour
 
     void ShowMyItemDetails() {
 
-        itemDetailsManager.Setup(myItem, inventoryIndex);
+        invManager.ShowSelectedItem(myItem, inventoryIndex);
 
     }
 
-    public void Setup(ItemObject item, int index, HUDItemDetails hudItemDetails) {
+    public void Setup(ItemObject item, int index, HUDInventory invetoryManager) {
 
         inventoryIndex = index;
         myItem = item;
-        itemDetailsManager = hudItemDetails;
+        invManager = invetoryManager;
 
         itemImage.sprite = myItem.icon;
 

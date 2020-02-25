@@ -5,50 +5,59 @@ using System.Collections.Generic;
 public class PlayerInventory : MonoBehaviour {
 
         #region Variables
-
-    [Header("Equiped Items")]
-    [SerializeField] private Item equipedActive;
-    [SerializeField] private Item equipedPassive;
+    [Header("Equiped Items")]        
+    [SerializeField] private InventoryItem equipedActive = new InventoryItem();
+    [SerializeField] private InventoryItem equipedPassive = new InventoryItem();
 
     [Header("Backpack")]
-    [SerializeField] private List<Item> items = new List<Item>();
+    [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
 
     // Public acess
-    public List<Item> Items { get { return items; } }
+    public List<InventoryItem> Items { get { return items; } }
+    public InventoryItem ActiveItem { get { return equipedActive; } }
+    public InventoryItem PassiveItem { get { return equipedPassive; } }
 
         #endregion
 
     public void UnequipItem(ItemType type) {
 
+        ItemObject item = null;
+
         switch(type) {
             case ItemType.Active:
-                if(equipedActive != null) { AddItem(equipedActive.itemObj, equipedActive.quantity); }
-                equipedActive = null;
+                if(equipedActive.itemObj != null) { item = equipedActive.itemObj; AddItem(equipedActive.itemObj, equipedActive.quantity); }
+                equipedActive = new InventoryItem();
                 break;
             
             case ItemType.Passive:
-                if(equipedPassive != null) { AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
-                equipedPassive = null;
+                if(equipedPassive.itemObj != null) { item = equipedPassive.itemObj; AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
+                equipedPassive = new InventoryItem();
                 break;
         }
+
+        if(item == null) return;
+
+        item.OnUnequip(this.gameObject);
 
     }
 
     public void EquipItem(int index) {
 
-        Item item = items[index];
+        InventoryItem item = items[index];
 
         switch(item.itemObj.type) {
             case ItemType.Active:
-                if(equipedActive != null) { AddItem(equipedActive.itemObj, equipedActive.quantity); }
+                if(equipedActive.itemObj != null) { AddItem(equipedActive.itemObj, equipedActive.quantity); }
                 equipedActive = item;
                 break;
             
             case ItemType.Passive:
-                if(equipedPassive != null) { AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
+                if(equipedPassive.itemObj != null) { AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
                 equipedPassive = item;
                 break;
         }
+
+        item.itemObj.OnEquip(this.gameObject);
 
         RemoveItem(item);
 
@@ -56,11 +65,11 @@ public class PlayerInventory : MonoBehaviour {
 
     public void AddItem(ItemObject item, int quantity = -1) {
 
-        Item newItem = new Item(item);
+        InventoryItem newItem = new InventoryItem(item);
 
         int itemIndex = items.FindIndex(obj => obj == newItem);
 
-        if(itemIndex != -1)
+        if(itemIndex != -1) {
             if(item.stackable)
             {
                 if(quantity != -1)
@@ -68,19 +77,22 @@ public class PlayerInventory : MonoBehaviour {
                 else
                     items[itemIndex].quantity += 1;
             }
+        }
         else
+        {
             items.Add(newItem);
+        }
 
     }
 
     public void RemoveItem(ItemObject item) {
 
-        Item itemToRemove = new Item(item);
+        InventoryItem itemToRemove = new InventoryItem(item);
         RemoveItem(itemToRemove);
 
     }
 
-    public void RemoveItem(Item item) {
+    public void RemoveItem(InventoryItem item) {
 
         items.RemoveAll(obj => obj == item);
 
