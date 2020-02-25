@@ -5194,16 +5194,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipedActive:
-    itemName: 
     quantity: 0
-    type: 0
     itemObj: {fileID: 0}
   equipedPassive:
-    itemName: 
     quantity: 0
-    type: 0
     itemObj: {fileID: 0}
-  Items: []
+  items:
+  - quantity: 1
+    itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
 --- !u!114 &2150744075976561101
 MonoBehaviour:
   m_ObjectHideFlags: 0
