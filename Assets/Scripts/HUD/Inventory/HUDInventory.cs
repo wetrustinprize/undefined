@@ -31,11 +31,15 @@ public class HUDInventory : MonoBehaviour
 
         #endregion
 
-    void Start() {
+    void Awake() {
 
         // Gets the player and its inventory
         player = GameObject.FindWithTag("Player");
         inventory = player.GetComponent<PlayerInventory>();
+
+    }
+
+    void Start() {
 
         // Sets initial value to the selected index
         selectedItemIndex = -1;

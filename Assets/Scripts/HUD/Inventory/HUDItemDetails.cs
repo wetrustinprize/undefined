@@ -19,10 +19,14 @@ public class HUDItemDetails : MonoBehaviour {
         #endregion
 
 
-    void Start() {
+    void Awake() {
 
         // Gets the canvas groups
         group = GetComponent<CanvasGroup>();
+
+    }
+
+    void Start() {
 
         // Sets to invisible
         group.interactable = false;
