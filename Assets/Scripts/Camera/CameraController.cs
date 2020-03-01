@@ -72,6 +72,11 @@ public class CameraController : MonoBehaviour
 
         #endregion
 
+    void Awake() {
+
+        DontDestroyOnLoad(this.gameObject);
+
+    }
 
     void Start() {
 
@@ -161,7 +166,7 @@ public class CameraController : MonoBehaviour
         float verticalLookAhead = 0;
         float time = isWalking ? lookAheadStartTimeSpeed : lookAheadEndTimeSpeed;
 
-        float gravity = playerMotor.GetForce("grav", true).ActualForce.y;
+        float gravity = playerMotor.GetForce("grav", true).Gravity.y;
 
         Vector2 newLookAhead = Vector2.zero;
 
@@ -188,13 +193,6 @@ public class CameraController : MonoBehaviour
         #endregion
 
         #region Public Functions
-
-    ///<summary>Plays a 2D audio.</summary>
-    public void PlayAudio2D(AudioClip clip) {
-
-        GetComponent<AudioSource>().PlayOneShot(clip);
-
-    }
 
     ///<summary>Changes the transform to the camera look at</summary>
     public void LookAt(Transform newLookAt) {
