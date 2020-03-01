@@ -14,18 +14,21 @@ public class PlayerController : MonoBehaviour {
 
         #region Variables
 
+    [Header("Input")]
+    public bool receiveInput = true;
+
     [Header("Movement")]
-    public bool CanMove = true;
-    public bool CanJump = true;
+    public bool canMove = true;
+    public bool canJump = true;
 
     [Header("Attack")]
-    public bool CanAttack = true;
+    public bool canAttack = true;
 
     [Header("Skills")]
-    public bool CanSkills = true;
-    public bool CanDash = true;
-    public bool CanTeleport = true;
-    public bool CanGhost = true;
+    public bool canSkills = true;
+    public bool canDash = true;
+    public bool canTeleport = true;
+    public bool canGhost = true;
 
     // Script side variables
     private Motor motor { get {return GetComponent<Motor>(); } }
@@ -57,42 +60,88 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Update() {
-        if(holdingAttack) HoldingAttackBehaviour();
+        if(holdingAttack) HoldingAttackTick();
     }
 
     void Start() {
 
         // Movement
-        inputs.Player.Move.performed += cb => { PerformWalk(cb.ReadValue<Vector2>()); };
-        inputs.Player.Move.canceled += cb => { PerformWalk(Vector2.zero, true); };
-        inputs.Player.Jump.performed += cb => { if(CanJump) pjump.Execute(); };
+        inputs.Player.Move.performed += cb => { 
+            WalkPerfomed(cb.ReadValue<Vector2>()); 
+        };
+
+        inputs.Player.Move.canceled += cb => { 
+            WalkPerfomed(Vector2.zero, true);
+        };
+
+        inputs.Player.Jump.performed += cb => { 
+            if(canJump) 
+            {
+                pjump.Execute(); 
+            }
+        };
 
         // Attack
-        inputs.Player.Attack.started += cb => { if(CanAttack) holdingAttack = true; };
-        inputs.Player.Attack.canceled += cb => { AttackBehaviour(); };
+        inputs.Player.Attack.started += cb => { 
+            if(canAttack && receiveInput) 
+            {
+                holdingAttack = true; 
+            }
+        };
+
+        inputs.Player.Attack.canceled += cb => { 
+            AttackCanceled();
+        };
 
         // Skills
             // Dash
-        inputs.Player.Dash.performed += cb => { if(CanDash && CanSkills) dash.Execute(); };
+        inputs.Player.Dash.performed += cb => { 
+            if(canDash && canSkills && receiveInput)
+            {
+                dash.Execute(); 
+            }
+        };
 
             // Teleport
-        inputs.Player.Teleport.started += cb => { teleport.StartPerforming(); };
-        inputs.Player.Teleport.canceled += cb => { teleport.StopPerforming(); };
-        inputs.Player.TeleportPosition.performed += cb => { teleport.UpdateArrow(cb.ReadValue<Vector2>()); };
-        inputs.Player.Jump.performed += cb => { teleport.CancelPerfoming(); };
+        inputs.Player.Teleport.started += cb => { 
+            if(canTeleport && canSkills && receiveInput)
+            {
+                teleport.StartPerforming(); 
+            }
+        };
+
+        inputs.Player.Teleport.canceled += cb => { 
+            teleport.StopPerforming(); 
+        };
+
+        inputs.Player.TeleportPosition.performed += cb => { 
+            teleport.UpdateArrow(cb.ReadValue<Vector2>()); 
+        };
+
+        inputs.Player.Jump.performed += cb => { 
+            teleport.CancelPerfoming(); 
+        };
     }
 
-    void HoldingAttackBehaviour() {
+        #region Attack
+
+    void HoldingAttackTick() {
 
         totalAttackSeconds += Time.deltaTime;
 
     }
 
-    void AttackBehaviour() {
+    void AttackStart() {
+
+        
+
+    }
+
+    void AttackCanceled() {
 
         holdingAttack = false;
 
-        if(CanAttack)
+        if(canAttack)
         {
             if(totalAttackSeconds < 0.35f) {
                 attack.Execute();
@@ -107,9 +156,13 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    void PerformWalk(Vector2 dir, bool force = false) {
+        #endregion
 
-        if(!CanMove && !force) return;
+        #region Walk
+
+    void WalkPerfomed(Vector2 dir, bool force = false) {
+
+        if((!canMove || !receiveInput) && !force) return;
 
         Vector2 input = dir;
         input.y = 0;
@@ -117,5 +170,7 @@ public class PlayerController : MonoBehaviour {
         motor.ReceiveInput(input);
 
     }
+
+        #endregion
 
 }
