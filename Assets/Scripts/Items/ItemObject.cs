@@ -22,6 +22,10 @@ namespace Undefined.Items {
         public bool stackable;
         public abstract ItemType type { get; }
 
+        [Header("Sounds")]
+        public AudioClip onEquipSFX;
+        public AudioClip onUnequipSFX;
+
         // Absctract classes
 
         public abstract void OnEquip(GameObject player);
