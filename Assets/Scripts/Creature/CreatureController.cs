@@ -50,6 +50,8 @@ public class CreatureController : MonoBehaviour
     private int bounceActualBounces;                // The total bounces
     private float bounceActualVelocity;             // The actual fly velocity
 
+    private AudioSource audioSource;                // This creature audio source
+
     // Public acces variables
     public int LastFacingDir { get { return lastFaceDir; } }        // Public acess to the lastFaceDir varaible
     public bool IsNearToThePlayer { get { return isNearPlayer; } }  // Public acess to the isNearPlayer variable
@@ -67,6 +69,9 @@ public class CreatureController : MonoBehaviour
         // gets the player gameobject and motor
         player = GameObject.FindWithTag("Player");
         playerMotor = player.GetComponent<Motor>();
+
+        // gets audio source
+        audioSource = GetComponent<AudioSource>();
 
         // sets initial face dir
         lastFaceDir = 1;
@@ -182,9 +187,9 @@ public class CreatureController : MonoBehaviour
 
             // Play sfx
             if(bounceActualBounces < bounce_Min)
-                CameraController.main.PlayAudio2D(bounce_NoTeleportSFX);
+                PlaySFX(bounce_NoTeleportSFX);
             else if(bounceActualBounces == bounce_Min)
-                CameraController.main.PlayAudio2D(bounce_TeleportSFX);
+                PlaySFX(bounce_TeleportSFX);
         }
 
         // Calculate direction
@@ -208,6 +213,12 @@ public class CreatureController : MonoBehaviour
                 Time.fixedDeltaTime / follow_Time
             )
         );
+
+    }
+
+    void PlaySFX(AudioClip sfx) {
+
+        audioSource.PlayOneShot(sfx);
 
     }
 
