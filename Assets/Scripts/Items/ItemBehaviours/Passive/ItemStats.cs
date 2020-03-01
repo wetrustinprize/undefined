@@ -5,9 +5,14 @@ namespace Undefined.Items {
     [CreateAssetMenu(fileName = "New Passive Stats Item", menuName = "Undefined/Item/Passive/Passive Stats Item")]
     public class ItemStats : ItemObject {
 
+            #region Variables
+
+        [Header("Stats")]
         public int agility;
         public int strength;
         public int toughness;
+
+            #endregion
 
         override public ItemType type { get { return ItemType.Passive; } }
 
@@ -18,6 +23,8 @@ namespace Undefined.Items {
             stats.Agility += agility;
             stats.Strength += strength;
             stats.Toughness += toughness;
+
+            
 
         }
         
