@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SpriteParallax : MonoBehaviour
+public class SpriteScreenParallax : MonoBehaviour
 {
     
         #region Variables

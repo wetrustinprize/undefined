@@ -39,6 +39,8 @@ namespace Undefined.Sound {
         ///<param name="vol">The SFX volume</param>
         public static void PlayUISFX(AudioClip sfx, float vol = 1.0f) {
 
+            if(sfx == null) return;
+
             instance.uiSource.PlayOneShot(sfx, vol);
 
         }

@@ -66,7 +66,8 @@ public class PlayerStats : MonoBehaviour {
 
         void UpdateToughness() {
 
-                int defense = (int)Mathf.Lerp(initialArmor, finalArmor, toughness / 100);
+                int defense = initialArmor + finalArmor * toughness / 100;
+
                 alive.SetNewArmor(defense);
 
         }

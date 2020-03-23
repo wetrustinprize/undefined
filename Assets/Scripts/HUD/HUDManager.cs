@@ -18,6 +18,9 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private CanvasGroup hudInventory;
     [SerializeField] private CanvasGroup hudShop;
 
+    [Header("Able")]
+    public bool canOpenInventory = true;
+
     // Instance
     public static HUDManager instance;
 
@@ -62,7 +65,9 @@ public class HUDManager : MonoBehaviour
 
         // Inputs
         inputs.UI.InventoryButton.performed += cb => {
-            ToggleHUD(HUDType.Inventory);
+            if(canOpenInventory) {
+                ToggleHUD(HUDType.Inventory);
+            }
         };
 
         // Hide initial huds

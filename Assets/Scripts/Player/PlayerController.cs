@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
 
     [Header("Input")]
     public bool receiveInput = true;
+    public bool canInteract = true;
 
     [Header("Movement")]
     public bool canMove = true;
@@ -30,6 +31,9 @@ public class PlayerController : MonoBehaviour {
     public bool canTeleport = true;
     public bool canGhost = true;
 
+    [Header("Inventory")]
+    public bool canUseActiveItem = true;
+
     // Script side variables
     private Motor motor { get {return GetComponent<Motor>(); } }
     private Jump jump { get { return GetComponent<Jump>(); } }
@@ -38,6 +42,8 @@ public class PlayerController : MonoBehaviour {
     private Attack attack { get {return GetComponent<Attack>(); } }
     private PlayerTeleport teleport { get { return GetComponent<PlayerTeleport>(); } }
     private PlayerExplosion explosion { get { return GetComponent<PlayerExplosion>(); } }
+    private PlayerInventory inventory { get { return GetComponent<PlayerInventory>(); } }
+    private PlayerInteraction interaction { get { return GetComponent<PlayerInteraction>(); } }
 
     // Script side
     private PlayerInput inputs;
@@ -48,7 +54,10 @@ public class PlayerController : MonoBehaviour {
         #endregion
 
     void Awake() {
+
+        DontDestroyOnLoad(this.gameObject);
         inputs = new PlayerInput();
+
     }
 
     void OnEnable() {
@@ -75,7 +84,7 @@ public class PlayerController : MonoBehaviour {
         };
 
         inputs.Player.Jump.performed += cb => { 
-            if(canJump) 
+            if(canJump && receiveInput) 
             {
                 pjump.Execute(); 
             }
@@ -121,6 +130,23 @@ public class PlayerController : MonoBehaviour {
         inputs.Player.Jump.performed += cb => { 
             teleport.CancelPerfoming(); 
         };
+
+        // Interaction
+        inputs.Player.Interact.performed += cb => {
+            if(receiveInput && canInteract) {
+                interaction.Interact();
+            }
+        };
+
+        // Inventory
+            // Use active
+        inputs.Player.UseActiveItem.performed += cb => {
+            if(receiveInput && canUseActiveItem)
+            {
+                inventory.UseActiveItem();
+            }
+        };
+
     }
 
         #region Attack

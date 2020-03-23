@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b56d821cceda1aa41a74ecb344a06cb0, type: 3}
+  m_Name: Debug
+  m_EditorClassIdentifier: 
+  itemName: "Peda\xE7o de C\xF3digo"
+  description: Parece que o desenvolvedor deixou isso no jogo.
+  statsDescription: "N\xE3o faz nada..."
+  icon: {fileID: 21300000, guid: 4ba1814487b86af4ba5909d8fc510222, type: 3}
+  onEquipSFX: {fileID: 0}
+  onUnequipSFX: {fileID: 0}
+  equipMessage: equipou
+  unequipMessage: desequipou
+  buyMessage: comprou
+  useMessage: usou
+  isStackable: 1

@@ -73,20 +73,25 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""7354f6de-e7f7-4c92-aab7-1947d07f131d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Use Active Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""09492505-5f73-458f-bc19-5396e6b825e3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""86a44f32-27b0-432b-a59d-748eec9e726f"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""3aaf26a0-685c-4496-a0fe-f49681f8fdbb"",
@@ -155,30 +160,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""f21d0e5e-d203-4107-8d1f-06357999d7d5"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""477616c7-5315-4d89-80ba-e110b3f8923f"",
                     ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""65c44ee3-2a27-4181-8fc9-7a97b335f859"",
-                    ""path"": ""<Gamepad>/buttonWest"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -199,34 +182,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""04b37b65-c2f4-4d3a-a7d7-6742bade608e"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Ghost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3a131ac5-6df0-4e04-9eea-8f6727c525c5"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Ghost"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""87a70361-4c31-4f2f-8d87-066b4a399ac2"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Teleport"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -249,6 +210,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TeleportPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f1143c6-4c8b-4909-a79b-f9815f52e720"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4a7db6f6-78e9-4a3d-98c2-bdf2943aa13c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use Active Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -426,6 +409,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Ghost = m_Player.FindAction("Ghost", throwIfNotFound: true);
         m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
         m_Player_TeleportPosition = m_Player.FindAction("TeleportPosition", throwIfNotFound: true);
+        m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
+        m_Player_UseActiveItem = m_Player.FindAction("Use Active Item", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -492,6 +477,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Ghost;
     private readonly InputAction m_Player_Teleport;
     private readonly InputAction m_Player_TeleportPosition;
+    private readonly InputAction m_Player_Interact;
+    private readonly InputAction m_Player_UseActiveItem;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -503,6 +490,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Ghost => m_Wrapper.m_Player_Ghost;
         public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
         public InputAction @TeleportPosition => m_Wrapper.m_Player_TeleportPosition;
+        public InputAction @Interact => m_Wrapper.m_Player_Interact;
+        public InputAction @UseActiveItem => m_Wrapper.m_Player_UseActiveItem;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -533,6 +522,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @TeleportPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
                 @TeleportPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
                 @TeleportPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
+                @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
+                @UseActiveItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
+                @UseActiveItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
+                @UseActiveItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -558,6 +553,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @TeleportPosition.started += instance.OnTeleportPosition;
                 @TeleportPosition.performed += instance.OnTeleportPosition;
                 @TeleportPosition.canceled += instance.OnTeleportPosition;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @UseActiveItem.started += instance.OnUseActiveItem;
+                @UseActiveItem.performed += instance.OnUseActiveItem;
+                @UseActiveItem.canceled += instance.OnUseActiveItem;
             }
         }
     }
@@ -660,6 +661,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnGhost(InputAction.CallbackContext context);
         void OnTeleport(InputAction.CallbackContext context);
         void OnTeleportPosition(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnUseActiveItem(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -18,8 +18,7 @@ namespace Undefined.Items {
         [Space(10)]
         public Sprite icon;
 
-        [Space(10)]
-        public bool stackable;
+        public abstract bool stackable { get; }
         public abstract ItemType type { get; }
 
         [Header("Sounds")]

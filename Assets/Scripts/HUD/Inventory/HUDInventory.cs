@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Undefined.Items;
+using Undefined.Sound;
 using System.Collections.Generic;
 
 public class HUDInventory : MonoBehaviour
@@ -36,6 +37,9 @@ public class HUDInventory : MonoBehaviour
         // Gets the player and its inventory
         player = GameObject.FindWithTag("Player");
         inventory = player.GetComponent<PlayerInventory>();
+
+        // Setup the player events
+        inventory.onUse += cb => RefreshBackpack();
 
     }
 

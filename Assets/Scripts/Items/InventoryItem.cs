@@ -14,6 +14,11 @@ namespace Undefined.Items {
 
         }
 
+        public InventoryItem(ItemObject item, int quantity) {
+            this.quantity = quantity;
+            this.itemObj = item;
+        }
+
         public InventoryItem() {
             quantity = 0;
             itemObj = null;

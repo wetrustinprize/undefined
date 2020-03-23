@@ -1,6 +1,8 @@
 using UnityEngine;
 using Undefined.Items;
+using Undefined.Sound;
 using System.Collections.Generic;
+using System;
 
 public class PlayerInventory : MonoBehaviour {
 
@@ -12,6 +14,11 @@ public class PlayerInventory : MonoBehaviour {
     [Header("Backpack")]
     [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
 
+    // Events
+    public Action<ItemObject> onEquip;
+    public Action<ItemObject> onUnequip;
+    public Action<ItemObject> onUse;
+
     // Public acess
     public List<InventoryItem> Items { get { return items; } }
     public InventoryItem ActiveItem { get { return equipedActive; } }
@@ -19,69 +26,112 @@ public class PlayerInventory : MonoBehaviour {
 
         #endregion
 
+    public void UseActiveItem() {
+
+        if(equipedActive.itemObj == null) return;
+
+        ItemObject usedItem = equipedActive.itemObj;
+
+        equipedActive.itemObj.OnUse(this.gameObject);
+
+        equipedActive.quantity--;
+
+        if(equipedActive.quantity <= 0)
+            equipedActive = new InventoryItem();
+        
+        onUse?.Invoke(usedItem);
+
+    }
+
     public void UnequipItem(ItemType type) {
 
-        ItemObject item = null;
+        InventoryItem item = null;
 
         switch(type) {
             case ItemType.Active:
-                if(equipedActive.itemObj != null) { item = equipedActive.itemObj; AddItem(equipedActive.itemObj, equipedActive.quantity); }
-                equipedActive = new InventoryItem();
+                if(equipedActive.itemObj != null) { 
+                    item = equipedActive;
+                    equipedActive = new InventoryItem();
+                }
                 break;
             
             case ItemType.Passive:
-                if(equipedPassive.itemObj != null) { item = equipedPassive.itemObj; AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
-                equipedPassive = new InventoryItem();
+                if(equipedPassive.itemObj != null) { 
+                    item = equipedPassive;
+                    equipedPassive = new InventoryItem();
+                }
                 break;
         }
 
         if(item == null) return;
 
-        item.OnUnequip(this.gameObject);
+        SoundsManager.PlayUISFX(item.itemObj.onUnequipSFX);
+
+        item.itemObj.OnUnequip(this.gameObject);
+
+        AddItem(item.itemObj);
+
+        onUnequip?.Invoke(item.itemObj);
 
     }
 
     public void EquipItem(int index) {
 
         InventoryItem item = items[index];
+        InventoryItem oldItem = null;
 
         switch(item.itemObj.type) {
             case ItemType.Active:
-                if(equipedActive.itemObj != null) { AddItem(equipedActive.itemObj, equipedActive.quantity); }
+                if(equipedActive.itemObj != null) { oldItem = equipedActive; }
                 equipedActive = item;
                 break;
             
             case ItemType.Passive:
-                if(equipedPassive.itemObj != null) { AddItem(equipedPassive.itemObj, equipedPassive.quantity); }
+                if(equipedPassive.itemObj != null) { oldItem = equipedPassive; }
                 equipedPassive = item;
                 break;
         }
 
+        SoundsManager.PlayUISFX(item.itemObj.onEquipSFX);
+
         item.itemObj.OnEquip(this.gameObject);
+        onEquip?.Invoke(item.itemObj);
+
+        if(oldItem != null)
+        {
+            AddItem(oldItem.itemObj, oldItem.quantity);
+        }
 
         RemoveItem(item);
 
     }
 
-    public void AddItem(ItemObject item, int quantity = -1) {
+    public void AddItem(ItemObject item, int quantity = 1) {
 
-        InventoryItem newItem = new InventoryItem(item);
-
-        int itemIndex = items.FindIndex(obj => obj == newItem);
-
-        if(itemIndex != -1) {
-            if(item.stackable)
-            {
-                if(quantity != -1)
-                    items[itemIndex].quantity = quantity;
-                else
-                    items[itemIndex].quantity += 1;
-            }
+        if(equipedActive.itemObj == item) {
+            equipedActive.quantity += quantity;
+            Debug.Log($"Equiped active is the same as this new item. ({item.name}) (total: {equipedActive.quantity})");
+            return;
         }
-        else
+
+        int itemIndex = items.FindIndex(obj => obj.itemObj == item);
+
+        if(itemIndex != -1)
         {
-            items.Add(newItem);
+            InventoryItem i = items[itemIndex];
+
+            if(i.itemObj.type == ItemType.Passive) {
+                Debug.Log($"Found the item in inventory, but passive items cannot be stacked. ({item.name})");
+                return;
+            }
+
+            i.quantity += quantity;
+            Debug.Log($"Found the item in inventory, stacking. ({item.name}) (total: {i.quantity})");
+            return;
         }
+
+        Debug.Log($"Didn't found the item in inventory, creating new one. ({item.name})");
+        items.Add(new InventoryItem(item, quantity));
 
     }
 

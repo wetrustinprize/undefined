@@ -34,6 +34,8 @@ public class CameraController : MonoBehaviour
     private Vector2 lookAheadValue;
     private float timeMovingCamera;
 
+    public static CameraController cam;
+
         #region Camera Size
 
     private float currentSize;
@@ -80,6 +82,9 @@ public class CameraController : MonoBehaviour
 
     void Start() {
 
+        if(cam != null) Destroy(this.gameObject);
+        cam = this;
+
         // Initial size
         currentSize = size;
         resizeTime = 1;
@@ -98,10 +103,9 @@ public class CameraController : MonoBehaviour
         CameraPush();
         SizeLerp();
 
-        newPos += new Vector3(0,0, -1);
+        newPos += new Vector3(0,0, -currentSize);
 
         transform.position = newPos;
-        thisCam.orthographicSize = currentSize;
         
 
     }

@@ -2,8 +2,11 @@ using UnityEngine;
 
 namespace Undefined.Items {
 
-    [CreateAssetMenu(fileName = "New Passive Stats Item", menuName = "Undefined/Item/Passive/Passive Stats Item")]
-    public class ItemStats : ItemObject {
+    [CreateAssetMenu(
+        fileName = "New Passive Stats Item", 
+        menuName = "Undefined/Item/Passive/Passive Stats Item"
+    )]
+    public class PassiveItemStats : ItemObject {
 
             #region Variables
 
@@ -15,6 +18,7 @@ namespace Undefined.Items {
             #endregion
 
         override public ItemType type { get { return ItemType.Passive; } }
+        override public bool stackable { get { return false; } }
 
         override public void OnEquip(GameObject player) {
 

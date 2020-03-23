@@ -1,15 +1,15 @@
 using UnityEngine;
 
-namespace Undefined.Items {
+namespace Undefined.Items.Shop {
 
-    [CreateAssetMenu(fileName = "New Shop Item", menuName = "Undefined/Item/Shop Item")]
-    public class ItemShop : ScriptableObject {
+    [System.Serializable]
+    public class ItemShop {
 
             #region Variables
 
         [Header("Information")]
         public int value;
-        public string[] sellerDescriptions;
+        public string sellerDescriptions;
         public ItemObject sellItem;
 
             #endregion
