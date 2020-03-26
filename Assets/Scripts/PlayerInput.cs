@@ -304,6 +304,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""13594fec-9c31-4fc3-bf42-cc6f3860a3ee"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -394,6 +402,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f9827aa-0c74-438c-ba04-7e03267278fc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -421,6 +440,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_UI_InventoryButton = m_UI.FindAction("InventoryButton", throwIfNotFound: true);
         m_UI_Submit = m_UI.FindAction("Submit", throwIfNotFound: true);
         m_UI_Cancel = m_UI.FindAction("Cancel", throwIfNotFound: true);
+        m_UI_Escape = m_UI.FindAction("Escape", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -575,6 +595,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_UI_InventoryButton;
     private readonly InputAction m_UI_Submit;
     private readonly InputAction m_UI_Cancel;
+    private readonly InputAction m_UI_Escape;
     public struct UIActions
     {
         private @PlayerInput m_Wrapper;
@@ -587,6 +608,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @InventoryButton => m_Wrapper.m_UI_InventoryButton;
         public InputAction @Submit => m_Wrapper.m_UI_Submit;
         public InputAction @Cancel => m_Wrapper.m_UI_Cancel;
+        public InputAction @Escape => m_Wrapper.m_UI_Escape;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -620,6 +642,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Cancel.started -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
                 @Cancel.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
                 @Cancel.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnCancel;
+                @Escape.started -= m_Wrapper.m_UIActionsCallbackInterface.OnEscape;
+                @Escape.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnEscape;
+                @Escape.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnEscape;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -648,6 +673,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Cancel.started += instance.OnCancel;
                 @Cancel.performed += instance.OnCancel;
                 @Cancel.canceled += instance.OnCancel;
+                @Escape.started += instance.OnEscape;
+                @Escape.performed += instance.OnEscape;
+                @Escape.canceled += instance.OnEscape;
             }
         }
     }
@@ -674,5 +702,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnInventoryButton(InputAction.CallbackContext context);
         void OnSubmit(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

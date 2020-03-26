@@ -4977,6 +4977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   receiveInput: 1
+  canInteract: 1
   canMove: 1
   canJump: 1
   canAttack: 1
@@ -5203,11 +5204,8 @@ MonoBehaviour:
   equipedPassive:
     quantity: 0
     itemObj: {fileID: 0}
-  items:
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
-  - quantity: 4
-    itemObj: {fileID: 11400000, guid: 6d26c55939b0f9d41b63db56c0bbdd2b, type: 2}
+  items: []
+  gold: 0
 --- !u!114 &2150744075976561101
 MonoBehaviour:
   m_ObjectHideFlags: 0
