@@ -13,6 +13,7 @@ public class PlayerInventory : MonoBehaviour {
 
     [Header("Backpack")]
     [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
+    [SerializeField] private int gold = 0;
 
     // Events
     public Action<ItemObject> onEquip;
@@ -23,6 +24,7 @@ public class PlayerInventory : MonoBehaviour {
     public List<InventoryItem> Items { get { return items; } }
     public InventoryItem ActiveItem { get { return equipedActive; } }
     public InventoryItem PassiveItem { get { return equipedPassive; } }
+    public int Gold { get { return gold; } set { gold = value; } }
 
         #endregion
 
@@ -132,6 +134,12 @@ public class PlayerInventory : MonoBehaviour {
 
         Debug.Log($"Didn't found the item in inventory, creating new one. ({item.name})");
         items.Add(new InventoryItem(item, quantity));
+
+    }
+
+    public bool HasItem(ItemObject item) {
+
+        return items.FindIndex(obj => obj.itemObj == item) != -1;
 
     }
 

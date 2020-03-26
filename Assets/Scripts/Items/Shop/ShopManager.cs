@@ -12,4 +12,12 @@ public class ShopManager : MonoBehaviour
 
     #endregion
     
+    public void OpenShop() {
+
+        if(details == null) return;
+
+        HUDManager.instance.ShowShop(details);
+
+    }
+
 }

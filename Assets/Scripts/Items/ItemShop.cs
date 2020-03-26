@@ -9,8 +9,10 @@ namespace Undefined.Items.Shop {
 
         [Header("Information")]
         public int value;
-        public string sellerDescriptions;
-        public ItemObject sellItem;
+
+        [Multiline]
+        public string[] sellerDescriptions;
+        public ItemObject sellingItem;
 
             #endregion
 

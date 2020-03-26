@@ -8,7 +8,18 @@ namespace Undefined.Items.Shop {
     )]
     public class ShopDetails : ScriptableObject {
 
-        [Header("Information")]
+        [Header("Shop Info")]
+        public string shopName;
+
+        [Header("Shop Messages")]
+
+        [Multiline]
+        public string[] welcomeMessage;
+        [Multiline]
+        public string[] noItemsMessage;
+
+        [Header("Selling items")]
+        
         public ItemShop[] sellingItems;
 
     }

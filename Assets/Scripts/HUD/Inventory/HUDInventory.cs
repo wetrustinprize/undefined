@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using Undefined.Items;
-using Undefined.Sound;
 using System.Collections.Generic;
 
 public class HUDInventory : MonoBehaviour
@@ -71,7 +69,7 @@ public class HUDInventory : MonoBehaviour
 
         }
 
-        // Create all items prefrabs inside the backpack panel
+        // Create all items prefabs inside the backpack panel
         for(int i = 0; i < items.Count; i++) {
 
             GameObject itemObj = Instantiate(itemPrefab, itemsTransform);
