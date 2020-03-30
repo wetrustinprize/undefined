@@ -170,7 +170,7 @@ public class CameraController : MonoBehaviour
         float verticalLookAhead = 0;
         float time = isWalking ? lookAheadStartTimeSpeed : lookAheadEndTimeSpeed;
 
-        float gravity = playerMotor.GetForce("grav", true).Gravity.y;
+        float gravity = playerMotor.GetForce("grav", true).ActualForce.y;
 
         Vector2 newLookAhead = Vector2.zero;
 
