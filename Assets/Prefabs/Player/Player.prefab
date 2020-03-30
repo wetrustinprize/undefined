@@ -5002,7 +5002,7 @@ MonoBehaviour:
   bypassGravity: 0
   maxSpeed: {x: 1, y: 0}
   fric: 1.7
-  gravityScale: 3
+  gravityScale: 7
   collisionLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -5016,8 +5016,6 @@ MonoBehaviour:
   externalForces: []
   constantForces: []
   slowness: []
-  newSlow: 0
-  resetGrav: 0
 --- !u!114 &6774648264558360622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5205,7 +5203,7 @@ MonoBehaviour:
     quantity: 0
     itemObj: {fileID: 0}
   items: []
-  gold: 0
+  gold: 1000
 --- !u!114 &2150744075976561101
 MonoBehaviour:
   m_ObjectHideFlags: 0

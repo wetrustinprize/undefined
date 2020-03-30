@@ -1,34 +1,37 @@
 fileFormatVersion: 2
-guid: 6bf15087ca3b4e64c8fbbb0a2cd14a3d
+guid: e533b91d77601104886d8e1b03d01fea
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5122721175796222358
-    second: arbustro_1
+      213: 8813896158156840163
+    second: Alana-attack_0
   - first:
-      213: 135576505368592614
-    second: arbustro_2
+      213: 7650165315930896582
+    second: Alana-attack_1
   - first:
-      213: -6240333983308654515
-    second: pedra_1
+      213: -5797481881374627273
+    second: Alana-attack_2
   - first:
-      213: 640849971508171845
-    second: folhas_1
+      213: 8951195064909615912
+    second: Alana-attack_3
   - first:
-      213: 7138122551887934499
-    second: tronco_1
+      213: -3125655663277579257
+    second: Alana-attack_4
   - first:
-      213: 2317383643460560524
-    second: florest_1_0
+      213: -1322245382372504401
+    second: Alana-attack_5
   - first:
-      213: 9087604692332265314
-    second: florest_1_1
+      213: 2100729424808892799
+    second: Alana-attack_6
   - first:
-      213: 5845719629141703536
-    second: florest_1_2
+      213: 596490507680712613
+    second: Alana-attack_7
   - first:
-      213: 5432815264405030672
-    second: florest_1_3
+      213: -6406195088236567156
+    second: Alana-attack_8
+  - first:
+      213: 3938158560489862781
+    second: Alana-attack_9
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -90,7 +93,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -102,7 +105,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -113,190 +116,211 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: arbustro_1
+      name: Alana-attack_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 333
-        width: 64
-        height: 43
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 69
+        width: 38
+        height: 69
+      alignment: 9
+      pivot: {x: 0.63431484, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23ea21f495ec0a948b4193865371e9a0
-      internalID: -5122721175796222358
+      spriteID: 3ec5e1a9bdf315a70800000000000000
+      internalID: 8813896158156840163
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: arbustro_2
+      name: Alana-attack_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 333
-        width: 64
-        height: 50
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 38
+        y: 69
+        width: 72
+        height: 69
+      alignment: 9
+      pivot: {x: 0.33364856, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cad199d6560983f47aaf5c8eee6098b1
-      internalID: 135576505368592614
+      spriteID: 6c8331192d8da2a60800000000000000
+      internalID: 7650165315930896582
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: pedra_1
+      name: Alana-attack_2
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 69
+        width: 96
+        height: 69
+      alignment: 9
+      pivot: {x: 0.5352853, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 73ae6ecf1f43b8fa0800000000000000
+      internalID: -5797481881374627273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Alana-attack_3
+      rect:
+        serializedVersion: 2
+        x: 206
+        y: 69
+        width: 64
+        height: 69
+      alignment: 9
+      pivot: {x: 0.8137927, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 823da2f6c78093c70800000000000000
+      internalID: 8951195064909615912
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Alana-attack_4
+      rect:
+        serializedVersion: 2
+        x: 270
+        y: 69
+        width: 58
+        height: 69
+      alignment: 9
+      pivot: {x: 0.80280596, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 704e6241cb07f94d0800000000000000
+      internalID: -3125655663277579257
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Alana-attack_5
       rect:
         serializedVersion: 2
         x: 0
-        y: 299
-        width: 64
-        height: 34
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 0
+        width: 46
+        height: 69
+      alignment: 9
+      pivot: {x: 0.81290686, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f05ea366e3fc351429b1fda29a03aa3d
-      internalID: -6240333983308654515
+      spriteID: fac49cd84d076ade0800000000000000
+      internalID: -1322245382372504401
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: folhas_1
+      name: Alana-attack_6
       rect:
         serializedVersion: 2
-        x: 128
-        y: 270
-        width: 135
-        height: 127
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 47
+        y: 0
+        width: 48
+        height: 69
+      alignment: 9
+      pivot: {x: 0.8146774, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 33dd88320e68f7c4a804c9dc4ac30a75
-      internalID: 640849971508171845
+      spriteID: f79d1fe184a472d10800000000000000
+      internalID: 2100729424808892799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tronco_1
+      name: Alana-attack_7
       rect:
         serializedVersion: 2
-        x: 263
-        y: 205
-        width: 118
-        height: 192
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        x: 95
+        y: 0
+        width: 83
+        height: 69
+      alignment: 9
+      pivot: {x: 0.36726004, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6f7e0c6b26732d64c81b809e68fd8899
-      internalID: 7138122551887934499
+      spriteID: 5a78336d4f8274800800000000000000
+      internalID: 596490507680712613
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_0
+      name: Alana-attack_8
       rect:
         serializedVersion: 2
-        x: 390
-        y: 205
-        width: 122
-        height: 192
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 178
+        y: 0
+        width: 79
+        height: 69
+      alignment: 9
+      pivot: {x: 0.3740352, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8664cc4520092020800000000000000
-      internalID: 2317383643460560524
+      spriteID: c85aecb328f9817a0800000000000000
+      internalID: -6406195088236567156
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_1
+      name: Alana-attack_9
       rect:
         serializedVersion: 2
-        x: 408
-        y: 2
-        width: 94
-        height: 193
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 257
+        y: 0
+        width: 63
+        height: 69
+      alignment: 9
+      pivot: {x: 0.45769054, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26f33a9c158ad1e70800000000000000
-      internalID: 9087604692332265314
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: florest_1_2
-      rect:
-        serializedVersion: 2
-        x: 279
-        y: 5
-        width: 93
-        height: 193
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07bf48fd70b202150800000000000000
-      internalID: 5845719629141703536
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: florest_1_3
-      rect:
-        serializedVersion: 2
-        x: 151
-        y: 155
-        width: 105
-        height: 109
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0178e2dd2bc356b40800000000000000
-      internalID: 5432815264405030672
+      spriteID: d767923785627a630800000000000000
+      internalID: 3938158560489862781
       vertices: []
       indices: 
       edges: []

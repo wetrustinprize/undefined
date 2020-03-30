@@ -1,0 +1,766 @@
+fileFormatVersion: 2
+guid: 0a2fa8bcc16fff14c892e220d2919240
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -3112065015962689007
+    second: zahir_grass_0
+  - first:
+      213: -1995347293923732893
+    second: zahir_grass_1
+  - first:
+      213: -4283806593457334675
+    second: zahir_grass_2
+  - first:
+      213: -8526542005345218733
+    second: zahir_grass_3
+  - first:
+      213: 2481410019463042172
+    second: zahir_grass_4
+  - first:
+      213: -7334220228358726138
+    second: zahir_grass_5
+  - first:
+      213: -7534400537128508598
+    second: zahir_grass_6
+  - first:
+      213: 2471911463300750802
+    second: zahir_grass_7
+  - first:
+      213: -1262643091546145172
+    second: zahir_grass_8
+  - first:
+      213: -7510612130324782360
+    second: zahir_grass_9
+  - first:
+      213: 4639022430756777787
+    second: zahir_grass_10
+  - first:
+      213: 153125141221813803
+    second: zahir_grass_11
+  - first:
+      213: 994262924760189150
+    second: zahir_grass_12
+  - first:
+      213: 7465355386831932907
+    second: zahir_grass_13
+  - first:
+      213: 6016396915385959421
+    second: zahir_grass_14
+  - first:
+      213: 1270815081281973969
+    second: zahir_grass_15
+  - first:
+      213: -538223614871501662
+    second: zahir_grass_16
+  - first:
+      213: -6496257516209787452
+    second: zahir_grass_17
+  - first:
+      213: -6890890706066468794
+    second: zahir_grass_18
+  - first:
+      213: 1065945610597871299
+    second: zahir_grass_19
+  - first:
+      213: 4096251171851511119
+    second: zahir_grass_20
+  - first:
+      213: -5175055506139626776
+    second: zahir_grass_21
+  - first:
+      213: 8571662204595613867
+    second: zahir_grass_22
+  - first:
+      213: 8052372739140535848
+    second: zahir_grass_23
+  - first:
+      213: 9061277385623600531
+    second: zahir_grass_24
+  - first:
+      213: 2220127298527326004
+    second: zahir_grass_25
+  - first:
+      213: 7595283551620210794
+    second: zahir_grass_26
+  - first:
+      213: -6681288897033272677
+    second: zahir_grass_27
+  - first:
+      213: 1475309823049501134
+    second: zahir_grass_28
+  - first:
+      213: 8332314179827227378
+    second: zahir_grass_29
+  - first:
+      213: 7675998729924373531
+    second: zahir_grass_30
+  - first:
+      213: -2500158469544729708
+    second: zahir_grass_31
+  - first:
+      213: -3498429253211690202
+    second: zahir_grass_32
+  - first:
+      213: -4079374145061055100
+    second: zahir_grass_33
+  - first:
+      213: 6249714758428451096
+    second: zahir_grass_34
+  - first:
+      213: 5610118428584781172
+    second: zahir_grass_35
+  - first:
+      213: -8109064007270333433
+    second: zahir_grass_36
+  - first:
+      213: -9220742786951020032
+    second: zahir_grass_37
+  - first:
+      213: -6455378602444005106
+    second: zahir_grass_38
+  - first:
+      213: -8765590599148782005
+    second: zahir_grass_39
+  - first:
+      213: -281179882652238748
+    second: zahir_grass_40
+  - first:
+      213: 6606839074757026649
+    second: zahir_grass_41
+  - first:
+      213: 8927744455836101333
+    second: zahir_grass_42
+  - first:
+      213: 9185092262036563276
+    second: zahir_grass_43
+  - first:
+      213: -3630353931141974649
+    second: zahir_grass_44
+  - first:
+      213: 6407393512771972805
+    second: zahir_grass_45
+  - first:
+      213: -3046735472125364433
+    second: zahir_grass_46
+  - first:
+      213: -2609357398210047162
+    second: zahir_grass_47
+  - first:
+      213: 4096138508234081773
+    second: zahir_grass_48
+  - first:
+      213: -1382036023568747203
+    second: zahir_grass_49
+  - first:
+      213: -351407157610737831
+    second: zahir_grass_50
+  - first:
+      213: 1863590807784310501
+    second: zahir_grass_51
+  - first:
+      213: 1347354561137981047
+    second: zahir_grass_52
+  - first:
+      213: 4502874616554889020
+    second: zahir_grass_53
+  - first:
+      213: -7288777107221796542
+    second: zahir_grass_54
+  - first:
+      213: -616332945756399793
+    second: zahir_grass_55
+  - first:
+      213: -4649309884303735182
+    second: zahir_grass_56
+  - first:
+      213: 5596619916470684276
+    second: zahir_grass_57
+  - first:
+      213: -8964568329790807636
+    second: zahir_grass_58
+  - first:
+      213: 3498910496314970359
+    second: zahir_grass_59
+  - first:
+      213: -4591249251326502740
+    second: zahir_grass_60
+  - first:
+      213: -909123800519634289
+    second: zahir_grass_61
+  - first:
+      213: -2912983783534235122
+    second: zahir_grass_62
+  - first:
+      213: 750384865159042206
+    second: zahir_grass_63
+  - first:
+      213: -5690135484346593204
+    second: zahir_grass_64
+  - first:
+      213: -2935800276910314089
+    second: zahir_grass_65
+  - first:
+      213: 2675175166691964890
+    second: zahir_grass_66
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 10.5
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: zahir_grass_0
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 272
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 112af9d3b59bfc4d0800000000000000
+      internalID: -3112065015962689007
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_1
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 272
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 362932e353a1f44e0800000000000000
+      internalID: -1995347293923732893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_2
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 272
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d66df7e899cdc84c0800000000000000
+      internalID: -4283806593457334675
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_3
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 272
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35f83f0c833aba980800000000000000
+      internalID: -8526542005345218733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_4
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 224
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c749030044dbf6220800000000000000
+      internalID: 2481410019463042172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_5
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 224
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60e91388f8d973a90800000000000000
+      internalID: -7334220228358726138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_6
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 224
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4361f461ae607790800000000000000
+      internalID: -7534400537128508598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_7
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 224
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ddd14e016efd4220800000000000000
+      internalID: 2471911463300750802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_8
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 176
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6e7a4a4cc03a7ee0800000000000000
+      internalID: -1262643091546145172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_9
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 176
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e260467f02f4c790800000000000000
+      internalID: -7510612130324782360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_10
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 176
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3fa35a725e116040800000000000000
+      internalID: 4639022430756777787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_11
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 176
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2e25b03182002200800000000000000
+      internalID: 153125141221813803
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_12
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed80cabbcd45ccd00800000000000000
+      internalID: 994262924760189150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_13
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bed8a22db254a9760800000000000000
+      internalID: 7465355386831932907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_14
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df306594e198e7350800000000000000
+      internalID: 6016396915385959421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_15
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1de65075597d2a110800000000000000
+      internalID: 1270815081281973969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_16
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a48bd15978d788f0800000000000000
+      internalID: -538223614871501662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_17
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4cdaad82538a8d5a0800000000000000
+      internalID: -6496257516209787452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_18
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6401ede8963ae50a0800000000000000
+      internalID: -6890890706066468794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_19
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cea29d92efface00800000000000000
+      internalID: 1065945610597871299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_20
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f45acf8ecbec8d830800000000000000
+      internalID: 4096251171851511119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: zahir_grass_21
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e24e9f8f628e28b0800000000000000
+      internalID: -5175055506139626776
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
