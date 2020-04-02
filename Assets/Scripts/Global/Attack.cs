@@ -14,16 +14,26 @@ public class Attack : MonoBehaviour
     [SerializeField] private LayerMask aliveLayes;
 
     [Header("Attack Settings")]
-    [SerializeField] private int Damage;
-    [SerializeField] private float coolDown;
+    public int Damage;
+    public float coolDown;
 
     [Header("Force Settings")]
-    [SerializeField] private float pushForce;
-    [SerializeField] private float pushTime;
+    public float pushForce;
+    public float pushTime;
 
     [Header("Slow Settings")]
-    [SerializeField] private Slow attackerSlow;
-    [SerializeField] private float attackerSlowTimer;
+    public Slow attackerSlow;
+    public float attackerSlowTimer;
+
+    // Default values
+    private int defaultDamage;
+    private float defaultCooldown;
+
+    private float defaultForce;
+    private float defaultForceTimer;
+
+    private Slow defaultAttackerSlow;
+    private float defaultAttackerSlowTimer;
 
     // Events
     public event Action onAttack;
@@ -41,10 +51,20 @@ public class Attack : MonoBehaviour
 
 
     void Start() {
-        attackerSlow.Name = "attacker_slow";
+        // Default values
+        defaultDamage = Damage;
+        defaultCooldown = coolDown;
+
+        defaultAttackerSlow = attackerSlow;
+        defaultAttackerSlowTimer = attackerSlowTimer;
+
+        defaultForce = pushForce;
+        defaultForceTimer = pushTime;
+
     }
 
     void Update() {
+        attackerSlow.Name = "attacker_slow";
 
         if(actCoolDown != 0)
             actCoolDown = Mathf.Clamp(actCoolDown - Time.deltaTime, 0, actCoolDown);
@@ -56,6 +76,19 @@ public class Attack : MonoBehaviour
             if(actAttackSlowTimer <= 0 && motor.HasSlow("attacker_slow"))
                 motor.RemoveSlow("attacker_slow");
         }
+
+    }
+
+    public void SetDefaultValues() {
+
+        Damage = defaultDamage;
+        coolDown = defaultCooldown;
+
+        attackerSlow = defaultAttackerSlow;
+        attackerSlowTimer = defaultAttackerSlowTimer;
+
+        pushForce = defaultForce;
+        pushTime = defaultForceTimer;
 
     }
 

@@ -12,6 +12,7 @@ public class HUDInventory : MonoBehaviour
     [Header("Equiped Items")]
     [SerializeField] private HUDEquipedInfo activeItemInfo;
     [SerializeField] private HUDEquipedInfo passiveItemInfo;
+    [SerializeField] private HUDEquipedInfo weaponItemInfo;
 
     [Header("Backpack")]
     [SerializeField] private Transform itemsTransform;
@@ -27,6 +28,7 @@ public class HUDInventory : MonoBehaviour
     private List<InventoryItem> items { get { return inventory.Items; } }
     private InventoryItem activeItem { get { return inventory.ActiveItem; }}
     private InventoryItem passiveItem { get { return inventory.PassiveItem; }}
+    private InventoryItem weaponItem { get { return inventory.WeaponItem; } }
 
         #endregion
 
@@ -47,6 +49,11 @@ public class HUDInventory : MonoBehaviour
         selectedItemIndex = -1;
         selectedEquipItem = false;
 
+        // Configure the buttons
+        activeItemInfo.SelectButton.onClick.AddListener(() => {ShowSelectedEquipedItem(ItemType.Active);});
+        passiveItemInfo.SelectButton.onClick.AddListener(() => {ShowSelectedEquipedItem(ItemType.Passive);});
+        weaponItemInfo.SelectButton.onClick.AddListener(() => {ShowSelectedEquipedItem(ItemType.Weapon);});
+
         // Refresh the backpack content
         RefreshBackpack();
 
@@ -61,6 +68,7 @@ public class HUDInventory : MonoBehaviour
         // Shows the equiped items
         activeItemInfo.SetNewEquip(activeItem.itemObj, activeItem.quantity);
         passiveItemInfo.SetNewEquip(passiveItem.itemObj, passiveItem.quantity);
+        weaponItemInfo.SetNewEquip(weaponItem.itemObj, weaponItem.quantity);
 
         // Deletes all item prefabs inside the backpack panel
         for(int i = 0; i < itemsTransform.childCount; i++) {
@@ -93,19 +101,26 @@ public class HUDInventory : MonoBehaviour
 
     }
 
-    public void ShowSelectedEquipedItem(bool passive) {
+    public void ShowSelectedEquipedItem(ItemType type) {
 
         ItemObject item = null;
 
-        if(!passive) {
-            item = activeItem.itemObj;
-            selectedItemIndex = -2;
-        }
-        else
-        {
-            item = passiveItem.itemObj;
-            selectedItemIndex = -3;
-        }
+        switch(type) {
+            case ItemType.Weapon:
+                item = weaponItem.itemObj;
+                selectedItemIndex = -4;
+                break;
+
+            case ItemType.Passive:
+                item = passiveItem.itemObj;
+                selectedItemIndex = -3;
+                break;
+            
+            case ItemType.Active:
+                item = activeItem.itemObj;
+                selectedItemIndex = -2;
+                break;
+        }   
 
         if(item == null) return;
 
@@ -126,6 +141,10 @@ public class HUDInventory : MonoBehaviour
             
             case -3:
                 inventory.UnequipItem(ItemType.Passive);
+                break;
+            
+            case -4:
+                inventory.UnequipItem(ItemType.Weapon);
                 break;
 
             default:

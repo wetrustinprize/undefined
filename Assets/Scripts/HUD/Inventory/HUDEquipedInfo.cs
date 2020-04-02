@@ -13,6 +13,9 @@ public class HUDEquipedInfo : MonoBehaviour {
     [Header("Button")]
     [SerializeField] private Button selectButton;
 
+    // public access
+    public Button SelectButton { get { return selectButton; } }
+
         #endregion
 
     void Start() {

@@ -10,6 +10,7 @@ public class PlayerInventory : MonoBehaviour {
     [Header("Equiped Items")]        
     [SerializeField] private InventoryItem equipedActive = new InventoryItem();
     [SerializeField] private InventoryItem equipedPassive = new InventoryItem();
+    [SerializeField] private InventoryItem equipedWeapon = new InventoryItem();
 
     [Header("Backpack")]
     [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
@@ -24,6 +25,7 @@ public class PlayerInventory : MonoBehaviour {
     public List<InventoryItem> Items { get { return items; } }
     public InventoryItem ActiveItem { get { return equipedActive; } }
     public InventoryItem PassiveItem { get { return equipedPassive; } }
+    public InventoryItem WeaponItem { get { return equipedWeapon; } }
     public int Gold { get { return gold; } set { gold = value; } }
 
         #endregion
@@ -63,6 +65,13 @@ public class PlayerInventory : MonoBehaviour {
                     equipedPassive = new InventoryItem();
                 }
                 break;
+
+            case ItemType.Weapon:
+                if(equipedWeapon.itemObj != null) {
+                    item = equipedWeapon;
+                    equipedWeapon = new InventoryItem();
+                }
+                break;
         }
 
         if(item == null) return;
@@ -91,6 +100,11 @@ public class PlayerInventory : MonoBehaviour {
             case ItemType.Passive:
                 if(equipedPassive.itemObj != null) { oldItem = equipedPassive; }
                 equipedPassive = item;
+                break;
+
+            case ItemType.Weapon:
+                if(equipedWeapon.itemObj != null) { oldItem = equipedWeapon; }
+                equipedWeapon = item;
                 break;
         }
 
