@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
     private Vector2 lookAheadValue;
     private float timeMovingCamera;
 
-    public static CameraController cam;
+    public static CameraController mainCam;
 
         #region Camera Size
 
@@ -82,8 +82,8 @@ public class CameraController : MonoBehaviour
 
     void Start() {
 
-        if(cam != null) Destroy(this.gameObject);
-        cam = this;
+        if(mainCam != null) Destroy(this.gameObject);
+        mainCam = this;
 
         // Initial size
         currentSize = size;
@@ -170,7 +170,7 @@ public class CameraController : MonoBehaviour
         float verticalLookAhead = 0;
         float time = isWalking ? lookAheadStartTimeSpeed : lookAheadEndTimeSpeed;
 
-        float gravity = playerMotor.GetForce("grav", true).ActualForce.y;
+        float gravity = playerMotor.finalSpeed.y;
 
         Vector2 newLookAhead = Vector2.zero;
 
