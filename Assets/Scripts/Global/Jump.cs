@@ -78,7 +78,7 @@ public class Jump : MonoBehaviour
         dir += jumpForce;
         groundJumped = true;
 
-        m.AddForce(new Force("jump", dir, 0, CollisionStopBehaviour.HitOposite), false, true, true);
+        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.HitOposite), false, true, true);
         m.RemoveSlow("wallSlow");
         OnJump?.Invoke();
 
@@ -100,7 +100,7 @@ public class Jump : MonoBehaviour
         wallJumps++;
 
         m.ResetGravity();
-        m.AddForce(new Force("jump", dir, 0, CollisionStopBehaviour.HitOposite), false, true, true);
+        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.HitOposite), false, true, true);
         m.RemoveSlow("wallSlow");
         OnWallJump?.Invoke();
 

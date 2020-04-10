@@ -21,7 +21,8 @@ public class JumpPad : MonoBehaviour
                                     duration,
                                     CollisionStopBehaviour.HitAnything);
             
-            motor.AddForce(force, false, true, true);
+            motor.RemoveForce("jump");
+            motor.AddForce(force, false, true, true, true);
 
         }
 

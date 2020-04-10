@@ -134,6 +134,10 @@ public class Motor : MonoBehaviour
         Force gravityForce = new Force("grav", Vector2.zero, 0, CollisionStopBehaviour.HitOposite);
         gravityForce.applied = true;
 
+        rb.gravityScale = 0;
+        rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+
         AddForce(inputForce, false);
         AddForce(gravityForce, true);
     }
@@ -178,7 +182,7 @@ public class Motor : MonoBehaviour
     ///<param name="constant">Is it constant</param>
     ///<param name="resetGrav">Reset gravity?</param>
     ///<param name="replaceForce">Replace force?</param>
-    public void AddForce(Force force, bool constant = false, bool resetGvt = false, bool replaceForce = false) {
+    public void AddForce(Force force, bool constant = false, bool resetGvt = false, bool replaceForce = false, bool resetTimer = false) {
         
         ref List<Force> list = ref externalForces;
         if(constant)
@@ -187,27 +191,32 @@ public class Motor : MonoBehaviour
         if(HasForce(force.Name, constant))
         {
             int index = list.FindIndex(f2 => f2.Name == force.Name);
+
+            list[index].applied = false;
+
             if(replaceForce) {
-                list[index] = force;
+                list[index].ActualForce = force.ActualForce;
+                list[index].ForceApplied = force.ForceApplied;
+                list[index].TimeToStop = force.TimeToStop;
             }
             else
             {
                 list[index].ActualForce += force.ForceApplied;
                 list[index].ForceApplied += force.ForceApplied;
-                if(force.TimeToStop != 0)
-                {
-                    list[index].TimeToStop = force.TimeToStop;
-                    list[index].Timer = 0;
-                }
             }
-            if(resetGvt)
+            if(resetTimer)
             {
-                resetGrav = true;
+                list[index].Timer = 0f;
             }
         }
         else
         {
             list.Add(force);
+        }
+
+        if(resetGvt)
+        {
+            resetGrav = true;
         }
     }
 
@@ -301,7 +310,7 @@ public class Motor : MonoBehaviour
 
         #endregion
 
-    // Called before drawing the screen, all the physics is called here
+    // All the physics is called here
     void FixedUpdate() {
 
         //Check if everything is alright
@@ -309,7 +318,9 @@ public class Motor : MonoBehaviour
 
         //Reset grav
         if(resetGrav) {
+            Debug.Log("Gravity reset;");
             GetForce("grav", true).ActualForce = Vector2.zero;
+            Debug.Log($"Gravity: {GetForce("grav", true).ActualForce}");
             resetGrav = false;
         }
 
@@ -527,12 +538,8 @@ public class Motor : MonoBehaviour
                 break;
             
             case CollisionStopBehaviour.HitAnything:
-                if(force.ActualForce.y != 0 && force.applied && (onGround || onCelling)) {
-                    force.ActualForce.y = 0;
-                }
-
-                if(force.ActualForce.x != 0 && force.applied && (onRightWall || onLeftWall)) {
-                    force.ActualForce.x = 0;
+                if(force.ActualForce != Vector2.zero && force.applied && ((onGround || onCelling) || (onRightWall || onLeftWall))) {
+                    force.ActualForce = Vector2.zero;
                 }
                 break;
 
@@ -689,7 +696,7 @@ public class Motor : MonoBehaviour
             if(f.Name == "grav")
             {
                 if(!onGround) {
-                    f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * gravityScale * gravityMultiplier;
+                    f.ActualForce += (Vector2)Physics.gravity * Time.fixedDeltaTime * gravityScale * gravityMultiplier * totalSlowness[SlowType.Gravity];
                 }
             }
                 #endregion
@@ -706,8 +713,6 @@ public class Motor : MonoBehaviour
 
             if(f.Name != "grav")
                 finalForce *= totalSlowness[SlowType.Constant];
-            else
-                finalForce *= totalSlowness[SlowType.Gravity];
 
             
             constantExternalSpeed += finalForce;
