@@ -8,6 +8,7 @@ public class HUDItemInfo : MonoBehaviour
 
     [Header("UI")]
     [SerializeField] private Image itemImage;
+    [SerializeField] private Text itemQuantity;
 
     [Header("Info")]
     public int inventoryIndex;
@@ -31,13 +32,14 @@ public class HUDItemInfo : MonoBehaviour
 
     }
 
-    public void Setup(ItemObject item, int index, HUDInventory invetoryManager) {
+    public void Setup(InventoryItem item, int index, HUDInventory invetoryManager) {
 
         inventoryIndex = index;
-        myItem = item;
+        myItem = item.itemObj;
         invManager = invetoryManager;
 
         itemImage.sprite = myItem.icon;
+        itemQuantity.text = item.quantity == 0 ? "" : $"{item.quantity}";
 
     }
 

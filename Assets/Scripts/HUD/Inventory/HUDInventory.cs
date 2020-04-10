@@ -81,7 +81,7 @@ public class HUDInventory : MonoBehaviour
         for(int i = 0; i < items.Count; i++) {
 
             GameObject itemObj = Instantiate(itemPrefab, itemsTransform);
-            itemObj.GetComponent<HUDItemInfo>().Setup(items[i].itemObj, i, this);
+            itemObj.GetComponent<HUDItemInfo>().Setup(items[i], i, this);
 
         }
 
