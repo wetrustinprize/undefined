@@ -80,7 +80,7 @@ public class PlayerInventory : MonoBehaviour {
 
         item.itemObj.OnUnequip(this.gameObject);
 
-        AddItem(item.itemObj);
+        AddItem(item.itemObj, item.quantity);
 
         onUnequip?.Invoke(item.itemObj);
 
