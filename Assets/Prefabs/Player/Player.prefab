@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6774648263188878032}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.06, z: 0}
+  m_LocalPosition: {x: 0, y: 2.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6774648264543929098}
@@ -5058,8 +5058,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8344ef9f65fabf4daa9da652ffb63bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: {x: 0, y: 25}
-  wallJumpForce: {x: 2, y: 30}
+  jumpForce: {x: 0, y: 16}
+  wallJumpForce: {x: 2, y: 25}
   maxWallJumps: 1
   allowWallJumps: 1
   allowGroundJumps: 1
@@ -5136,7 +5136,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.42}
+  m_Offset: {x: 0, y: 1.635}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5202,7 +5202,12 @@ MonoBehaviour:
   equipedPassive:
     quantity: 0
     itemObj: {fileID: 0}
-  items: []
+  equipedWeapon:
+    quantity: 0
+    itemObj: {fileID: 0}
+  items:
+  - quantity: 12
+    itemObj: {fileID: 11400000, guid: 6d26c55939b0f9d41b63db56c0bbdd2b, type: 2}
   gold: 1000
 --- !u!114 &2150744075976561101
 MonoBehaviour:
@@ -5216,8 +5221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3fb4494eaa9294ba81980a5ac0c2af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialSpeed: {x: 18, y: 0}
-  finalSpeed: {x: 22, y: 0}
+  initialSpeed: {x: 22, y: 0}
+  finalSpeed: {x: 27, y: 0}
   initialHealth: 15
   finalHealth: 80
   initialArmor: 0
@@ -5356,7 +5361,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381750135871718034}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.83, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 845179607734680704}

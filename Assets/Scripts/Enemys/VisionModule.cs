@@ -1,38 +1,30 @@
 using System;
 using UnityEngine;
 
-/*
-
-    Author: Prize
-    Github: @prize34
-
-*/
-
-[RequireComponent(typeof(BaseEnemy))]
 public class VisionModule : MonoBehaviour
 {
     
         #region Variables
 
     [Header("Vision:")]
+    [SerializeField] private Vector2 facingDir = new Vector2(1,0);
     [SerializeField] private LayerMask raycastLayers;        // Layers to raycast
+    
     [Range(1f, 180f)]
     [SerializeField] private double maxAngle = 45f;          // Maximun angle in degrees
 
-    // Private variables
-    private BaseEnemy baseEnemy;                        // This gameobject baseEnemy
-
-    // Events
-    public Action OnViewPlayer;                 // Event called once this gameobject have vision of the player
-    public Action OnLostViewPlayer;             // Event called once this gameobject lost vision of the player
-    private bool hasViewPlayer = false;         // Checks if has already seen the player
+    public Vector2 FacingDir { get { return facingDir; } }
 
         #endregion
 
-    // Called once
-    void Start() {
 
-        baseEnemy = GetComponent<BaseEnemy>();                              // Gets the baseEnemy
+    public void SetFacingDir(Vector2 newFacingDir) {
+
+        newFacingDir = newFacingDir.normalized;
+
+        if(newFacingDir == Vector2.zero) return;
+
+        facingDir = newFacingDir;
 
     }
 
@@ -42,7 +34,7 @@ public class VisionModule : MonoBehaviour
         if(gameObjectToFind == null) return false;
 
         Vector2 dir = (gameObjectToFind.transform.position - transform.position).normalized;                  // Gets the direction
-        Vector2 fDir = baseEnemy._facingDir;                                                                  // Gets the facing dir
+        Vector2 fDir = facingDir;                                                                  // Gets the facing dir
 
         dir = gameObjectToFind.transform.InverseTransformDirection(dir);                                      // Fixes the direction
         
@@ -55,12 +47,29 @@ public class VisionModule : MonoBehaviour
 
     }
 
+    public bool RaycastVision(bool checkVision, GameObject gameObjectToFind = null, float maxDist = Mathf.Infinity) {
+        if(gameObjectToFind == null) gameObjectToFind = GameObject.FindWithTag("Player");
+
+        if(gameObjectToFind == null) return false;
+        if(!CheckIsInVision(gameObjectToFind) && checkVision) return false;
+
+        Vector2 dir = (gameObjectToFind.transform.position - transform.position).normalized;                          // Calculates the direction
+
+        RaycastHit2D[] hits2D = Physics2D.RaycastAll(transform.position, dir, maxDist, raycastLayers);     //  Raycast
+
+        foreach(RaycastHit2D hit in hits2D) {
+            if(hit.collider.gameObject == this.gameObject) continue;
+            return hit.collider.gameObject == gameObjectToFind;
+        }
+
+        return false;
+
+    }
+
     // Draws the vision gizmos
     void OnDrawGizmos() {
 
-        if(baseEnemy == null) return;
-
-        Vector2 fDir = baseEnemy._facingDir;                                                                // Gets the facing dir
+        Vector2 fDir = facingDir;                                                        // Gets the facing dir
 
         float angleDraw = ((float)maxAngle / 2) * Mathf.Deg2Rad;                                            // Calculates the angle
         float extraAngleDraw = Mathf.Atan2(fDir.y, fDir.x);                                                 // Calculates the facing dir angle

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Motor))]
-[RequireComponent(typeof(BaseEnemy))]
 public class CollisionCheckModule : MonoBehaviour
 {
     
@@ -9,7 +8,6 @@ public class CollisionCheckModule : MonoBehaviour
 
     private Motor myMotor;
     private Collider2D myCollider;
-    private BaseEnemy myBaseEnemy;
 
         #endregion
 
@@ -17,15 +15,14 @@ public class CollisionCheckModule : MonoBehaviour
 
         myMotor = GetComponent<Motor>();
         myCollider = GetComponent<Collider2D>();
-        myBaseEnemy = GetComponent<BaseEnemy>();
 
 
     }
 
-    public bool WillFall() {
+    public bool WillFall(float side) {
 
         Vector2 pos = myMotor.GroundColliderPosition + (Vector2)transform.position;
-        pos.x += myMotor.GroundCellingColliderSize.x * myBaseEnemy._facingDir.x;
+        pos.x += myMotor.GroundCellingColliderSize.x * side;
 
         foreach(Collider2D c in Physics2D.OverlapBoxAll(pos, myMotor.GroundCellingColliderSize, 0, myMotor.CollisionLayer))
         {

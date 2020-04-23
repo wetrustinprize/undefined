@@ -12,7 +12,7 @@ public class JumpPad : MonoBehaviour
         #endregion
 
 
-    void OnTriggerEnter2D(Collider2D col) {
+    void ApplyForce(Collider2D col) {
 
         if(col.gameObject.TryGetComponent<Motor>(out Motor motor)) {
 
@@ -25,6 +25,12 @@ public class JumpPad : MonoBehaviour
             motor.AddForce(force, false, true, true, true);
 
         }
+
+    }
+
+    void OnTriggerStay2D(Collider2D col) {
+
+        ApplyForce(col);
 
     }
 

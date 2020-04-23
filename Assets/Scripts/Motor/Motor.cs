@@ -18,7 +18,7 @@ public class Motor : MonoBehaviour
     [Header("Velocity")]
     [SerializeField] private Vector2 maxSpeed = Vector2.one;
     [SerializeField] private float fric = 0.65f;
-    [SerializeField] private float gravityScale = 3f;
+    [SerializeField] private float gravityScale = 7f;
 
     [Space]
 
@@ -34,10 +34,12 @@ public class Motor : MonoBehaviour
     [SerializeField] private Vector2 inputAxis; // Input received by the player
     
 
-    //Script side
+        #region References
 
     private Rigidbody2D rb {get { return GetComponent<Rigidbody2D>(); } }
     private BoxCollider2D col {get {return GetComponent<BoxCollider2D>(); } }
+
+        #endregion
 
         #region Public Acess Variables
 
@@ -142,7 +144,54 @@ public class Motor : MonoBehaviour
         AddForce(gravityForce, true);
     }
 
-        #region Public Functions
+    
+    // All the physics is called here
+    void FixedUpdate() {
+
+        //Check if everything is alright
+        CheckColliderChange();
+
+        //Reset grav
+        if(resetGrav) {
+            Debug.Log("Gravity reset;");
+            GetForce("grav", true).ActualForce = Vector2.zero;
+            Debug.Log($"Gravity: {GetForce("grav", true).ActualForce}");
+            resetGrav = false;
+        }
+
+        //Check collisions
+        CheckIsGroundedOrCelling();
+        CheckNearWall();
+
+        //Do all the calculation
+        CalculateSlowness();
+        CalculateExternalSpeed();
+        CalculateConstantSpeed();
+
+        // Apply rigidbody velocity
+        rb.velocity = finalSpeed;
+        
+    }
+
+        #region Collision Methods
+
+    // void OnCollisionEnter2D(Collision2D collision) {
+
+    //     CheckIsGroundedOrCelling();
+    //     CheckNearWall();
+
+    // }
+
+    // void OnCollisionExit2D(Collision2D collision) {
+
+    //     CheckIsGroundedOrCelling();
+    //     CheckNearWall();
+
+    // }
+
+        #endregion
+
+        #region Public Methods
 
     // Called to apply a input
     ///<summary>Called to move the motor using the fric and maxspeed values</summary>
@@ -309,32 +358,6 @@ public class Motor : MonoBehaviour
         #endregion
 
         #endregion
-
-    // All the physics is called here
-    void FixedUpdate() {
-
-        //Check if everything is alright
-        CheckColliderChange();
-
-        //Reset grav
-        if(resetGrav) {
-            Debug.Log("Gravity reset;");
-            GetForce("grav", true).ActualForce = Vector2.zero;
-            Debug.Log($"Gravity: {GetForce("grav", true).ActualForce}");
-            resetGrav = false;
-        }
-
-        //Do all the calculation
-        CheckIsGroundedOrCelling();
-        CheckNearWall();
-        CalculateSlowness();
-        CalculateExternalSpeed();
-        CalculateConstantSpeed();
-
-        // Apply rigidbody velocity
-        rb.velocity = finalSpeed;
-        
-    }
 
         #region Checkers and Calculators
 
