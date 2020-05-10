@@ -19,7 +19,7 @@ public class JumpPad : MonoBehaviour
             Force force = new Force($"jumppad_{this.gameObject.name}",
                                     forceToApply,
                                     duration,
-                                    CollisionStopBehaviour.HitAnything);
+                                    CollisionStopBehaviour.Ground | CollisionStopBehaviour.Celling);
             
             motor.RemoveForce("jump");
             motor.AddForce(force, false, true, true, true);

@@ -39,7 +39,7 @@ public class Dash : MonoBehaviour
         
         if(dashTimer > 0 && applyCooldown) return;
 
-        Force f = new Force("dash", dashForce * m.LastFacingDir, dashDuration, CollisionStopBehaviour.HitOposite, true);
+        Force f = new Force("dash", dashForce * m.LastFacingDir, dashDuration, CollisionStopBehaviour.AnyCollision, true);
         m.AddForce(f, false, true, true);
         m.RemoveForce("jump");
         dashTimer = dashCooldown;

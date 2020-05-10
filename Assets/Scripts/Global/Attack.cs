@@ -139,7 +139,7 @@ public class Attack : MonoBehaviour
             
             Vector2 direction = ((Vector2)transform.position - (Vector2)aliveTrans.position).normalized * -1;
             direction += new Vector2(0, 0.5f);
-            Force f = new Force("attack", direction * pushForce, pushTime, CollisionStopBehaviour.HitOposite);
+            Force f = new Force("attack", direction * pushForce, pushTime, CollisionStopBehaviour.AnyCollision);
 
             m.AddForce(f, false, true, true);
         }
