@@ -19,6 +19,7 @@ public class Motor : MonoBehaviour
     [SerializeField] private Vector2 maxSpeed = Vector2.one;
     [SerializeField] private float fric = 0.65f;
     [SerializeField] private float gravityScale = 7f;
+    [SerializeField] private CollisionStopBehaviour gravityStopBehaviour = CollisionStopBehaviour.OpositeY;
 
     [Space]
 
@@ -130,10 +131,10 @@ public class Motor : MonoBehaviour
         gravityScale = !bypassGravity ? gravityScale : 0;
         gravityMultiplier = 1.0f;
 
-        Force inputForce = new Force("input", Vector2.zero, 0, CollisionStopBehaviour.HitOposite);
+        Force inputForce = new Force("input", Vector2.zero, 0, CollisionStopBehaviour.OpositeX);
         inputForce.applied = true;
 
-        Force gravityForce = new Force("grav", Vector2.zero, 0, CollisionStopBehaviour.HitOposite);
+        Force gravityForce = new Force("grav", Vector2.zero, 0, gravityStopBehaviour);
         gravityForce.applied = true;
 
         rb.gravityScale = 0;
@@ -535,7 +536,14 @@ public class Motor : MonoBehaviour
         if(force.TimeToStop != 0 && force.Timer <= force.TimeToStop)
         {
             float p = 1 - (force.Timer / force.TimeToStop);
-            force.ActualForce = force.ForceApplied * p * 2/force.TimeToStop;
+
+            // Checks if has reached 0 velocity in any of the axis, if so, don't calculate velocity with time
+            Vector2 forceToCalculate = new Vector2(
+                force.ActualForce.x == 0 ? 0 : force.ForceApplied.x,
+                force.ActualForce.y == 0 ? 0 : force.ForceApplied.y
+            );
+
+            force.ActualForce = forceToCalculate * p * 2/force.TimeToStop;
             force.Timer += Time.fixedDeltaTime;
         }
 
@@ -544,29 +552,42 @@ public class Motor : MonoBehaviour
             resetGrav = true;
         }
 
-        switch(force.stopBehaviour) {
 
-            case CollisionStopBehaviour.NeverStop:
-                break;
-            
-            case CollisionStopBehaviour.HitOposite:
-                // Check is has collided oposite
-                if((force.ActualForce.y < 0 && force.applied && onGround) || (force.ActualForce.y > 0 && force.applied && onCelling)) {
-                    force.ActualForce.y = 0;
-                }
+        if(!force.applied) {force.applied = true; return;}
 
-                if((force.ActualForce.x > 0 && onRightWall) || (force.ActualForce.x < 0 && onLeftWall)) {
-                    force.ActualForce.x = 0;
-                }
-                break;
-            
-            case CollisionStopBehaviour.HitAnything:
-                if(force.ActualForce != Vector2.zero && force.applied && ((onGround || onCelling) || (onRightWall || onLeftWall))) {
-                    force.ActualForce = Vector2.zero;
-                }
-                break;
-
+        // Checks if should stop on oposite X
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.OpositeX))
+        {
+            if(force.ActualForce.x > 0 && onRightWall)
+                force.ActualForce.x = 0;
+            else if(force.ActualForce.x < 0 && onLeftWall)
+                force.ActualForce.x = 0;
         }
+
+        // Checks if should stop on oposite Y
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.OpositeY))
+        {
+            if(force.ActualForce.y > 0 && onCelling)
+                force.ActualForce.y = 0;
+            else if(force.ActualForce.y < 0 && onGround)
+                force.ActualForce.y = 0;
+        }
+
+        // Checks if should stop on celling
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.Celling) && onCelling)
+            force.ActualForce.y = 0;
+
+        // Check if should stop on ground
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.Ground) && onGround)
+            force.ActualForce.y = 0;
+
+        // Check if should stop on right wall
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.RightWall) && onRightWall)
+            force.ActualForce.x = 0;
+
+        // Check if should stop on left wall
+        if(force.stopBehaviour.HasFlag(CollisionStopBehaviour.LeftWall) && onLeftWall)
+            force.ActualForce.x = 0;
 
     }
 
@@ -691,8 +712,7 @@ public class Motor : MonoBehaviour
                 finalForce *= totalSlowness[SlowType.External];
             else
                 finalForce *= totalSlowness[SlowType.Input];
-            
-            if(!f.applied) f.applied = true;
+    
             externalSpeed += finalForce;
 
 
