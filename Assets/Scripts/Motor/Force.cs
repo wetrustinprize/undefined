@@ -4,12 +4,23 @@ using System.Collections.Generic;
 namespace Undefined.Force
 {
 
+    [System.Flags]
     public enum CollisionStopBehaviour {
 
-        NeverStop,
-        HitAnything,
-        HitOposite
+        AnyCollision = 15,
+        AnyWall = 3,
 
+        NotGround = 11,
+        NotCelling = 7,
+
+        DontStop = 0,
+        RightWall = 1,
+        LeftWall = 2,
+        Ground = 4,
+        Celling = 8,
+
+        OpositeX = 16,
+        OpositeY = 32
     }
 
     [System.Serializable]
@@ -34,10 +45,10 @@ namespace Undefined.Force
         ///<param name="force">Force to be applied</param>
         ///<param name="time">Time to the force stop</param>
         ///<param name="gravity">Should calculate gravity?</param>
-        public Force(Vector2 force, float time = 0, CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.NeverStop, bool disableAllGravity = false) {
+        public Force(Vector2 force, float time = 0, CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.DontStop, bool disableAllGravity = false) {
             this.Name = "noname";
             this.ForceApplied = force;
-            this.ActualForce = (time != 0 ? Vector2.zero : force);
+            this.ActualForce = force;
             this.TimeToStop = time;
             this.stopBehaviour = stopBehaviour;
             this.disableAllGravity = disableAllGravity;
@@ -47,10 +58,10 @@ namespace Undefined.Force
         ///<param name="force">Force to be applied</param>
         ///<param name="time">Time to the force stop</param>
         ///<param name="gravity">Should calculate gravity?</param>
-        public Force(string name, Vector2 force, float time = 0, CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.NeverStop, bool disableAllGravity = false) {
+        public Force(string name, Vector2 force, float time = 0, CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.DontStop, bool disableAllGravity = false) {
             this.Name = name;
             this.ForceApplied = force;
-            this.ActualForce = (time != 0 ? Vector2.zero : force);
+            this.ActualForce = force;
             this.TimeToStop = time;
             this.stopBehaviour = stopBehaviour;
             this.disableAllGravity = disableAllGravity;
