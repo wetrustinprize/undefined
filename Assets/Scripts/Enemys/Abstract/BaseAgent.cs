@@ -23,7 +23,7 @@ public abstract class BaseAgent : MonoBehaviour {
             if(myPath == null || curWaypoint >= myPath.vectorPath.Count)
                 return Vector2.zero;
 
-            return ((Vector2)myPath.vectorPath[curWaypoint] - (Vector2)this.transform.position).normalized; 
+            return (PathPos - (Vector2)this.transform.position).normalized; 
         } 
     }
 
@@ -33,6 +33,16 @@ public abstract class BaseAgent : MonoBehaviour {
             if(myPath == null) return true;
 
             return curWaypoint >= myPath.vectorPath.Count;
+        }
+    }
+
+    public Vector2 PathPos {
+        get
+        {
+            if(myPath == null || curWaypoint >= myPath.vectorPath.Count)
+                return Vector2.zero;
+
+            return (Vector2)myPath.vectorPath[curWaypoint];
         }
     }
 
