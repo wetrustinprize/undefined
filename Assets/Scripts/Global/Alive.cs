@@ -18,8 +18,8 @@ public class Alive : MonoBehaviour
 
     // Events
     public float realDefense { get {return 1-(defense/100); } }     // Returns the real defense
-    public event Action onHeal;                                     // Called when the Alive heals
-    public event Action onDamage;                                   // Called when the Alive takes damage
+    public event Action<int> onHeal;                                     // Called when the Alive heals
+    public event Action<int> onDamage;                                   // Called when the Alive takes damage
     public event Action onDie;                                      // Called when the Alive dies (health < 0)
 
         #endregion
@@ -27,6 +27,15 @@ public class Alive : MonoBehaviour
     void Start() {
 
         health = maxHealth;
+
+    }
+
+    void Update() {
+
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            TakeDamage(1);
+        }
 
     }
 
@@ -59,16 +68,16 @@ public class Alive : MonoBehaviour
         health -= damage;
 
         if(health <= 0) {
-            onDamage?.Invoke();
+            onDamage?.Invoke(damage);
             onDie?.Invoke();
         } else {
             if(damage > 0)
             {
-                onDamage?.Invoke();
+                onDamage?.Invoke(damage);
             }
             else if(damage < 0)
             {
-                onHeal?.Invoke();
+                onHeal?.Invoke(damage);
             }
         }
 
