@@ -48,7 +48,7 @@ public class PlayerAnimator : MonoBehaviour
         attack.onAttack += AttackEffect;
         
         // Setup the alive events
-        alive.onDamage += DamageEffect;
+        alive.onDamage += cb => { DamageEffect(); };
 
         // Setup the jump event
         jump.OnWallJump += WallJumpEffect;
