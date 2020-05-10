@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public enum MeleeEnemyBehaviour {
+public enum GroundEnemyBehaviour {
 
     Idle,
     Chasing
@@ -10,17 +10,18 @@ public enum MeleeEnemyBehaviour {
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(CollisionCheckModule))]
 [RequireComponent(typeof(VisionModule))]
-public class MeleeEnemy : BaseAgent
+public class GroundEnemy : BaseAgent
 {
 
         #region Variables
     
-    [SerializeField] private MeleeEnemyBehaviour myBehaviour;
+    [SerializeField] private GroundEnemyBehaviour myBehaviour;
 
         #region References
 
     CollisionCheckModule collisionModule;
     VisionModule visionModule;
+    Jump jumpModule;
     GameObject player;
 
         #endregion
@@ -32,6 +33,7 @@ public class MeleeEnemy : BaseAgent
 
         this.collisionModule = this.GetComponent<CollisionCheckModule>();
         this.visionModule = this.GetComponent<VisionModule>();
+        this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
 
         this.player = PlayerController.mainPlayer.gameObject;
 
@@ -40,11 +42,11 @@ public class MeleeEnemy : BaseAgent
     void Update() {
 
         switch(myBehaviour) {
-            case MeleeEnemyBehaviour.Idle:
+            case GroundEnemyBehaviour.Idle:
                 this.IdleBehaviour();
                 break;
             
-            case MeleeEnemyBehaviour.Chasing:
+            case GroundEnemyBehaviour.Chasing:
                 this.ChasingBehaviour();
                 break;
         }
@@ -64,7 +66,7 @@ public class MeleeEnemy : BaseAgent
 
         if(visionModule.RaycastVision(true, player, 15f)) {
 
-            this.ChangeBehaviour(MeleeEnemyBehaviour.Chasing);
+            this.ChangeBehaviour(GroundEnemyBehaviour.Chasing);
 
         }
 
@@ -72,31 +74,40 @@ public class MeleeEnemy : BaseAgent
 
     void ChasingBehaviour() {
 
+        this.CalculatePath(player.transform.position);
+        
         this.CheckWaypointDistance();
-        myMotor.ReceiveInput(this.DirToPath);
+        
+        this.myMotor.ReceiveInput(this.DirToPath);
+        this.visionModule.SetFacingDir(new Vector2(1, 0) * (this.DirToPath.x < 0 ? -1 : 1));
+        
+        if(this.jumpModule != null) {
+            bool tooHigh = this.PathPos.y > this.transform.position.y + this.waypointMinDistance;
+            bool edgeWay = this.collisionModule.WillFall(this.visionModule.FacingDir.x);
 
-        if(this.ReachedPathEnd)
-            this.CalculatePath(player.transform.position);
+            if(tooHigh || edgeWay)
+                jumpModule.Execute();
+        }
 
     }
 
-    void ChangeBehaviour(MeleeEnemyBehaviour newBehaviour) {
+    void ChangeBehaviour(GroundEnemyBehaviour newBehaviour) {
 
         switch(myBehaviour) {
-            case MeleeEnemyBehaviour.Chasing:
+            case GroundEnemyBehaviour.Chasing:
                 break;
             
-            case MeleeEnemyBehaviour.Idle:
+            case GroundEnemyBehaviour.Idle:
                 myMotor.ReceiveInput(Vector2.zero);
                 break;
         }
 
         switch(newBehaviour) {
-            case MeleeEnemyBehaviour.Chasing:
+            case GroundEnemyBehaviour.Chasing:
                 this.CalculatePath(player.transform.position);
                 break;
 
-            case MeleeEnemyBehaviour.Idle:
+            case GroundEnemyBehaviour.Idle:
                 break;
 
         }
