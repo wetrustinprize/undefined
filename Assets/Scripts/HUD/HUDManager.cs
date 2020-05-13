@@ -130,6 +130,11 @@ public class HUDManager : MonoBehaviour
 
     }
 
+    public void HideAllHUD() {
+        UpdateHUD(HUDType.Inventory, true);
+        UpdateHUD(HUDType.Shop, true);
+    }
+
     public void ToggleInventory() {
         ToggleHUD(HUDType.Inventory);
     }
