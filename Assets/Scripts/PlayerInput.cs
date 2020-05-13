@@ -95,7 +95,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""3aaf26a0-685c-4496-a0fe-f49681f8fdbb"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=2)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
