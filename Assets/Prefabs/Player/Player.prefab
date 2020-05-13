@@ -1,5 +1,116 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &789477748
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 789477749}
+  - component: {fileID: 789477750}
+  m_Layer: 9
+  m_Name: death_blackout
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &789477749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789477748}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 10000, y: 10000, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6774648263188878033}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &789477750
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789477748}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 1153510953
+  m_SortingLayer: 5
+  m_SortingOrder: 998
+  m_Sprite: {fileID: 21300000, guid: 889c6edb31b287f41a9875fa17283b7d, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.01, y: 0.01}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!1 &1967801070
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1967801071}
+  m_Layer: 9
+  m_Name: death_focus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1967801071
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967801070}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6774648263188878033}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6774648263188878032
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,6 +143,8 @@ Transform:
   m_Children:
   - {fileID: 6774648264543929098}
   - {fileID: 6774648264049727489}
+  - {fileID: 789477749}
+  - {fileID: 1967801071}
   m_Father: {fileID: 6774648264558360628}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -122,6 +235,10 @@ MonoBehaviour:
   jump: {fileID: 6774648264558360623}
   alive: {fileID: 6774648264558360618}
   driftThreshold: 0.3
+  dashThreshold: 2
+  deathFocus: {fileID: 1967801071}
+  ghostParticle: {fileID: 7798819625000943297, guid: d64b205ae2c684a489139632649d1f39,
+    type: 3}
   dustSpawnTransform: {fileID: 6774648264049727489}
   dustParticles: {fileID: 2944184413433036515, guid: e85a63a8c21e15b4794be342dbda96f7,
     type: 3}
@@ -5003,6 +5120,7 @@ MonoBehaviour:
   maxSpeed: {x: 1, y: 0}
   fric: 1.7
   gravityScale: 7
+  gravityStopBehaviour: 32
   collisionLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -5046,6 +5164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   extraTimeGroundJump: 0.2
   extraTimeWallJump: 0.2
+  extraTimePreJump: 0.15
 --- !u!114 &6774648264558360623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5058,10 +5177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8344ef9f65fabf4daa9da652ffb63bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: {x: 0, y: 16}
+  jumpForce: {x: 0, y: 19}
   wallJumpForce: {x: 2, y: 25}
   maxWallJumps: 1
-  allowWallJumps: 1
+  allowWallJumps: 0
   allowGroundJumps: 1
   applyWallSlow: 1
   normalWallSlow: -0.7
