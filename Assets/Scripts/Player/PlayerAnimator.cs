@@ -14,8 +14,14 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Animator Settings")]
     [SerializeField] private float driftThreshold;      // The threshold to play the drift animation
+    [SerializeField] private float dashThreshold;      // The threshold to stop the dash animation
 
+    [Header("Death Animation Settingss")]
+    [SerializeField] private Transform deathFocus;      // Where will the camera focus when the player dies
+ 
     [Header("Particles")]
+    [SerializeField] private GameObject ghostParticle;          // The ghost "particle"
+    [Space]
     [SerializeField] private Transform dustSpawnTransform;      // The dust particles transform
     [SerializeField] private GameObject dustParticles;          // The dust particles when walking/running
     [Space]
@@ -108,6 +114,15 @@ public class PlayerAnimator : MonoBehaviour
 
         #region Particles
 
+    // Called to call a "ghost"
+    public void SpawnGhost(Sprite newSprite) {
+
+        GameObject newGhost = Instantiate(ghostParticle, transform.position, transform.rotation);
+        newGhost.GetComponent<SpriteRenderer>().sprite = newSprite;
+        newGhost.GetComponent<SpriteRenderer>().flipX = sprite.flipX;
+
+    }
+
     // Called to create the dust particles
     public void DustParticles() {
 
@@ -126,6 +141,27 @@ public class PlayerAnimator : MonoBehaviour
         }
 
         GameObject.Instantiate(dustParticles, pos, rot);
+
+    }
+
+    public void DeathEffect(int stage) {
+
+        switch(stage) {
+            case 0:
+                HUDManager.instance.HideAllHUD();
+
+                sprite.sortingLayerName = "Details";
+                sprite.sortingOrder = 999;
+
+                CameraController.mainCam.Resize(20, 0.05f);
+                CameraController.mainCam.Shake(5, 5, 0.3f, Vector2.one);
+                break;
+            
+            case 1:
+                CameraController.mainCam.Resize(10, 2f);
+                CameraController.mainCam.LookAt(deathFocus, 1f);
+                break;
+        }
 
     }
 
@@ -151,6 +187,11 @@ public class PlayerAnimator : MonoBehaviour
 
     // Updates the animator
     void Update() {
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            animator.SetTrigger("Death");
+        }
+
         // Gets all velocity info
         float vInput = motor.InputAxis.x;
         float hVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
@@ -164,7 +205,8 @@ public class PlayerAnimator : MonoBehaviour
         bool drifting = vInput != lastInput && vInput != 0 && Mathf.Abs(hVel) > driftThreshold;
         bool onWall = motor.OnWall;
         bool canWallJump = jump.CanWallJump;
-        bool dashing = motor.HasForce("dash", false);
+        bool dashing = motor.HasForce("dash");
+        bool highVelocityDashing = dashing ? Mathf.Abs(motor.GetForce("dash").ActualForce.x) > dashThreshold : false;
 
         lastInput = vInput;
 
@@ -194,12 +236,13 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetFloat("SpeedV", vVel);
         animator.SetFloat("Input", Mathf.Abs(vInput));
         animator.SetBool("OnAir", onAir);
+        animator.SetBool("Dashing", highVelocityDashing);
+        animator.SetBool("Atacking", attacked);
         animator.SetBool("OnWall", onWall && canWallJump && onAir);
         
         animator.SetBool("Drift", drifting);
 
-        //if(drifting)    animator.SetTrigger("Drift");
-        if(dashing)     animator.SetTrigger("Dash");
+        if(highVelocityDashing)     animator.SetTrigger("Dash");
         if(attacked)    animator.SetTrigger("Attack");
 
         // Squish effect
