@@ -18,8 +18,8 @@ public class Jump : MonoBehaviour
 
     [Space]
 
-    [SerializeField] private bool allowWallJumps = true;
-    [SerializeField] private bool allowGroundJumps = true;
+    public bool allowWallJumps = true;
+    public bool allowGroundJumps = true;
 
     [Header("Wall slow settings")]
     [SerializeField] private bool applyWallSlow = true;
