@@ -274,7 +274,7 @@ public class Motor : MonoBehaviour
     ///<summary>Check if has a force with the name</string>
     ///<param name="name">Name of the force</param>
     ///<param name="constant">Is it a constant force?</param>
-    public bool HasForce(string name, bool constant) {
+    public bool HasForce(string name, bool constant = false) {
         ref List<Force> list = ref externalForces;
         if(constant)
             list = ref constantForces;
