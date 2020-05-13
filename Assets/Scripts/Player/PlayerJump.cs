@@ -12,10 +12,12 @@ public class PlayerJump : MonoBehaviour
     [Header("Extra Frames")]
     [SerializeField] private float extraTimeGroundJump;
     [SerializeField] private float extraTimeWallJump;
+    [SerializeField] private float extraTimePreJump;
 
     // Script side variables
     private float timeToGroundJump;
     private float timeToWallJump;
+    private float timeToPreJump;
 
     private bool countWallJump;
     private bool countGroundJump;
@@ -40,6 +42,18 @@ public class PlayerJump : MonoBehaviour
 
     public void Update() {
 
+        if(timeToPreJump > 0)
+        {
+            if(motor.OnGround) {
+                Execute();
+                timeToPreJump = 0f;
+            }
+            else
+            {
+                timeToPreJump = Mathf.Clamp(timeToPreJump - Time.deltaTime, 0, extraTimePreJump);
+            }
+        }
+
         if(countWallJump && timeToWallJump > 0)
             timeToWallJump = Mathf.Clamp(timeToWallJump - Time.deltaTime, 0, extraTimeWallJump);
 
@@ -50,10 +64,13 @@ public class PlayerJump : MonoBehaviour
 
     public void Execute() {
 
-        if(canGroundJump && !jump.HasGroundJumped)
+        if(canGroundJump && !jump.HasGroundJumped && jump.allowGroundJumps)
             jump.GroundJump();
-        else if(canWallJump && !jump.HasWallJumped)
+        else if(canWallJump && !jump.HasWallJumped && jump.allowWallJumps)
             jump.WallJump();
+        else if(!motor.OnGround && jump.HasGroundJumped)
+            timeToPreJump = extraTimePreJump;
+
 
     }
 
