@@ -36,6 +36,12 @@ public class CameraController : MonoBehaviour
 
     public static CameraController mainCam;
 
+        #region Lookat
+
+    private float look_Smooth;
+
+        #endregion
+
         #region Camera Size
 
     private float currentSize;
@@ -98,12 +104,14 @@ public class CameraController : MonoBehaviour
 
         if(isPlayer)
             PlayerFollow();
+        else
+            OtherFollow();
 
         CameraShake();
         CameraPush();
         SizeLerp();
 
-        newPos += new Vector3(0,0, -currentSize);
+        newPos.z = -currentSize;
 
         transform.position = newPos;
         
@@ -111,6 +119,20 @@ public class CameraController : MonoBehaviour
     }
 
         #region Calculatios
+
+    void OtherFollow() {
+        
+        if(look_Smooth <= 0)
+        {
+            newPos = lookAt.transform.position;
+            return;
+        }
+        else
+        {
+            newPos = Vector3.Lerp(this.transform.position, lookAt.transform.position, Time.deltaTime / look_Smooth);
+        }
+
+    }
 
     void PlayerFollow() {
         
@@ -199,7 +221,8 @@ public class CameraController : MonoBehaviour
         #region Public Functions
 
     ///<summary>Changes the transform to the camera look at</summary>
-    public void LookAt(Transform newLookAt) {
+    public void LookAt(Transform newLookAt, float smoothTime = 0f) {
+        look_Smooth = smoothTime;
         lookAt = newLookAt.gameObject;
     }
 
