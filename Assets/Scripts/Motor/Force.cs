@@ -24,6 +24,32 @@ namespace Undefined.Force
     }
 
     [System.Serializable]
+    public class ForceTemplate {
+
+        [Header("Force Details")]
+        public string Name = "";
+
+        [Header("Physics")]
+        public Vector2 ForceToApply = Vector2.zero;
+
+        [Header("Behaviour")]
+        public CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.AnyCollision;
+        public bool disableAllGravity = false;
+
+        [Header("Time")]
+        public float TimeToStop = 0f;
+
+        public static explicit operator Force(ForceTemplate template)
+        {
+            if(template.Name == "" || template.Name == null)
+                return new Force(template.ForceToApply, template.TimeToStop, template.stopBehaviour, template.disableAllGravity);
+            else
+                return new Force(template.Name, template.ForceToApply, template.TimeToStop, template.stopBehaviour, template.disableAllGravity);
+        }
+
+    }
+
+    [System.Serializable]
     public class Force {
 
         [Header("Force Details")]
@@ -46,7 +72,7 @@ namespace Undefined.Force
         ///<param name="time">Time to the force stop</param>
         ///<param name="gravity">Should calculate gravity?</param>
         public Force(Vector2 force, float time = 0, CollisionStopBehaviour stopBehaviour = CollisionStopBehaviour.DontStop, bool disableAllGravity = false) {
-            this.Name = "noname";
+            this.Name = $"force"+Time.time;
             this.ForceApplied = force;
             this.ActualForce = force;
             this.TimeToStop = time;
