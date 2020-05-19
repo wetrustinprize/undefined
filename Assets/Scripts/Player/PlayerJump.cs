@@ -23,9 +23,10 @@ public class PlayerJump : MonoBehaviour
     private bool countGroundJump;
 
     private bool canWallJump { get { return (timeToWallJump > 0); } }
-    private bool canGroundJump { get { return (timeToGroundJump > 0); } }
+    private bool canGroundJump { get { return (timeToGroundJump > 0 && rb.velocity.y < 0.1); } }
 
     private Motor motor { get { return GetComponent<Motor>(); } }
+    private Rigidbody2D rb { get { return GetComponent<Rigidbody2D>(); } }
     private Jump jump { get {return GetComponent<Jump>(); } }
 
         #endregion
@@ -65,11 +66,17 @@ public class PlayerJump : MonoBehaviour
     public void Execute() {
 
         if(canGroundJump && !jump.HasGroundJumped && jump.allowGroundJumps)
+        {
             jump.GroundJump();
+        }
         else if(canWallJump && !jump.HasWallJumped && jump.allowWallJumps)
+        {
             jump.WallJump();
+        }
         else if(!motor.OnGround && jump.HasGroundJumped)
+        {
             timeToPreJump = extraTimePreJump;
+        }
 
 
     }
