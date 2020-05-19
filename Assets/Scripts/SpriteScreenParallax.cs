@@ -7,14 +7,15 @@ public class SpriteScreenParallax : MonoBehaviour
 
     [Header("Parallax config")]
     [SerializeField] private Vector2 effect;
-    [SerializeField] private Transform cam;
 
+    private Transform cam;
     private Vector2 startPos;
 
         #endregion
 
     void Start() {
         startPos = (Vector2)transform.position;
+        cam = GameManager.Camera.transform;
     }
 
     void LateUpdate() {

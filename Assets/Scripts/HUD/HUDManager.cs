@@ -21,9 +21,6 @@ public class HUDManager : MonoBehaviour
     [Header("Able")]
     public bool canOpenInventory = true;
 
-    // Instance
-    public static HUDManager instance;
-
     // Script side variables
     private PlayerInput inputs;
     private PlayerController player;
@@ -39,7 +36,6 @@ public class HUDManager : MonoBehaviour
 
     void Awake() {
 
-        DontDestroyOnLoad(this.gameObject);
         inputs = new PlayerInput();
 
     }
@@ -57,10 +53,6 @@ public class HUDManager : MonoBehaviour
     }
 
     void Start() {
-
-        // Instance
-        if(instance != null) Destroy(this.gameObject);
-        instance = this;
 
         // Other components
         Inventory = hudInventory.GetComponent<HUDInventory>();

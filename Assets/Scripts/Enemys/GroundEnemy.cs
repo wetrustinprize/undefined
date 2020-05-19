@@ -35,7 +35,7 @@ public class GroundEnemy : BaseAgent
         this.visionModule = this.GetComponent<VisionModule>();
         this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
 
-        this.player = PlayerController.mainPlayer.gameObject;
+        this.player = GameManager.Player.gameObject;
 
     }
 

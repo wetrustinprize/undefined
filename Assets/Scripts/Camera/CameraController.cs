@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Undefined.Force;
 
 public class CameraController : MonoBehaviour
 {
@@ -30,11 +29,10 @@ public class CameraController : MonoBehaviour
     private Vector3 newPos = Vector2.zero;
 
     private Camera thisCam;
+    public Camera Camera { get { return thisCam; } }
 
     private Vector2 lookAheadValue;
     private float timeMovingCamera;
-
-    public static CameraController mainCam;
 
         #region Lookat
 
@@ -82,14 +80,9 @@ public class CameraController : MonoBehaviour
 
     void Awake() {
 
-        DontDestroyOnLoad(this.gameObject);
-
     }
 
     void Start() {
-
-        if(mainCam != null) Destroy(this.gameObject);
-        mainCam = this;
 
         // Initial size
         currentSize = size;

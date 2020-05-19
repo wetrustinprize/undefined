@@ -1,49 +1,39 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Undefined.Sound {
-    public class SoundsManager : MonoBehaviour
-    {
+public class SoundsManager : MonoBehaviour
+{
 
-            #region Variables
+        #region Variables
 
-        [SerializeField] private AudioMixer mixer;
+    [SerializeField] private AudioMixer mixer;
 
-        public static SoundsManager instance;
+    // Script side
+    private AudioSource uiSource;
 
-        // Script side
-        private AudioSource uiSource;
+        #endregion
 
-            #endregion
+    void Awake() {
 
-        void Awake() {
+        DontDestroyOnLoad(this.gameObject);
 
-            DontDestroyOnLoad(this.gameObject);
+    }
 
-        }
+    void Start() {
 
-        void Start() {
+        // Gets the UI AudioSource
+        uiSource = CameraController.main.GetComponent<AudioSource>();
 
-            // Static instace
-            if(instance != null) Destroy(this.gameObject);
-            
-            instance = this;
+    }
 
-            // Gets the UI AudioSource
-            uiSource = CameraController.main.GetComponent<AudioSource>();
+    ///<summar>Plays a UI SFX</summary>
+    ///<param name="sfx">The AudioClip to play</param>
+    ///<param name="vol">The SFX volume</param>
+    public void PlayUISFX(AudioClip sfx, float vol = 1.0f) {
 
-        }
+        if(sfx == null) return;
 
-        ///<summar>Plays a UI SFX</summary>
-        ///<param name="sfx">The AudioClip to play</param>
-        ///<param name="vol">The SFX volume</param>
-        public static void PlayUISFX(AudioClip sfx, float vol = 1.0f) {
-
-            if(sfx == null) return;
-
-            instance.uiSource.PlayOneShot(sfx, vol);
-
-        }
+        this.uiSource.PlayOneShot(sfx, vol);
 
     }
 

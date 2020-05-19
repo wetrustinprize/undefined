@@ -16,7 +16,7 @@ public class ShopManager : MonoBehaviour
 
         if(details == null) return;
 
-        HUDManager.instance.ShowShop(details);
+        GameManager.HUD.ShowShop(details);
 
     }
 

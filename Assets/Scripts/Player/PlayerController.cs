@@ -51,14 +51,10 @@ public class PlayerController : MonoBehaviour {
     private float totalAttackSeconds;
     private bool holdingAttack;
 
-    //
-    public static PlayerController mainPlayer;
-
         #endregion
 
     void Awake() {
 
-        DontDestroyOnLoad(this.gameObject);
         inputs = new PlayerInput();
 
     }
@@ -76,9 +72,6 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Start() {
-
-        if(mainPlayer != null) Destroy(this.gameObject);
-        mainPlayer = this;
 
         // Movement
         inputs.Player.Move.performed += cb => { 

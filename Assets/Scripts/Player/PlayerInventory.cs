@@ -1,6 +1,5 @@
 using UnityEngine;
 using Undefined.Items;
-using Undefined.Sound;
 using System.Collections.Generic;
 using System;
 
@@ -76,7 +75,7 @@ public class PlayerInventory : MonoBehaviour {
 
         if(item == null) return;
 
-        SoundsManager.PlayUISFX(item.itemObj.onUnequipSFX);
+        GameManager.Sound.PlayUISFX(item.itemObj.onUnequipSFX);
 
         item.itemObj.OnUnequip(this.gameObject);
 
@@ -108,7 +107,7 @@ public class PlayerInventory : MonoBehaviour {
                 break;
         }
 
-        SoundsManager.PlayUISFX(item.itemObj.onEquipSFX);
+        GameManager.Sound.PlayUISFX(item.itemObj.onEquipSFX);
 
         item.itemObj.OnEquip(this.gameObject);
         onEquip?.Invoke(item.itemObj);

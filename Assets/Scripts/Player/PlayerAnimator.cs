@@ -28,8 +28,6 @@ public class PlayerAnimator : MonoBehaviour
     [SerializeField] private GameObject wallJumpDustParticles;  // The dust particles when walljumping
     [SerializeField] private ParticleSystem wallParticles;      // The wall dust particles when walking/running
     [SerializeField] private float wallSlideParticlesVel;       // The velocity required to enable the wall slide particles
-    [Space]
-    [SerializeField] private GameObject dashParticles;          // The dash particles when dashing
 
     [Header("Animator References")]
     [SerializeField] private Animator animator;             // Reference to the animator
@@ -40,7 +38,6 @@ public class PlayerAnimator : MonoBehaviour
     private CameraController cam { get { return CameraController.main; } }
 
     private bool attacked;
-    private bool dashParticleSpawned;
     private float wallParticleDefaultX;
     private float squishPercentage;
     private float lastInput;
@@ -148,34 +145,20 @@ public class PlayerAnimator : MonoBehaviour
 
         switch(stage) {
             case 0:
-                HUDManager.instance.HideAllHUD();
+                GameManager.HUD.HideAllHUD();
 
                 sprite.sortingLayerName = "Details";
                 sprite.sortingOrder = 999;
 
-                CameraController.mainCam.Resize(20, 0.05f);
-                CameraController.mainCam.Shake(5, 5, 0.3f, Vector2.one);
+                GameManager.Camera.Resize(20, 0.05f);
+                GameManager.Camera.Shake(5, 5, 0.3f, Vector2.one);
                 break;
             
             case 1:
-                CameraController.mainCam.Resize(10, 2f);
-                CameraController.mainCam.LookAt(deathFocus, 1f);
+                GameManager.Camera.Resize(10, 2f);
+                GameManager.Camera.LookAt(deathFocus, 1f);
                 break;
         }
-
-    }
-
-    // Called to create the dash particles
-    public void DashParticles() {
-
-        Quaternion rot = Quaternion.identity;
-
-        if(motor.LastFacingDir == 1)
-        {
-            rot.y = 180;
-        }
-
-        GameObject.Instantiate(dashParticles, transform.parent.position, rot, transform);
 
     }
 
@@ -254,16 +237,6 @@ public class PlayerAnimator : MonoBehaviour
         wallParticles.gameObject.transform.localPosition = new Vector2(wallParticleDefaultX * (sprite.flipX ? -1 : 1), pos.y);
 
         if(!(onWall && onAir && canWallJump && vVel < -wallSlideParticlesVel)) wallParticles.Play();
-
-        // Spawns and checks the dash particles
-        if(!dashParticleSpawned && dashing)
-        {
-            dashParticleSpawned = true;
-            DashParticles();
-        } else if(dashParticles && !dashing)
-        {
-            dashParticleSpawned = false;
-        }
 
         if(attacked) attacked = false;
     }
