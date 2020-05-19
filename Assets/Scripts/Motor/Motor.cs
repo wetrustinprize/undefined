@@ -154,9 +154,7 @@ public class Motor : MonoBehaviour
 
         //Reset grav
         if(resetGrav) {
-            Debug.Log("Gravity reset;");
             GetForce("grav", true).ActualForce = Vector2.zero;
-            Debug.Log($"Gravity: {GetForce("grav", true).ActualForce}");
             resetGrav = false;
         }
 
@@ -225,6 +223,15 @@ public class Motor : MonoBehaviour
         #endregion
 
         #region Force Related
+
+    public void ClearAllForces(bool constant = false) 
+    {
+        ref List<Force> list = ref externalForces;
+        if(constant)
+            list = ref constantForces;
+        
+        list.ForEach(f => {f.ActualForce = Vector2.zero;});
+    }
 
     // Called to apply a force
     ///<summary>Adds a new force to the motor.</summary>
