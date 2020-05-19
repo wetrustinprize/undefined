@@ -40,24 +40,11 @@ public class Dash : MonoBehaviour
         if(dashTimer > 0 && applyCooldown) return;
 
         Force f = new Force("dash", dashForce * m.LastFacingDir, dashDuration, CollisionStopBehaviour.AnyCollision, true);
+        m.ClearAllForces();
         m.AddForce(f, false, true, true);
         m.RemoveForce("jump");
         dashTimer = dashCooldown;
 
     }
 
-    ///<summary>Executes a custom dash</summary>
-    ///<param name="dash">The direction to dash</param>
-    ///<param name="time">The time to the dash complete</param>
-    public void Execute(Vector2 dash, float time) {
-
-        if(dashTimer > 0 && applyCooldown) return;
-
-        Force f = new Force("dash", dash * m.LastFacingDir, time);
-
-        m.AddForce(f, false, true);
-
-        dashTimer = dashCooldown;
-
-    }
 }
