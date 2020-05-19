@@ -4,79 +4,79 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: 5654082674868810815
-    second: zahir_stone_0
+    second: zstone_continuem
   - first:
       213: -8919981495781689670
-    second: zahir_stone_1
+    second: zstone_it
   - first:
       213: -5888802354778893790
-    second: zahir_stone_2
+    second: zstone_leftt
   - first:
       213: 2998779711930117888
-    second: zahir_stone_3
+    second: zstone_middletop
   - first:
       213: -6601721058948397670
-    second: zahir_stone_4
+    second: zstone_rightt
   - first:
       213: -50303949006420343
-    second: zahir_stone_5
+    second: zstone_leftm
   - first:
       213: 4049413533297400494
-    second: zahir_stone_6
+    second: zstone_middlem
   - first:
       213: -5236233984200983575
-    second: zahir_stone_7
+    second: zstone_rightm
   - first:
       213: 8261288956100030710
-    second: zahir_stone_8
+    second: zstone_im
   - first:
       213: -5622463037310729011
     second: zahir_stone_9
   - first:
       213: -7111832144525539553
-    second: zahir_stone_10
+    second: zstone_ib
   - first:
       213: -6047260025782475145
-    second: zahir_stone_11
+    second: zstone_leftb
   - first:
       213: -2789084213302371041
-    second: zahir_stone_12
+    second: zstone_middleb
   - first:
       213: -2984719044114324854
-    second: zahir_stone_13
+    second: zstone_rightb
   - first:
       213: -4009307019475116110
-    second: zahir_stone_14
+    second: zstone_singler
   - first:
       213: -449182516198006533
-    second: zahir_stone_15
+    second: zstone_singlem
   - first:
       213: 1039535968717627143
-    second: zahir_stone_16
+    second: zstone_singlel
   - first:
       213: -3397222427440847490
-    second: zahir_stone_17
+    second: zstone_single
   - first:
       213: -7845278356154434409
-    second: zahir_stone_18
+    second: zstone_continuelb
   - first:
       213: 853880765238411164
-    second: zahir_stone_19
+    second: zstone_continuerb
   - first:
       213: -8728233500509511019
-    second: zahir_stone_20
+    second: zstone_continuemb
   - first:
       213: 8996738877351328046
-    second: zahir_stone_21
+    second: zstone_continuer
   - first:
       213: -7353405986597975897
-    second: zahir_stone_22
+    second: zstone_continuel
   - first:
       213: -3881929129325629143
-    second: zahir_stone_23
+    second: zstone_continuerw
   - first:
       213: 4346457757949945389
-    second: zahir_stone_24
+    second: zstone_continuelw
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -161,7 +161,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: zahir_stone_0
+      name: zstone_continuem
       rect:
         serializedVersion: 2
         x: 32
@@ -169,7 +169,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -182,7 +182,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_1
+      name: zstone_it
       rect:
         serializedVersion: 2
         x: 112
@@ -190,7 +190,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -203,7 +203,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_2
+      name: zstone_leftt
       rect:
         serializedVersion: 2
         x: 176
@@ -211,7 +211,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -224,7 +224,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_3
+      name: zstone_middletop
       rect:
         serializedVersion: 2
         x: 224
@@ -232,7 +232,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -245,7 +245,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_4
+      name: zstone_rightt
       rect:
         serializedVersion: 2
         x: 272
@@ -253,7 +253,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -266,7 +266,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_6
+      name: zstone_middlem
       rect:
         serializedVersion: 2
         x: 224
@@ -274,7 +274,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -287,7 +287,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_8
+      name: zstone_im
       rect:
         serializedVersion: 2
         x: 112
@@ -295,7 +295,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -308,7 +308,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_5
+      name: zstone_leftm
       rect:
         serializedVersion: 2
         x: 176
@@ -316,7 +316,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -329,7 +329,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_7
+      name: zstone_rightm
       rect:
         serializedVersion: 2
         x: 272
@@ -337,7 +337,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -358,7 +358,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -371,7 +371,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_10
+      name: zstone_ib
       rect:
         serializedVersion: 2
         x: 112
@@ -379,7 +379,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -392,7 +392,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_11
+      name: zstone_leftb
       rect:
         serializedVersion: 2
         x: 176
@@ -400,7 +400,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -413,7 +413,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_12
+      name: zstone_middleb
       rect:
         serializedVersion: 2
         x: 224
@@ -421,7 +421,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -434,7 +434,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_13
+      name: zstone_rightb
       rect:
         serializedVersion: 2
         x: 272
@@ -442,7 +442,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -455,7 +455,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_14
+      name: zstone_singler
       rect:
         serializedVersion: 2
         x: 272
@@ -463,7 +463,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -476,7 +476,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_15
+      name: zstone_singlem
       rect:
         serializedVersion: 2
         x: 224
@@ -484,7 +484,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -497,7 +497,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_16
+      name: zstone_singlel
       rect:
         serializedVersion: 2
         x: 176
@@ -505,7 +505,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -518,7 +518,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_17
+      name: zstone_single
       rect:
         serializedVersion: 2
         x: 112
@@ -526,7 +526,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -539,7 +539,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_18
+      name: zstone_continuelb
       rect:
         serializedVersion: 2
         x: 64
@@ -547,7 +547,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -560,7 +560,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_19
+      name: zstone_continuerb
       rect:
         serializedVersion: 2
         x: 16
@@ -568,7 +568,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -581,7 +581,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_20
+      name: zstone_continuemb
       rect:
         serializedVersion: 2
         x: 40
@@ -589,7 +589,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -602,7 +602,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_21
+      name: zstone_continuer
       rect:
         serializedVersion: 2
         x: 112
@@ -610,7 +610,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -623,7 +623,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_22
+      name: zstone_continuel
       rect:
         serializedVersion: 2
         x: 160
@@ -631,7 +631,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -644,7 +644,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_23
+      name: zstone_continuerw
       rect:
         serializedVersion: 2
         x: 224
@@ -652,7 +652,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -665,7 +665,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zahir_stone_24
+      name: zstone_continuelw
       rect:
         serializedVersion: 2
         x: 272
@@ -673,7 +673,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
