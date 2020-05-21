@@ -126,7 +126,7 @@ public class Motor : MonoBehaviour
         #endregion
 
     // Initial setup
-    void Start() {
+    void Awake() {
         lastFaceDir = 1;
         gravityScale = !bypassGravity ? gravityScale : 0;
         gravityMultiplier = 1.0f;
