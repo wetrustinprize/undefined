@@ -7,11 +7,38 @@ public class Lever : MonoBehaviour
 
     [Header("Lever Settings")]
     [SerializeField] private Color leverColor;
+    [SerializeField] private SpriteRenderer leverSprite;
 
     [Header("Doors")]
     [SerializeField] private Door[] doorsToActivate;
 
         #endregion
+
+    void Start() {
+
+        // Updates the lever sprite color
+        leverSprite.color = leverColor;
+
+        foreach(Door d in doorsToActivate)
+        {
+            d.AddDoorColor(leverColor);
+        }
+
+    }
+
+    public void Toggle() {
+
+        foreach(Door d in doorsToActivate)
+        {
+            d.Toggle();
+        }
+
+    }
+
+    [ExecuteInEditMode]
+    void OnValidate() {
+        leverSprite.color = leverColor;
+    }
 
     void OnDrawGizmos() {
 
