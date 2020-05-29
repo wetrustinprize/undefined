@@ -67,14 +67,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""TeleportPosition"",
-                    ""type"": ""Button"",
-                    ""id"": ""5effec77-8926-4ac3-b97c-5068ee068085"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""7354f6de-e7f7-4c92-aab7-1947d07f131d"",
@@ -87,6 +79,14 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""type"": ""Button"",
                     ""id"": ""09492505-5f73-458f-bc19-5396e6b825e3"",
                     ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MousePosition"",
+                    ""type"": ""Value"",
+                    ""id"": ""450f7d7e-40a2-4260-82f7-7ad116c5c9f5"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -204,17 +204,6 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""502d5aa6-9c5b-4d44-bcd8-ab0f7ff48a72"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""TeleportPosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""6f1143c6-4c8b-4909-a79b-f9815f52e720"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
@@ -232,6 +221,17 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Use Active Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e2982bb6-9c0e-450a-9f67-56bc7d959038"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -427,9 +427,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Ghost = m_Player.FindAction("Ghost", throwIfNotFound: true);
         m_Player_Teleport = m_Player.FindAction("Teleport", throwIfNotFound: true);
-        m_Player_TeleportPosition = m_Player.FindAction("TeleportPosition", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_UseActiveItem = m_Player.FindAction("Use Active Item", throwIfNotFound: true);
+        m_Player_MousePosition = m_Player.FindAction("MousePosition", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Point = m_UI.FindAction("Point", throwIfNotFound: true);
@@ -496,9 +496,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Ghost;
     private readonly InputAction m_Player_Teleport;
-    private readonly InputAction m_Player_TeleportPosition;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_UseActiveItem;
+    private readonly InputAction m_Player_MousePosition;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -509,9 +509,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @Ghost => m_Wrapper.m_Player_Ghost;
         public InputAction @Teleport => m_Wrapper.m_Player_Teleport;
-        public InputAction @TeleportPosition => m_Wrapper.m_Player_TeleportPosition;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @UseActiveItem => m_Wrapper.m_Player_UseActiveItem;
+        public InputAction @MousePosition => m_Wrapper.m_Player_MousePosition;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -539,15 +539,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Teleport.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
                 @Teleport.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
                 @Teleport.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleport;
-                @TeleportPosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
-                @TeleportPosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
-                @TeleportPosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTeleportPosition;
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @UseActiveItem.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
                 @UseActiveItem.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
                 @UseActiveItem.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUseActiveItem;
+                @MousePosition.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
+                @MousePosition.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
+                @MousePosition.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMousePosition;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -570,15 +570,15 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Teleport.started += instance.OnTeleport;
                 @Teleport.performed += instance.OnTeleport;
                 @Teleport.canceled += instance.OnTeleport;
-                @TeleportPosition.started += instance.OnTeleportPosition;
-                @TeleportPosition.performed += instance.OnTeleportPosition;
-                @TeleportPosition.canceled += instance.OnTeleportPosition;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
                 @UseActiveItem.started += instance.OnUseActiveItem;
                 @UseActiveItem.performed += instance.OnUseActiveItem;
                 @UseActiveItem.canceled += instance.OnUseActiveItem;
+                @MousePosition.started += instance.OnMousePosition;
+                @MousePosition.performed += instance.OnMousePosition;
+                @MousePosition.canceled += instance.OnMousePosition;
             }
         }
     }
@@ -688,9 +688,9 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnGhost(InputAction.CallbackContext context);
         void OnTeleport(InputAction.CallbackContext context);
-        void OnTeleportPosition(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnUseActiveItem(InputAction.CallbackContext context);
+        void OnMousePosition(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
