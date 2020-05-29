@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
     public bool canDash = true;
     public bool canTeleport = true;
     public bool canGhost = true;
+    [SerializeField] private float explosionMinTimer = 0.35f;
 
     [Header("Inventory")]
     public bool canUseActiveItem = true;
@@ -50,6 +51,8 @@ public class PlayerController : MonoBehaviour {
 
     private float totalAttackSeconds;
     private bool holdingAttack;
+
+    public Vector2 lastMousePosition { get; private set; }
 
         #endregion
 
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour {
             }
         };
 
-        // Attack
+        // Attack and explosion
         inputs.Player.Attack.started += cb => { 
             if(canAttack && receiveInput) 
             {
@@ -122,10 +125,6 @@ public class PlayerController : MonoBehaviour {
             teleport.StopPerforming(); 
         };
 
-        inputs.Player.TeleportPosition.performed += cb => { 
-            teleport.UpdateArrow(cb.ReadValue<Vector2>()); 
-        };
-
         inputs.Player.Jump.performed += cb => { 
             teleport.CancelPerfoming(); 
         };
@@ -146,6 +145,11 @@ public class PlayerController : MonoBehaviour {
             }
         };
 
+        // Mouse position
+        inputs.Player.MousePosition.performed += cb => {
+            lastMousePosition = cb.ReadValue<Vector2>();
+        };
+
     }
 
         #region Attack
@@ -154,11 +158,10 @@ public class PlayerController : MonoBehaviour {
 
         totalAttackSeconds += Time.deltaTime;
 
-    }
-
-    void AttackStart() {
-
-        
+        if(totalAttackSeconds >= explosionMinTimer && !explosion.IsShowingVisual)
+        {
+            explosion.StartExplosionVisual();
+        }
 
     }
 
@@ -168,12 +171,13 @@ public class PlayerController : MonoBehaviour {
 
         if(canAttack)
         {
-            if(totalAttackSeconds < 0.35f) {
+            if(totalAttackSeconds < explosionMinTimer) {
                 attack.Execute();
             }
             else
             {
                 explosion.Execute();
+                explosion.StopExplosionVisual();
             }
         }
 
