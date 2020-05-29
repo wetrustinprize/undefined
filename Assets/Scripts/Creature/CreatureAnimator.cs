@@ -17,11 +17,22 @@ public class CreatureAnimator : MonoBehaviour
 
 
 
+        #region Animation Voids
+
+    public void CreateExplosion() {
+
+        creatureController.CreateExplosion();
+
+    }
+
+        #endregion
+
     void Start() {
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
 
+        creatureController.OnExplode += () => { animator.SetTrigger("Explosion"); };
 
     }
 
