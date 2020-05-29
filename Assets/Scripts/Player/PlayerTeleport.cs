@@ -35,7 +35,7 @@ public class PlayerTeleport : MonoBehaviour
     void Start() {
 
         // Initial creature bounce config
-        creature = GameObject.FindWithTag("Creature").GetComponent<CreatureController>();
+        creature = GameManager.Creature;
 
         creature.SetMaxBounces(min_bounces + 2);
         creature.SetMinBounces(min_bounces);
@@ -44,6 +44,9 @@ public class PlayerTeleport : MonoBehaviour
 
         // Gets the player motor
         playerMotor = GetComponent<Motor>();
+
+        // Disable graphics
+        teleportGraphs.SetActive(false);
 
 
     }
@@ -54,21 +57,35 @@ public class PlayerTeleport : MonoBehaviour
 
     }
 
+    void LateUpdate() {
+
+        if(performing)
+        {
+            Vector3 dir = GameManager.Camera.GetWorldPositionOnPlane(GameManager.Player.lastMousePosition, 0) - transform.position;
+            Debug.Log(dir);
+            dir.Normalize();
+
+            float rot_z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            teleportGraphs.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+        }
+
+    }
+
     public void StopPerforming() {
 
         // Check if is perfoming
         if(!performing) return;
         else performing = false;
 
-        Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        diff.Normalize();
+        Vector3 dir = GameManager.Camera.GetWorldPositionOnPlane(GameManager.Player.lastMousePosition, 0) - transform.position;
+        dir.Normalize();
 
         RemoveSlows();
 
-        creature.Bounce(diff);
+        creature.Bounce(dir);
 
         teleportGraphs.SetActive(false);
-        playerMotor.AddForce(new Force("teleportknockback", diff * -1 * knock_force, 0.1f));
+        playerMotor.AddForce(new Force("teleportknockback", dir * -1 * knock_force, 0.1f));
 
     }
 
@@ -87,25 +104,12 @@ public class PlayerTeleport : MonoBehaviour
         if(creature.IsBouncing) { Teleport(); return; }
 
         // Check if isnt already perfoming
-        if(performing || currentCooldown > 0 || creature.State != CreatureState.Following) return;
+        if(performing || currentCooldown > 0 || creature.IsBusy) return;
         else performing = true;
 
         ApplySlows();
 
         teleportGraphs.SetActive(true);
-
-    }
-
-    public void UpdateArrow(Vector2 pos) {
-
-        // Check if is perfoming
-        if(!performing) return;
-
-        Vector3 diff = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        diff.Normalize();
-
-        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-        teleportGraphs.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
 
     }
 
