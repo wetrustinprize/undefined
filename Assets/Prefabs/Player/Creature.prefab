@@ -247,6 +247,9 @@ MonoBehaviour:
   bounce_Layers:
     serializedVersion: 2
     m_Bits: 256
+  bounce_PlayerOffset: {x: 0, y: 1.8}
+  explosion_Velocity: 60
+  explosion_Time: 0.3
   bounce_NoTeleportSFX: {fileID: 8300000, guid: 5326f248c778f9445a8dd6d91a30afac,
     type: 3}
   bounce_TeleportSFX: {fileID: 8300000, guid: 9f8d29100d6592d45bed1a351df0867d, type: 3}
