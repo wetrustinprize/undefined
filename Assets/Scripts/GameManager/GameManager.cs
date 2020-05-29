@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     // Public acess variables
     public static PlayerController Player { get { return playerInstance.GetComponent<PlayerController>(); } }
-    public static CreatureController Bird { get { return birdInstance.GetComponent<CreatureController>(); } }
+    public static CreatureController Creature { get { return birdInstance.GetComponent<CreatureController>(); } }
     public static HUDManager HUD { get { return hudInstance.GetComponent<HUDManager>(); } }
     public static CameraController Camera { get { return cameraInstance.GetComponent<CameraController>(); } }
     public static SoundsManager Sound { get { return manager.GetComponent<SoundsManager>();} }
