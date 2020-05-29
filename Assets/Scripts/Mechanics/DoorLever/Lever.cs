@@ -45,6 +45,8 @@ public class Lever : MonoBehaviour
         if(doorsToActivate == null || doorsToActivate.Length <= 0) return;
 
         foreach(Door door in doorsToActivate) {
+            if(door == null) continue;
+
             Vector3 doorPos = door.transform.position;
 
             Gizmos.color = leverColor;
