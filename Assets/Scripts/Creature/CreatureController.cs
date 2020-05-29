@@ -4,8 +4,11 @@ using System;
 public enum CreatureState {
 
     Following,
+
     Bouncing,
-    Explosion
+
+    GoingToExplode,
+    Exploding,
 
 }
 
@@ -30,6 +33,11 @@ public class CreatureController : MonoBehaviour
     [SerializeField] private float bounce_MaxDist;          // Maximung distance to fly
     [SerializeField] private float bounce_MaxPlayerDist;    // Maximung distance from player
     [SerializeField] private LayerMask bounce_Layers;       // The layers to perform the raycast
+    [SerializeField] private Vector2 bounce_PlayerOffset;
+
+    [Header("Explosion")]
+    [SerializeField] private float explosion_Velocity;      // The velocity which the creature travels to the explosion destionation
+    [SerializeField] private float explosion_Time;          // The time the creature stays in the "explosion" animation
 
     [Header("SFX")]
     [SerializeField] private AudioClip bounce_NoTeleportSFX;    // Bounce SFX (can't teleport)
@@ -39,6 +47,10 @@ public class CreatureController : MonoBehaviour
     public Action OnBounceEnd;                      // Called when bounce ends
     public Action OnBounceStart;                    // Called when bounce starts
 
+    public Action OnExplodeStart;                   // Called when starting the explosion behaviour
+    public Action OnExplode;                        // Called when explodes
+    public Action OnExplodeEnd;                     // Called when ended the explosion behaviour
+
     // Script side
     private GameObject player;                      // The player gameobject
     private Motor playerMotor;                      // The player motor
@@ -46,9 +58,20 @@ public class CreatureController : MonoBehaviour
     private int lastFaceDir;                        // Last facing direction
     private bool isNearPlayer;                      // Is near to the player
 
+        #region Explosion Variables
+
+    private Vector2 explosionPosition;
+    private float explosionTimer;
+
+        #endregion
+
+        #region Bounce Variables
+
     private float bounceActualDist;                 // The actual distance
     private int bounceActualBounces;                // The total bounces
     private float bounceActualVelocity;             // The actual fly velocity
+
+        #endregion
 
     private AudioSource audioSource;                // This creature audio source
 
@@ -59,6 +82,8 @@ public class CreatureController : MonoBehaviour
 
     public int TotalBounces { get { return bounceActualBounces; } }             // Public acess to the bounceActualBounces variable
     public bool IsBouncing { get { return state == CreatureState.Bouncing; } }  // Faster way to check if is bouncing
+    public bool IsExploding { get { return state == CreatureState.Exploding; } }
+    public bool IsBusy { get { return state != CreatureState.Following; } }
 
         #endregion
 
@@ -82,13 +107,27 @@ public class CreatureController : MonoBehaviour
 
         switch(state)
         {
+
             case CreatureState.Following:
                 FollowingBehaviour();
                 break;
+
+            // Bounce
             
             case CreatureState.Bouncing:
                 BouncingBehaviour();
                 break;
+            
+            // Explosion
+
+            case CreatureState.GoingToExplode:
+                GoingToExplodeBehaviour();
+                break;
+            
+            case CreatureState.Exploding:
+                ExplodingBehaviour();
+                break;
+
         }
 
     }
@@ -96,6 +135,8 @@ public class CreatureController : MonoBehaviour
         #endregion
 
         #region Public functions
+
+        #region Bounce
 
     public void SetMaxBounces(int max) {
 
@@ -111,9 +152,10 @@ public class CreatureController : MonoBehaviour
 
     public void Bounce(Vector2 direction) {
 
+        if(IsBusy) return;
         if(direction == Vector2.zero) return;
 
-        transform.position = player.transform.position;
+        transform.position = player.transform.position + (Vector3)bounce_PlayerOffset;
 
         bounce_Dir = direction.normalized;
         bounceActualDist = 0;
@@ -124,12 +166,34 @@ public class CreatureController : MonoBehaviour
 
     }
 
-    public void ChangeState(CreatureState newState) {
+
+        #endregion
+
+        #region Explosion
+
+    public void Explode(Vector2 newExplodePos) {
+
+        if(IsBusy) return;
+
+        explosionPosition = newExplodePos;
+        ChangeState(CreatureState.GoingToExplode);
+
+    }
+
+        #endregion
+
+    public void ChangeState(CreatureState newState, bool force = false) {
+
+        if(state != CreatureState.Following && !force) return;
 
         switch(state)
         {
             case CreatureState.Bouncing:
                 OnBounceEnd?.Invoke();
+                break;
+            
+            case CreatureState.Exploding:
+                OnExplodeEnd?.Invoke();
                 break;
         }
 
@@ -137,6 +201,15 @@ public class CreatureController : MonoBehaviour
         {
             case CreatureState.Bouncing:
                 OnBounceStart?.Invoke();
+                break;
+            
+            case CreatureState.GoingToExplode:
+                OnExplodeStart?.Invoke();
+                break;
+
+            case CreatureState.Exploding:
+                explosionTimer = 0f;
+                OnExplode?.Invoke();
                 break;
         }
 
@@ -168,8 +241,8 @@ public class CreatureController : MonoBehaviour
     void BouncingBehaviour() {
 
         // Checks distances
-        if(bounceActualDist > bounce_MaxDist) { ChangeState(CreatureState.Following); return; }
-        if(Vector2.Distance(transform.position, player.transform.position) > bounce_MaxPlayerDist) { ChangeState(CreatureState.Following); return; }
+        if(bounceActualDist > bounce_MaxDist) { ChangeState(CreatureState.Following, true); return; }
+        if(Vector2.Distance(transform.position, player.transform.position) > bounce_MaxPlayerDist) { ChangeState(CreatureState.Following, true); return; }
 
         // Raycast
         RaycastHit2D hit = Physics2D.Raycast(transform.position, bounce_Dir, bounce_Velocity * Time.fixedDeltaTime, bounce_Layers);
@@ -179,7 +252,7 @@ public class CreatureController : MonoBehaviour
 
             // Check total bounce
             bounceActualBounces++; 
-            if(bounceActualBounces >= bounce_Max) { ChangeState(CreatureState.Following); return; }
+            if(bounceActualBounces >= bounce_Max) { ChangeState(CreatureState.Following, true); return; }
 
             // Reflect direction
             bounce_Dir = bounce_Dir - 2 * (bounce_Dir * hit.normal) * hit.normal; 
@@ -216,12 +289,52 @@ public class CreatureController : MonoBehaviour
 
     }
 
+        #region Explosion Behaviours
+
+    void GoingToExplodeBehaviour() {
+
+        float distance = Vector2.Distance(transform.position, explosionPosition);
+
+        if(distance > 1)
+        {
+            Vector2 dir = ((Vector2)transform.position - explosionPosition) * -1;
+            dir.Normalize();
+            Move((Vector2)transform.position + dir * explosion_Velocity * Time.fixedDeltaTime);
+        }
+        else
+        {
+            ChangeState(CreatureState.Exploding, true);
+        }
+
+    }
+
+    public void  CreateExplosion() {
+
+        Instantiate(GameManager.Player.GetComponent<PlayerExplosion>().explosion_Prefab, transform.position, transform.rotation);
+
+    }
+
+    void ExplodingBehaviour() {
+
+        if(explosionTimer < explosion_Time)
+        {
+            explosionTimer += Time.fixedDeltaTime;
+        }
+        else
+        {
+            ChangeState(CreatureState.Following, true);
+        }
+
+    }
+
+        #endregion
+
+        #endregion
+
     void PlaySFX(AudioClip sfx) {
 
         audioSource.PlayOneShot(sfx);
 
     }
-
-        #endregion
 
 }
