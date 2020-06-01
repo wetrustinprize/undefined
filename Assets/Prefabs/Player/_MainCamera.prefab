@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookAt: {fileID: 0}
-  size: 25
+  size: 30
   lookAheadDistance: 7
   lookAheadStartTimeSpeed: 3
   lookAheadEndTimeSpeed: 1

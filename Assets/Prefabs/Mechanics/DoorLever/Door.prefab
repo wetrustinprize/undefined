@@ -133,7 +133,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animationDuration: 1
+  animationDuration: 0.3
   deactivatedPos: {fileID: 1364968851253625251}
   activatedPos: {fileID: 1364968850517958618}
 --- !u!1 &1364968851605118936

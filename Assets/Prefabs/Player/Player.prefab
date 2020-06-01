@@ -5364,11 +5364,17 @@ MonoBehaviour:
   jumpForce: {x: 0, y: 19}
   wallJumpForce: {x: 2, y: 25}
   maxWallJumps: 1
-  allowWallJumps: 0
+  allowWallJumps: 1
   allowGroundJumps: 1
   applyWallSlow: 1
-  normalWallSlow: -0.7
-  noWallJumpSlow: 0
+  normalWallSlow:
+    Name: 
+    Value: {x: 0, y: -0.7}
+    Types: 13
+  noWallJumpSlow:
+    Name: 
+    Value: {x: 0, y: 0}
+    Types: 0
 --- !u!114 &6774648264558360621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5381,19 +5387,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157b33bd867a5104da6356dfb3ed7053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 2.09, y: 0}
-  size: {x: 3.11, y: 2.52}
+  offset: {x: 1.71, y: 1.88}
+  size: {x: 3.35, y: 3.58}
   aliveLayes:
     serializedVersion: 2
     m_Bits: 512
   Damage: 1
   coolDown: 0.33
-  pushForce: 2
-  pushTime: 0.1
+  pushForce:
+    Name: player_atk
+    ForceToApply: {x: 5, y: 0}
+    stopBehaviour: 15
+    disableAllGravity: 0
+    TimeToStop: 0.2
   attackerSlow:
     Name: 
     Value: {x: -1, y: 0}
-    Types: 01000000
+    Types: 2
   attackerSlowTimer: 0.28
 --- !u!114 &6774648264558360618
 MonoBehaviour:
@@ -5511,11 +5521,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialSpeed: {x: 22, y: 0}
-  finalSpeed: {x: 27, y: 0}
-  initialHealth: 15
-  finalHealth: 80
-  initialArmor: 0
-  finalArmor: 10
+  initialJumpSpeed: {x: 0, y: 19}
+  initialWallJumpSpeed: {x: 2, y: 25}
+  initialHealth: 30
+  initialDefense: 0
 --- !u!82 &1040150026
 AudioSource:
   m_ObjectHideFlags: 0
