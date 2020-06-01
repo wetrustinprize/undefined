@@ -19,7 +19,7 @@ public class Tutorial_Attackdummy : MonoBehaviour
         this.myAlive = this.GetComponent<Alive>();
         this.playerTransform = GameManager.Player.gameObject.transform;
 
-        this.myAlive.onDamage += cb => { Attacked(); };
+        this.myAlive.onDamage += (dmg, dealer) => { Attacked(); };
     }
 
     void Attacked() {
