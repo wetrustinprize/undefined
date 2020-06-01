@@ -18,8 +18,7 @@ public class Attack : MonoBehaviour
     public float coolDown;
 
     [Header("Force Settings")]
-    public float pushForce;
-    public float pushTime;
+    public ForceTemplate pushForce;
 
     [Header("Slow Settings")]
     public Slow attackerSlow;
@@ -29,8 +28,7 @@ public class Attack : MonoBehaviour
     private int defaultDamage;
     private float defaultCooldown;
 
-    private float defaultForce;
-    private float defaultForceTimer;
+    private ForceTemplate defaultForce;
 
     private Slow defaultAttackerSlow;
     private float defaultAttackerSlowTimer;
@@ -59,7 +57,6 @@ public class Attack : MonoBehaviour
         defaultAttackerSlowTimer = attackerSlowTimer;
 
         defaultForce = pushForce;
-        defaultForceTimer = pushTime;
 
     }
 
@@ -88,7 +85,6 @@ public class Attack : MonoBehaviour
         attackerSlowTimer = defaultAttackerSlowTimer;
 
         pushForce = defaultForce;
-        pushTime = defaultForceTimer;
 
     }
 
@@ -100,15 +96,10 @@ public class Attack : MonoBehaviour
         if(onPerform != null)
             onPerform();
 
-        actCoolDown = coolDown;
-
         Vector2 dir = offset;
         dir.x *= motor.LastFacingDir;
         bool calledAttack = false;
         Collider2D[] hits = Physics2D.OverlapBoxAll((Vector2)transform.position + dir, size, 0f, aliveLayes);
-
-        motor.AddSlow(attackerSlow, true);
-        actAttackSlowTimer = attackerSlowTimer;
 
         if(hits.Length > 0) {
 
@@ -120,28 +111,57 @@ public class Attack : MonoBehaviour
                     onAttack?.Invoke();
                 }
 
-                if(c.TryGetComponent<Alive>(out Alive a)) {
-                    DirectAttack(a, c.transform);
-                }
+                if(c.TryGetComponent<Alive>(out Alive a)) ExecuteAttack(a, true);
 
             }
 
         }
 
+        ApplySlow();
+        ApplyCooldown();
+
+    }
+
+    void ApplyCooldown() {
+        actCoolDown = coolDown;
+    }
+
+    void ApplySlow() {
+        attackerSlow.Name = "attacker_slow";
+        motor.AddSlow(attackerSlow, true);
+        actAttackSlowTimer = attackerSlowTimer;
+    }
+
+    void ExecuteAttack(Alive a, bool ignoreCooldown, bool ignoreSlow = false,int customDamage = 0) {
+        if(!ignoreCooldown && actCoolDown != 0) return;
+
+        if(!ignoreCooldown) ApplyCooldown();
+        if(!ignoreSlow) ApplySlow();
+
+        a.TakeDamage(customDamage == 0 ? Damage : customDamage, this.gameObject);
+
+        if(a.TryGetComponent<Motor>(out Motor m)) {
+            
+            float height = m.WallColliderSize.y / 2;
+            Vector2 playerPos = (Vector2)a.transform.position + new Vector2(0, height);
+
+            Vector2 direction = ((Vector2)transform.position - playerPos).normalized * -1;
+            direction += new Vector2(0, 0.5f);
+
+            Force f = new Force(pushForce);
+            f.ForceApplied = direction * pushForce.ForceToApply;
+            f.ActualForce = direction * pushForce.ForceToApply;
+
+            m.AddForce(f, false, true, true);
+        }
     }
 
     ///<summary>Executes a attack on a specific Alive</summary>
-    ///<param name="alive">The alive component to attack</param>
-    ///<param name="collider">Collider to calculate push</param>
-    public void DirectAttack(Alive alive, Transform aliveTrans = null) {
-        alive.TakeDamage(Damage);
-        if(alive.TryGetComponent<Motor>(out Motor m) && aliveTrans != null) {
-            
-            Vector2 direction = ((Vector2)transform.position - (Vector2)aliveTrans.position).normalized * -1;
-            direction += new Vector2(0, 0.5f);
-            Force f = new Force("attack", direction * pushForce, pushTime, CollisionStopBehaviour.AnyCollision);
-
-            m.AddForce(f, false, true, true);
+    ///<param name="objectToAttack">The alive component to attack</param>
+    public void DirectAttack(GameObject objectToAttack, int customDamage = 0, bool ignoreCooldown = true, bool ignoreSlow = true) {
+        if(objectToAttack.TryGetComponent<Alive>(out Alive a))
+        {
+            ExecuteAttack(a, ignoreCooldown, ignoreSlow, customDamage);
         }
     }
 
@@ -150,7 +170,7 @@ public class Attack : MonoBehaviour
         if(!GetComponent<Motor>()) return;
 
         Vector2 dir = offset;
-        dir.x *= motor.LastFacingDir;
+        dir.x *= motor.LastFacingDir == 0 ? 1 : motor.LastFacingDir;
         Vector3 pos = transform.position + (Vector3)dir;
 
         Gizmos.color = new Color(1, 1, 1, 0.8f);

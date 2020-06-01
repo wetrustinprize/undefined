@@ -16,8 +16,7 @@ namespace Undefined.Items {
         public float attackCooldown;
 
         [Header("Push Force")]
-        public float attackPushForce;
-        public float attackPushTime;
+        public ForceTemplate attackPushForce;
 
         [Header("Slow")]
         public Slow attackerSlow;
@@ -37,7 +36,6 @@ namespace Undefined.Items {
             attack.coolDown = attackCooldown;
             
             attack.pushForce = attackPushForce;
-            attack.pushTime = attackPushTime;
 
             attack.attackerSlow = attackerSlow;
             attack.attackerSlowTimer = attackerSlowTimer;
