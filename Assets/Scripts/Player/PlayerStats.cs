@@ -10,25 +10,32 @@ public class PlayerStats : MonoBehaviour {
 
         [Header("Initial Values")]
         [SerializeField] private Vector2 initialSpeed;
-        [SerializeField] private Vector2 finalSpeed;
+        public Vector2 AditionalSpeed { get { return aditionalSpeed; } set { aditionalSpeed = value; configureSpeed(); } }
+
+        [Space(10)]
+        [SerializeField] private Vector2 initialJumpSpeed;
+        public Vector2 AditionalJumpSpeed { get { return aditionalJumpSpeed; } set { aditionalJumpSpeed = value; configureJump(); } }
+
+        [Space(10)]
+        [SerializeField] private Vector2 initialWallJumpSpeed;
+        public Vector2 AditionalWallJumpSpeed { get { return aditionalWallJumpSpeed; } set { aditionalWallJumpSpeed = value; configureWallJump(); } }
 
         [Space(10)]
         [SerializeField] private int initialHealth;
-        [SerializeField] private int finalHealth;
+        public int AditionalHealth { get { return aditionalHealth; } set { aditionalHealth = value; configureHealth(); } }
 
         [Space(10)]
-        [SerializeField] private int initialArmor;
-        [SerializeField] private int finalArmor;
+        [SerializeField] private float initialDefense;
+        public float AditionalDefense { get { return aditionalDefense; } set { aditionalDefense = value; configureDefense(); } }
 
-        // Stat values
-        private int agility;
-        private int strength;
-        private int toughness;
+        // Aditionals
+        private Vector2 aditionalSpeed;
+        private Vector2 aditionalJumpSpeed;
+        private Vector2 aditionalWallJumpSpeed;
+        private int aditionalHealth;
+        private float aditionalDefense;
 
-        public int Agility { get { return agility; } set { agility = value; UpdateAgility(); } }
-        public int Strength { get { return strength; } set { strength = value; UpdateStrength(); } }
-        public int Toughness { get { return toughness; } set { toughness = value; UpdateToughness(); } }
-
+        
         // Local variables
         private Motor motor;
         private Alive alive;
@@ -36,40 +43,41 @@ public class PlayerStats : MonoBehaviour {
 
                 #endregion
 
-        void Start() {
+        void Awake() {
 
                 // Gets all components
                 motor = GetComponent<Motor>();
                 alive = GetComponent<Alive>();
                 jump = GetComponent<Jump>();
 
-                // Initial stat
-                Agility = 1;
-                Strength = 1;
-                Toughness = 1;
+                // Configures aditional values
+                AditionalSpeed = Vector2.zero;
+                AditionalJumpSpeed = Vector2.zero;
+                AditionalWallJumpSpeed = Vector2.zero;
+
+                AditionalHealth = 0;
+                AditionalDefense = 0;
 
         }
 
-        void UpdateAgility() {
-
-                Vector2 vel = Vector2.Lerp(initialSpeed, finalSpeed, agility / 100);
-                motor.SetNewMaxSpeed(vel);
-                
+        void configureHealth() {
+                alive.SetNewMaxHealth(initialHealth + AditionalHealth);
         }
 
-        void UpdateStrength() {
-
-                int health = (int)Mathf.Lerp(initialHealth, finalHealth, strength / 100);
-                alive.SetNewMaxHealth(health);
-
+        void configureDefense() {
+                alive.SetNewDefense(initialDefense + AditionalDefense);
         }
 
-        void UpdateToughness() {
+        void configureJump() {
+                jump.jumpForce = initialJumpSpeed + AditionalJumpSpeed;
+        }
 
-                int defense = initialArmor + finalArmor * toughness / 100;
+        void configureWallJump() {
+                jump.wallJumpForce = initialWallJumpSpeed + AditionalWallJumpSpeed;
+        }
 
-                alive.SetNewArmor(defense);
-
+        void configureSpeed() {
+                motor.SetNewMaxSpeed(initialSpeed + AditionalSpeed);
         }
 
 

@@ -10,10 +10,16 @@ namespace Undefined.Items {
 
             #region Variables
 
-        [Header("Stats")]
-        public int agility;
-        public int strength;
-        public int toughness;
+        [Header("Aditionals")]
+        public Vector2 aditionalSpeed;
+        public Vector2 aditionalJumpSpeed;
+        public Vector2 aditionalWallJumpSpeed;
+        
+        [Space]
+        public int aditionalHealth;
+
+        [Range(0.0f, 1.0f)]
+        public float aditionalDefense;
 
             #endregion
 
@@ -24,9 +30,12 @@ namespace Undefined.Items {
 
             PlayerStats stats = player.GetComponent<PlayerStats>();
 
-            stats.Agility += agility;
-            stats.Strength += strength;
-            stats.Toughness += toughness;
+            stats.AditionalSpeed = aditionalSpeed;
+            stats.AditionalJumpSpeed = aditionalJumpSpeed;
+            stats.AditionalWallJumpSpeed = aditionalWallJumpSpeed;
+
+            stats.AditionalHealth = aditionalHealth;
+            stats.AditionalDefense = aditionalDefense;
 
             
 
@@ -36,9 +45,12 @@ namespace Undefined.Items {
 
             PlayerStats stats = player.GetComponent<PlayerStats>();
 
-            stats.Agility -= agility;
-            stats.Strength -= strength;
-            stats.Toughness -= toughness;
+            stats.AditionalSpeed = Vector2.zero;
+            stats.AditionalJumpSpeed = Vector2.zero;
+            stats.AditionalWallJumpSpeed = Vector2.zero;
+            
+            stats.AditionalHealth = 0;
+            stats.AditionalDefense = 0;
 
         }
 
