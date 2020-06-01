@@ -208,7 +208,6 @@ public class Motor : MonoBehaviour
 
 
     public void SetNewMaxSpeed(Vector2 newMaxSpeed) {
-
         maxSpeed = newMaxSpeed;
 
     }
@@ -524,14 +523,17 @@ public class Motor : MonoBehaviour
         // Apply all values
         slowness.ForEach(s => {
 
-            s.Types.ForEach(t => {
+            if(s.Types.HasFlag(SlowType.Input))
+                totalSlowness[SlowType.Input] = totalSlowness[SlowType.Input] + s.Value;
 
-                totalSlowness[t] = new Vector2(
-                    Mathf.Clamp(totalSlowness[t].x + s.Value.x, 0, Mathf.Infinity),
-                    Mathf.Clamp(totalSlowness[t].y + s.Value.y, 0, Mathf.Infinity)
-                );
+            if(s.Types.HasFlag(SlowType.Gravity))
+                totalSlowness[SlowType.Gravity] = totalSlowness[SlowType.Gravity] + s.Value;
 
-            });
+            if(s.Types.HasFlag(SlowType.External))
+                totalSlowness[SlowType.External] = totalSlowness[SlowType.External] + s.Value;
+
+            if(s.Types.HasFlag(SlowType.Constant))
+                totalSlowness[SlowType.Constant] = totalSlowness[SlowType.Constant] + s.Value;
 
         });
 

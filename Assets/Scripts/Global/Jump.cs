@@ -10,8 +10,8 @@ public class Jump : MonoBehaviour
     #region Variables
 
     [Header("Force settings")]
-    [SerializeField] private Vector2 jumpForce = new Vector2(0, 8);
-    [SerializeField] private Vector2 wallJumpForce = new Vector2(4, 4);
+    public Vector2 jumpForce = new Vector2(0, 8);
+    public Vector2 wallJumpForce = new Vector2(4, 4);
     
     [Header("Jump Settings")]
     [SerializeField] private int maxWallJumps = 1;
@@ -23,8 +23,8 @@ public class Jump : MonoBehaviour
 
     [Header("Wall slow settings")]
     [SerializeField] private bool applyWallSlow = true;
-    [SerializeField] private float normalWallSlow = -0.9f;
-    [SerializeField] private float noWallJumpSlow = -0.3f;
+    [SerializeField] private Slow normalWallSlow;
+    [SerializeField] private Slow noWallJumpSlow;
 
     // Actions
     public Action OnJump;
@@ -78,7 +78,7 @@ public class Jump : MonoBehaviour
         dir += jumpForce;
         groundJumped = true;
 
-        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.NotGround), false, true, true);
+        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.NotGround), false, true, true, true);
         m.RemoveSlow("wallSlow");
         OnJump?.Invoke();
 
@@ -100,7 +100,7 @@ public class Jump : MonoBehaviour
         wallJumps++;
 
         m.ResetGravity();
-        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.NotGround), false, true, true);
+        m.AddForce(new Force("jump", dir, 1f, CollisionStopBehaviour.NotGround), false, true, true, true);
         m.RemoveSlow("wallSlow");
         OnWallJump?.Invoke();
 
@@ -174,12 +174,12 @@ public class Jump : MonoBehaviour
 
         if(!applyWallSlow) return;
 
-        float totalSlow = CanWallJump ? normalWallSlow : noWallJumpSlow;
-        Slow s = new Slow("wallSlow", new Vector2(0, totalSlow), SlowType.Gravity);
+        Slow totalSlow = CanWallJump ? normalWallSlow : noWallJumpSlow;
+        totalSlow.Name = "wallSlow";
 
-        if(m.InputAxis.x == dir && totalSlow != 0)
+        if(m.InputAxis.x == dir && totalSlow.Value != Vector2.zero)
         {
-            m.AddSlow(s, true);
+            m.AddSlow(totalSlow, true);
         }
 
     }
