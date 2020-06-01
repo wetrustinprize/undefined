@@ -30,9 +30,9 @@ public class HUDHPBar : MonoBehaviour
         playerAliveComponent = GameObject.FindWithTag("Player").GetComponent<Alive>();
 
         // Event to run when the player gets damaged.
-        playerAliveComponent.onDamage += cb => {OnDamage();};
+        playerAliveComponent.onDamage += (dmg, dealer) => {OnDamage();};
 
-        playerAliveComponent.onHeal += cb => {OnHeal();};
+        playerAliveComponent.onHeal += (dmg, healer) => {OnHeal();};
 
     }
 
