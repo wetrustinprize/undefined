@@ -9,7 +9,9 @@ public class Alive : MonoBehaviour
 
     [SerializeField] private int maxHealth;                         // The maximun HP this Alive can have
     [SerializeField] private int health;                            // The current HP this Alive have
-    [SerializeField] private float defense;                         // His defense (from 0% to 100%)
+
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float defense;                         // The defense (from 0.0 to 1.0)
 
     // Public variables
     public int Health { get { return health; } }                    // Public acess to the health variable
@@ -17,9 +19,8 @@ public class Alive : MonoBehaviour
     public float Defense { get { return defense; } }                // Public acess to the defense variable
 
     // Events
-    public float realDefense { get {return 1-(defense/100); } }     // Returns the real defense
-    public event Action<int> onHeal;                                     // Called when the Alive heals
-    public event Action<int> onDamage;                                   // Called when the Alive takes damage
+    public event Action<int, GameObject> onHeal;                         // Called when the Alive heals
+    public event Action<int, GameObject> onDamage;                       // Called when the Alive takes damage
     public event Action onDie;                                      // Called when the Alive dies (health < 0)
 
         #endregion
@@ -34,7 +35,7 @@ public class Alive : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.H))
         {
-            TakeDamage(1);
+            TakeDamage(1, this.gameObject);
         }
 
     }
@@ -48,36 +49,38 @@ public class Alive : MonoBehaviour
 
     }
 
-    public void SetNewArmor(int newArmor) {
+    ///<summary>Sets a new value to the denfese</summary>
+    ///<param name="newDefense">Value from 0.0 to 1.0</param>
+    public void SetNewDefense(float newDefense) {
 
-        defense = newArmor;
+        defense = Mathf.Clamp(newDefense, 0.0f, 1.0f);
 
     }
 
     ///<summary>Takes damage.</summary>
     ///<param name="damage">Damage to receive</param>
-    public void TakeDamage(int damage) {
-
+    public void TakeDamage(int damage, GameObject dealer) {
+        Debug.Log(damage);
         if(damage == 0) return;
 
         if(damage > 0)
         {
-            damage = (int)(damage * realDefense);
+            damage = (int)(damage * (1-defense));
         }
 
         health -= damage;
 
         if(health <= 0) {
-            onDamage?.Invoke(damage);
+            onDamage?.Invoke(damage, dealer);
             onDie?.Invoke();
         } else {
             if(damage > 0)
             {
-                onDamage?.Invoke(damage);
+                onDamage?.Invoke(damage, dealer);
             }
             else if(damage < 0)
             {
-                onHeal?.Invoke(damage);
+                onHeal?.Invoke(damage, dealer);
             }
         }
 
@@ -85,8 +88,11 @@ public class Alive : MonoBehaviour
 
     ///<summary>Heals.</summary>
     ///<param name="value">Health to heal</param>
-    public void Heal(int value) {
-        TakeDamage(-value);
+    public void Heal(int value, GameObject dealer = null) {
+        if(value > 0)
+            value *= -1;
+
+        TakeDamage(value, dealer);
     }
 
 }
