@@ -7,6 +7,7 @@ public enum GroundEnemyBehaviour {
 
 }
 
+[RequireComponent(typeof(Alive))]
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(CollisionCheckModule))]
 [RequireComponent(typeof(VisionModule))]
@@ -15,13 +16,18 @@ public class GroundEnemy : BaseAgent
 
         #region Variables
     
+    [Header("Ground Enemy Settings")]
     [SerializeField] private GroundEnemyBehaviour myBehaviour;
+    [SerializeField] private float distanceToStopChasing;
+    [SerializeField] private float distanceToAttack;
 
         #region References
 
     CollisionCheckModule collisionModule;
     VisionModule visionModule;
     Jump jumpModule;
+    Attack attackModule;
+    Alive aliveModule;
     GameObject player;
 
         #endregion
@@ -31,15 +37,34 @@ public class GroundEnemy : BaseAgent
     protected override void Start() {
         base.Start();
 
+        // Getting all modules
         this.collisionModule = this.GetComponent<CollisionCheckModule>();
         this.visionModule = this.GetComponent<VisionModule>();
-        this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
+        this.aliveModule = this.GetComponent<Alive>();
 
+        this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
+        this.attackModule = this.TryGetComponent(out Attack attack) ? attack : null;
+
+        // Getting player
         this.player = GameManager.Player.gameObject;
+
+        // Settings events
+        this.myMotor.onTouchWall += OnTouchWall;
+        this.aliveModule.onDamage += OnDamage;
 
     }
 
-    void Update() {
+    void OnDamage(int damage, GameObject dealer) {
+
+        Debug.Log(dealer == player);
+        if(dealer == player)
+        {
+            ChangeBehaviour(GroundEnemyBehaviour.Chasing);
+        }
+
+    }
+
+    void FixedUpdate() {
 
         switch(myBehaviour) {
             case GroundEnemyBehaviour.Idle:
@@ -53,6 +78,36 @@ public class GroundEnemy : BaseAgent
 
 
     }
+
+    bool CheckInDistance() {
+
+        float dist = Vector2.Distance(this.transform.position, player.transform.position);
+
+        if(dist > distanceToStopChasing )
+        {
+            return false;
+        }
+        else
+        {
+            if(dist < distanceToAttack && attackModule != null)
+            {  
+                Debug.Log("Attacking!");
+                attackModule.DirectAttack(player, 0, false, false);
+            }
+
+            return true;
+        }
+
+    }
+
+    void OnTouchWall(int wallSide) {
+
+        if((this.visionModule.FacingDir.x > 0 && wallSide == 1) || (this.visionModule.FacingDir.x < 0 && wallSide == -1))
+            this.visionModule.SetFacingDir(this.visionModule.FacingDir * -1);
+
+    }
+
+        #region Behaviours
 
     void IdleBehaviour() {
 
@@ -74,6 +129,8 @@ public class GroundEnemy : BaseAgent
 
     void ChasingBehaviour() {
 
+        if(!CheckInDistance()) { ChangeBehaviour(GroundEnemyBehaviour.Idle); return; }
+
         this.CalculatePath(player.transform.position);
         
         this.CheckWaypointDistance();
@@ -90,6 +147,8 @@ public class GroundEnemy : BaseAgent
         }
 
     }
+
+        #endregion
 
     void ChangeBehaviour(GroundEnemyBehaviour newBehaviour) {
 

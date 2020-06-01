@@ -10,6 +10,7 @@ public abstract class BaseAgent : MonoBehaviour {
 
     #region Pathfinding Variables
 
+    [Header("Base Agent Settings")]
     public float waypointMinDistance = 0.3f;
 
     protected Seeker mySeeker;
@@ -75,6 +76,7 @@ public abstract class BaseAgent : MonoBehaviour {
 
     protected void CheckWaypointDistance() {
 
+        if(myPath == null) return;
         if(curWaypoint >= myPath.vectorPath.Count) return;
 
         float distance = Vector2.Distance(this.transform.position, myPath.vectorPath[curWaypoint]);
