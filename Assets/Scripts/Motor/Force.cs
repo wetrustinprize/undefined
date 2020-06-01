@@ -20,7 +20,8 @@ namespace Undefined.Force
         Celling = 8,
 
         OpositeX = 16,
-        OpositeY = 32
+        OpositeY = 32,
+        Oposites = 48
     }
 
     [System.Serializable]
@@ -91,6 +92,16 @@ namespace Undefined.Force
             this.TimeToStop = time;
             this.stopBehaviour = stopBehaviour;
             this.disableAllGravity = disableAllGravity;
+        }
+
+        public Force(ForceTemplate template)
+        {
+            this.Name = template.Name == "" ? $"force"+Time.time : template.Name;
+            this.ForceApplied = template.ForceToApply;
+            this.ActualForce = template.ForceToApply;
+            this.TimeToStop = template.TimeToStop;
+            this.stopBehaviour = template.stopBehaviour;
+            this.disableAllGravity = template.disableAllGravity;
         }
 
         ///<summary>Returns the force direction</summary>
