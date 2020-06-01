@@ -9,8 +9,15 @@ public class Lever : MonoBehaviour
     [SerializeField] private Color leverColor;
     [SerializeField] private SpriteRenderer leverSprite;
 
+    [Header("Lever Debug Sprites")]    
+    [SerializeField] private Sprite leverOn;
+    [SerializeField] private Sprite leverOff;
+
     [Header("Doors")]
     [SerializeField] private Door[] doorsToActivate;
+
+    // script side
+    private bool spriteOn = false;
 
         #endregion
 
@@ -27,6 +34,9 @@ public class Lever : MonoBehaviour
     }
 
     public void Toggle() {
+
+        leverSprite.sprite = spriteOn ? leverOff : leverOn;
+        spriteOn = !spriteOn;
 
         foreach(Door d in doorsToActivate)
         {
