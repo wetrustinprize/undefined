@@ -6,7 +6,7 @@ public class ExplosiveMineAnimator : MonoBehaviour
         #region Variables
 
     [Header("Sound")]
-    [SerializeField] private AudioClip beepSFX;
+    [SerializeField] private AudioClip beepSFX = null;
 
     // Script-side
     private AudioSource source;

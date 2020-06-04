@@ -10,9 +10,9 @@ public class PlayerJump : MonoBehaviour
         #region Variables
 
     [Header("Extra Frames")]
-    [SerializeField] private float extraTimeGroundJump;
-    [SerializeField] private float extraTimeWallJump;
-    [SerializeField] private float extraTimePreJump;
+    [SerializeField] private float extraTimeGroundJump = 0f;
+    [SerializeField] private float extraTimeWallJump = 0f;
+    [SerializeField] private float extraTimePreJump = 0f;
 
     // Script side variables
     private float timeToGroundJump;

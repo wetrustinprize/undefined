@@ -9,23 +9,23 @@ public class PlayerStats : MonoBehaviour {
                 #region Variables
 
         [Header("Initial Values")]
-        [SerializeField] private Vector2 initialSpeed;
+        [SerializeField] private Vector2 initialSpeed = Vector2.zero;
         public Vector2 AditionalSpeed { get { return aditionalSpeed; } set { aditionalSpeed = value; configureSpeed(); } }
 
         [Space(10)]
-        [SerializeField] private Vector2 initialJumpSpeed;
+        [SerializeField] private Vector2 initialJumpSpeed = Vector2.zero;
         public Vector2 AditionalJumpSpeed { get { return aditionalJumpSpeed; } set { aditionalJumpSpeed = value; configureJump(); } }
 
         [Space(10)]
-        [SerializeField] private Vector2 initialWallJumpSpeed;
+        [SerializeField] private Vector2 initialWallJumpSpeed = Vector2.zero;
         public Vector2 AditionalWallJumpSpeed { get { return aditionalWallJumpSpeed; } set { aditionalWallJumpSpeed = value; configureWallJump(); } }
 
         [Space(10)]
-        [SerializeField] private int initialHealth;
+        [SerializeField] private int initialHealth = 10;
         public int AditionalHealth { get { return aditionalHealth; } set { aditionalHealth = value; configureHealth(); } }
 
         [Space(10)]
-        [SerializeField] private float initialDefense;
+        [SerializeField] private float initialDefense = 0;
         public float AditionalDefense { get { return aditionalDefense; } set { aditionalDefense = value; configureDefense(); } }
 
         // Aditionals

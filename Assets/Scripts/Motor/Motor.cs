@@ -12,8 +12,8 @@ public class Motor : MonoBehaviour
         #region Variables
 
     [Header("Bypass:")]
-    [SerializeField] private bool bypassInput;
-    [SerializeField] private bool bypassGravity;
+    [SerializeField] private bool bypassInput = false;
+    [SerializeField] private bool bypassGravity = false;
 
     [Header("Velocity")]
     [SerializeField] private Vector2 maxSpeed = Vector2.one;
@@ -24,15 +24,15 @@ public class Motor : MonoBehaviour
     [Space]
 
     [SerializeField] private LayerMask collisionLayer = 0;
-    [SerializeField] private bool onGround;
-    [SerializeField] private bool onWall;
-    [SerializeField] private bool onCelling;
-    [SerializeField] private bool onRightWall;
-    [SerializeField] private bool onLeftWall;
+    [SerializeField] private bool onGround = false;
+    [SerializeField] private bool onWall = false;
+    [SerializeField] private bool onCelling = false;
+    [SerializeField] private bool onRightWall = false;
+    [SerializeField] private bool onLeftWall = false;
 
     [Header("Other")]
-    [SerializeField] private int lastFaceDir;
-    [SerializeField] private Vector2 inputAxis; // Input received by the player
+    [SerializeField] private int lastFaceDir = 1;
+    [SerializeField] private Vector2 inputAxis = Vector2.zero; // Input received by the player
     
 
         #region References

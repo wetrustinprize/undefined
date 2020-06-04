@@ -7,11 +7,11 @@ public class HUDItemDetails : MonoBehaviour {
         #region Variables
 
     [Header("UI Components")]
-    [SerializeField] private Image itemIcon;
-    [SerializeField] private Text itemName;
-    [SerializeField] private Text itemDescription;
-    [SerializeField] private Text itemStats;
-    [SerializeField] private Text buttonText;
+    [SerializeField] private Image itemIcon = null;
+    [SerializeField] private Text itemName = null;
+    [SerializeField] private Text itemDescription = null;
+    [SerializeField] private Text itemStats = null;
+    [SerializeField] private Text buttonText = null;
 
     // Script side
     private CanvasGroup group;

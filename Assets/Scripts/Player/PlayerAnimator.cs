@@ -7,31 +7,31 @@ public class PlayerAnimator : MonoBehaviour
         #region Variables
 
     [Header("References")]
-    [SerializeField] private Motor motor;               // Reference to the Player Motor component
-    [SerializeField] private Attack attack;             // Reference to the Attack component
-    [SerializeField] private Jump jump;                 // Reference to the Jump component
-    [SerializeField] private Alive alive;               // Referente to the Alive component
+    [SerializeField] private Motor motor = null;               // Reference to the Player Motor component
+    [SerializeField] private Attack attack = null;             // Reference to the Attack component
+    [SerializeField] private Jump jump = null;                 // Reference to the Jump component
+    [SerializeField] private Alive alive = null;               // Referente to the Alive component
 
     [Header("Animator Settings")]
-    [SerializeField] private float driftThreshold;      // The threshold to play the drift animation
-    [SerializeField] private float dashThreshold;      // The threshold to stop the dash animation
+    [SerializeField] private float driftThreshold = 0.3f;      // The threshold to play the drift animation
+    [SerializeField] private float dashThreshold = 2;      // The threshold to stop the dash animation
 
     [Header("Death Animation Settingss")]
-    [SerializeField] private Transform deathFocus;      // Where will the camera focus when the player dies
+    [SerializeField] private Transform deathFocus = null;      // Where will the camera focus when the player dies
  
     [Header("Particles")]
-    [SerializeField] private GameObject ghostParticle;          // The ghost "particle"
+    [SerializeField] private GameObject ghostParticle = null;          // The ghost "particle"
     [Space]
-    [SerializeField] private Transform dustSpawnTransform;      // The dust particles transform
-    [SerializeField] private GameObject dustParticles;          // The dust particles when walking/running
+    [SerializeField] private Transform dustSpawnTransform = null;      // The dust particles transform
+    [SerializeField] private GameObject dustParticles = null;          // The dust particles when walking/running
     [Space]
-    [SerializeField] private GameObject wallJumpDustParticles;  // The dust particles when walljumping
-    [SerializeField] private ParticleSystem wallParticles;      // The wall dust particles when walking/running
-    [SerializeField] private float wallSlideParticlesVel;       // The velocity required to enable the wall slide particles
+    [SerializeField] private GameObject wallJumpDustParticles = null;  // The dust particles when walljumping
+    [SerializeField] private ParticleSystem wallParticles = null;      // The wall dust particles when walking/running
+    [SerializeField] private float wallSlideParticlesVel = 5;       // The velocity required to enable the wall slide particles
 
     [Header("Animator References")]
-    [SerializeField] private Animator animator;             // Reference to the animator
-    [SerializeField] private SpriteRenderer sprite;         // Reference to the sprite renderer
+    [SerializeField] private Animator animator = null;             // Reference to the animator
+    [SerializeField] private SpriteRenderer sprite = null;         // Reference to the sprite renderer
 
 
     //Script side var

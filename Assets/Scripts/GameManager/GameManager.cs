@@ -7,10 +7,10 @@ public class GameManager : MonoBehaviour
         #region Variables
 
     [Header("Prefabs")]
-    [SerializeField] private GameObject PlayerPrefab;
-    [SerializeField] private GameObject BirdPrebab;
-    [SerializeField] private GameObject HUDPrefab;
-    [SerializeField] private GameObject CameraPrefab;
+    [SerializeField] private GameObject PlayerPrefab = null;
+    [SerializeField] private GameObject BirdPrebab = null;
+    [SerializeField] private GameObject HUDPrefab = null;
+    [SerializeField] private GameObject CameraPrefab = null;
 
     // Script side variables
     private static GameObject playerInstance = null;

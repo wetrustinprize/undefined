@@ -7,18 +7,18 @@ public class CameraController : MonoBehaviour
 
 
     [Header("Follow settings")]
-    [SerializeField] private GameObject lookAt;
-    [SerializeField] private float size;
+    [SerializeField] private GameObject lookAt = null;
+    [SerializeField] private float size = 30;
 
     [Header("Look ahead settings:")]
-    [SerializeField] private float lookAheadDistance;
-    [SerializeField] private float lookAheadStartTimeSpeed;
-    [SerializeField] private float lookAheadEndTimeSpeed;
-    [SerializeField] private float lookAheadTime;
+    [SerializeField] private float lookAheadDistance = 7;
+    [SerializeField] private float lookAheadStartTimeSpeed = 3;
+    [SerializeField] private float lookAheadEndTimeSpeed = 1;
+    [SerializeField] private float lookAheadTime = 3;
 
     [Header("Vertical look ahead settings:")]
-    [SerializeField] private float gravityScale;
-    [SerializeField] private AnimationCurve gravityScaleCurve;
+    [SerializeField] private float gravityScale = 50;
+    [SerializeField] private AnimationCurve gravityScaleCurve = null;
 
     // Script-side
     private bool isPlayer { get { return lookAt.GetComponent<PlayerController>(); } }

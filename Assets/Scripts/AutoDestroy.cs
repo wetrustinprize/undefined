@@ -4,7 +4,7 @@ public class AutoDestroy : MonoBehaviour
 {
     
     [SerializeField]
-    private float time;
+    private float time = 1f;
 
     void Start()
     {

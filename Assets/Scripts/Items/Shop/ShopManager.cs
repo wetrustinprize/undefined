@@ -8,7 +8,7 @@ public class ShopManager : MonoBehaviour
     #region Variables
 
     [Header("Shop Info")]
-    [SerializeField] private ShopDetails details;
+    [SerializeField] private ShopDetails details = null;
 
     #endregion
     

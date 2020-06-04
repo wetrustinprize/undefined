@@ -6,10 +6,10 @@ public class Tutorial_WASD : MonoBehaviour
         #region Variables
 
     [Header("Sprites Gameobjects")]
-    [SerializeField] private SpriteRenderer w_sprite;
-    [SerializeField] private SpriteRenderer a_sprite;
-    [SerializeField] private SpriteRenderer s_sprite;
-    [SerializeField] private SpriteRenderer d_sprite;
+    [SerializeField] private SpriteRenderer w_sprite = null;
+    [SerializeField] private SpriteRenderer a_sprite = null;
+    [SerializeField] private SpriteRenderer s_sprite = null;
+    [SerializeField] private SpriteRenderer d_sprite = null;
 
     [Header("Sprites")]
     [SerializeField] private Sprite[] w_sprites = new Sprite[2];

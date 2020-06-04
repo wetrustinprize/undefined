@@ -6,7 +6,7 @@ public class SpriteScreenParallax : MonoBehaviour
         #region Variables
 
     [Header("Parallax config")]
-    [SerializeField] private Vector2 effect;
+    [SerializeField] private Vector2 effect = Vector2.zero;
 
     private Transform cam;
     private Vector2 startPos;

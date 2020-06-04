@@ -6,7 +6,7 @@ public class JumpPad : MonoBehaviour
     
         #region
 
-    [SerializeField] private ForceTemplate forceToApply;
+    [SerializeField] private ForceTemplate forceToApply = null;
     [SerializeField] private bool useAutoTime = true;
 
         #endregion

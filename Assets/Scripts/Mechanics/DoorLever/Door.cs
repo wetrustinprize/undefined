@@ -7,17 +7,17 @@ public class Door : MonoBehaviour
         #region Variables
 
     [Header("Information")]
-    [SerializeField] private bool activated;
-    [SerializeField] private BoxCollider2D doorCollider;
-    [SerializeField] private SpriteRenderer doorSprite;
+    [SerializeField] private bool activated = false;
+    [SerializeField] private BoxCollider2D doorCollider = null;
+    [SerializeField] private SpriteRenderer doorSprite = null;
 
     [Header("Animation")]
-    [SerializeField] private AnimationCurve animationCurve;
+    [SerializeField] private AnimationCurve animationCurve = null;
     [SerializeField] private float animationDuration = 1.0f;
 
     [Header("Positions")]
-    [SerializeField] private Transform deactivatedPos;
-    [SerializeField] private Transform activatedPos;
+    [SerializeField] private Transform deactivatedPos = null;
+    [SerializeField] private Transform activatedPos = null;
 
     // script side
     private List<Color> doorColor = new List<Color> { Color.gray };

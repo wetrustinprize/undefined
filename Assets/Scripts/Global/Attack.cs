@@ -9,9 +9,9 @@ public class Attack : MonoBehaviour
         #region Variables
 
     [Header("Raycast Settings")]
-    [SerializeField] private Vector2 offset;
-    [SerializeField] private Vector2 size;
-    [SerializeField] private LayerMask aliveLayes;
+    [SerializeField] private Vector2 offset = Vector2.zero;
+    [SerializeField] private Vector2 size = Vector2.one;
+    [SerializeField] private LayerMask aliveLayes = 0;
 
     [Header("Attack Settings")]
     public int Damage;

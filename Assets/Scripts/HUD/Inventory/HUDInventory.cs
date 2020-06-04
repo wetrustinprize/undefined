@@ -7,20 +7,20 @@ public class HUDInventory : MonoBehaviour
         #region Variables
 
     [Header("Selected Item Info")]
-    [SerializeField] private HUDItemDetails itemsDetails;
+    [SerializeField] private HUDItemDetails itemsDetails = null;
 
     [Header("Equiped Items")]
-    [SerializeField] private HUDEquipedInfo activeItemInfo;
-    [SerializeField] private HUDEquipedInfo passiveItemInfo;
-    [SerializeField] private HUDEquipedInfo weaponItemInfo;
+    [SerializeField] private HUDEquipedInfo activeItemInfo = null;
+    [SerializeField] private HUDEquipedInfo passiveItemInfo = null;
+    [SerializeField] private HUDEquipedInfo weaponItemInfo = null;
 
     [Header("Backpack")]
-    [SerializeField] private Transform itemsTransform;
-    [SerializeField] private GameObject itemPrefab;
+    [SerializeField] private Transform itemsTransform = null;
+    [SerializeField] private GameObject itemPrefab = null;
 
     // Script side variables
     private int selectedItemIndex;
-    private bool selectedEquipItem;
+    //private bool selectedEquipItem;
 
     // Script side
     private GameObject player;
@@ -47,7 +47,7 @@ public class HUDInventory : MonoBehaviour
 
         // Sets initial value to the selected index
         selectedItemIndex = -1;
-        selectedEquipItem = false;
+        //selectedEquipItem = false;
 
         // Configure the buttons
         activeItemInfo.SelectButton.onClick.AddListener(() => {ShowSelectedEquipedItem(ItemType.Active);});
@@ -97,7 +97,7 @@ public class HUDInventory : MonoBehaviour
         itemsDetails.ShowItemInfo(itemToShow);
 
         selectedItemIndex = positionInventory;
-        selectedEquipItem = true;
+        //selectedEquipItem = true;
 
     }
 
@@ -125,7 +125,7 @@ public class HUDInventory : MonoBehaviour
         if(item == null) return;
 
         itemsDetails.ShowItemInfo(item, true);
-        selectedEquipItem = true;
+        //selectedEquipItem = true;
 
     }
 

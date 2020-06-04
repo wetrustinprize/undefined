@@ -15,8 +15,8 @@ public class HUDManager : MonoBehaviour
         #region Variables
 
     [Header("Canvas Groups")]
-    [SerializeField] private CanvasGroup hudInventory;
-    [SerializeField] private CanvasGroup hudShop;
+    [SerializeField] private CanvasGroup hudInventory = null;
+    [SerializeField] private CanvasGroup hudShop = null;
 
     [Header("Able")]
     public bool canOpenInventory = true;

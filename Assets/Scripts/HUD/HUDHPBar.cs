@@ -6,17 +6,17 @@ public class HUDHPBar : MonoBehaviour
         #region Variables
 
     [Header("Bars")]
-    [SerializeField] private Image[] hpBars;   // ALl the HP bars
-    [SerializeField] private Animator hpAnimator;
+    [SerializeField] private Image[] hpBars = null;   // ALl the HP bars
+    [SerializeField] private Animator hpAnimator = null;
 
     [Header("Bars Texture")]
-    [SerializeField] private Sprite hpFull;
-    [SerializeField] private Sprite hpHalfBroken;
-    [SerializeField] private Sprite hpBroken;
-    [SerializeField] private float thresholdToBroken;
+    [SerializeField] private Sprite hpFull = null;
+    [SerializeField] private Sprite hpHalfBroken = null;
+    [SerializeField] private Sprite hpBroken = null;
+    [SerializeField] private float thresholdToBroken = 0.25f;
 
     [Header("Particles")]
-    [SerializeField] private GameObject hpBreakParticle;
+    [SerializeField] private GameObject hpBreakParticle = null;
 
     // Local variables
     private Alive playerAliveComponent;             // The player Alive component

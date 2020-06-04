@@ -6,10 +6,10 @@ public class WaterManager : MonoBehaviour
         #region Variables
 
     [Header("Reflection Camera")]
-    [SerializeField] private Camera waterReflectionCamera;
+    [SerializeField] private Camera waterReflectionCamera = null;
 
     [Header("Reflection Sprite")]
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer = null;
 
     private RenderTexture waterReflection;
     public static WaterManager instance;

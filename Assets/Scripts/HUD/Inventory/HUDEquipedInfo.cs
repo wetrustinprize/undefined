@@ -7,11 +7,11 @@ public class HUDEquipedInfo : MonoBehaviour {
         #region Variables
 
     [Header("Informations")]
-    [SerializeField] private Image equipedSprite;
-    [SerializeField] private Text ammount;
+    [SerializeField] private Image equipedSprite = null;
+    [SerializeField] private Text ammount = null;
 
     [Header("Button")]
-    [SerializeField] private Button selectButton;
+    [SerializeField] private Button selectButton = null;
 
     // public access
     public Button SelectButton { get { return selectButton; } }

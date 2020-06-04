@@ -23,8 +23,8 @@ public class Jump : MonoBehaviour
 
     [Header("Wall slow settings")]
     [SerializeField] private bool applyWallSlow = true;
-    [SerializeField] private Slow normalWallSlow;
-    [SerializeField] private Slow noWallJumpSlow;
+    [SerializeField] private Slow normalWallSlow = null;
+    [SerializeField] private Slow noWallJumpSlow = null;
 
     // Actions
     public Action OnJump;

@@ -8,7 +8,7 @@ public class VisionModule : MonoBehaviour
 
     [Header("Vision:")]
     [SerializeField] private Vector2 facingDir = new Vector2(1,0);
-    [SerializeField] private LayerMask raycastLayers;        // Layers to raycast
+    [SerializeField] private LayerMask raycastLayers = 0;        // Layers to raycast
     
     [Range(1f, 180f)]
     [SerializeField] private double maxAngle = 45f;          // Maximun angle in degrees

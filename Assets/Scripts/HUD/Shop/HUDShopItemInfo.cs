@@ -7,7 +7,7 @@ public class HUDShopItemInfo : MonoBehaviour {
         #region Variables
 
     [Header("UI")]
-    [SerializeField] private Image itemImage;
+    [SerializeField] private Image itemImage = null;
 
     [Header("Info")]
     public int shopListIndex;

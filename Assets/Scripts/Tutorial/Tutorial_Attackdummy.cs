@@ -7,7 +7,7 @@ public class Tutorial_Attackdummy : MonoBehaviour
         #region Variables
 
     [Header("Gameobjects")]
-    [SerializeField] private Transform dummyBody;
+    [SerializeField] private Transform dummyBody = null;
 
     // Script side
     private Alive myAlive;

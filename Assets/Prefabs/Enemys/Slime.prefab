@@ -205,6 +205,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21899e8c2f6c4e41a91977ca024cc4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ignoreInputVel: 1
+  ignoreInputDir: 1
+  ignoreVel: 0
+  ignoreCollisions: 1
   ignoreFlipX: 0
   ignoreFlipY: 1
   animator: {fileID: 4324886272615893263}

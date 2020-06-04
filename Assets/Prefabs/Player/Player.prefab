@@ -5432,9 +5432,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889a4994f7536f743996db26dd9bb26e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  min_bounces: 2
-  knock_force: 2
-  tel_cooldown: 0
+  minBounces: 2
+  knockForce:
+    Name: 
+    ForceToApply: {x: 7, y: 2}
+    stopBehaviour: 15
+    disableAllGravity: 0
+    TimeToStop: 0.1
+  telCooldown: 0
   teleportGraphs: {fileID: 7381750135871718034}
 --- !u!61 &6774648264558360629
 BoxCollider2D:

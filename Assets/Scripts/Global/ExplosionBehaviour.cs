@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(Attack))]
 public class ExplosionBehaviour : MonoBehaviour
 {
@@ -10,12 +7,10 @@ public class ExplosionBehaviour : MonoBehaviour
         #region Variable
 
     [Header("Explosion Settings")]
-    [SerializeField] private float explosion_Time;
-    [SerializeField] private float explosion_MaxSize;
-    [SerializeField] private bool destroy_Gameobject;
+    [SerializeField] private float explosionRadius = 6;
+    [SerializeField] private LayerMask raycastLayers = 0;
 
     // Local variables
-    private float explosionCurTime;
     private Attack attack;
 
         #endregion
@@ -25,22 +20,13 @@ public class ExplosionBehaviour : MonoBehaviour
         // Gets the attack component
         attack = GetComponent<Attack>();
 
-        transform.localScale = Vector3.zero;
-
-    }
-
-    void FixedUpdate() {
-
-        explosionCurTime += Time.fixedDeltaTime;
-        float percentage = explosionCurTime / explosion_Time;
-        transform.localScale = new Vector3(explosion_MaxSize * percentage, explosion_MaxSize * percentage, 1);
-
-        if(explosionCurTime > explosion_Time)
+        // Explodes
+        foreach(Collider2D col in Physics2D.OverlapCircleAll(transform.position, explosionRadius, raycastLayers))
         {
-            if(destroy_Gameobject)
-                Destroy(this.gameObject);
-            else
-                Destroy(this);
+            if(col.tag != "Player")
+            {
+                attack.DirectAttack(col.gameObject);
+            }
         }
 
     }

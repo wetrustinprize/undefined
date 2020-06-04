@@ -6,15 +6,15 @@ public class Lever : MonoBehaviour
         #region Variables
 
     [Header("Lever Settings")]
-    [SerializeField] private Color leverColor;
-    [SerializeField] private SpriteRenderer leverSprite;
+    [SerializeField] private Color leverColor = Color.white;
+    [SerializeField] private SpriteRenderer leverSprite = null;
 
     [Header("Lever Debug Sprites")]    
-    [SerializeField] private Sprite leverOn;
-    [SerializeField] private Sprite leverOff;
+    [SerializeField] private Sprite leverOn = null;
+    [SerializeField] private Sprite leverOff = null;
 
     [Header("Doors")]
-    [SerializeField] private Door[] doorsToActivate;
+    [SerializeField] private Door[] doorsToActivate = null;
 
     // script side
     private bool spriteOn = false;

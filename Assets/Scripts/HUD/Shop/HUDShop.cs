@@ -8,15 +8,15 @@ public class HUDShop : MonoBehaviour {
         #region Variables
 
     [Header("Shop Menu")]
-    [SerializeField] private Transform itemsTransform;
-    [SerializeField] private GameObject itemsPrefab;
+    [SerializeField] private Transform itemsTransform = null;
+    [SerializeField] private GameObject itemsPrefab = null;
 
     [Header("Item Details")]
-    [SerializeField] private HUDShopItemDetails itemDetails;
+    [SerializeField] private HUDShopItemDetails itemDetails = null;
 
     // Script side variables
-    private ShopDetails myDetails;
-    private PlayerInventory inventory;
+    private ShopDetails myDetails = null;
+    private PlayerInventory inventory = null;
 
     private bool emptyShop;
 

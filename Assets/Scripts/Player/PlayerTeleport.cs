@@ -6,16 +6,16 @@ public class PlayerTeleport : MonoBehaviour
         #region Variables
 
     [Header("Configuration")]
-    [SerializeField] private int min_bounces;
+    [SerializeField] private int minBounces = 2;
 
     [Header("Knockback")]
-    [SerializeField] private float knock_force;
+    [SerializeField] private ForceTemplate knockForce = null;
 
     [Header("Cooldown")]
-    [SerializeField] private float tel_cooldown;
+    [SerializeField] private float telCooldown = 0;
 
     [Header("Graphics")]
-    [SerializeField] private GameObject teleportGraphs;
+    [SerializeField] private GameObject teleportGraphs = null;
 
     // Script side
     private bool performing;     // Is the teleport being perfomed?
@@ -37,8 +37,8 @@ public class PlayerTeleport : MonoBehaviour
         // Initial creature bounce config
         creature = GameManager.Creature;
 
-        creature.SetMaxBounces(min_bounces + 2);
-        creature.SetMinBounces(min_bounces);
+        creature.SetMaxBounces(minBounces + 2);
+        creature.SetMinBounces(minBounces);
         
         creature.OnBounceEnd += StartCountdown;
 
@@ -85,7 +85,13 @@ public class PlayerTeleport : MonoBehaviour
         creature.Bounce(dir);
 
         teleportGraphs.SetActive(false);
-        playerMotor.AddForce(new Force("teleportknockback", dir * -1 * knock_force, 0.1f));
+
+        knockForce.Name = "teleportknockback";
+        Force f = new Force(knockForce);
+        f.ForceApplied = dir * -1 * knockForce.ForceToApply;
+        f.ActualForce = dir * -1 * knockForce.ForceToApply;
+
+        playerMotor.AddForce(f);
 
     }
 
@@ -127,12 +133,12 @@ public class PlayerTeleport : MonoBehaviour
     }
 
     void StartCountdown() {
-        currentCooldown = tel_cooldown;
+        currentCooldown = telCooldown;
     }
 
     void Teleport() {
 
-        if(creature.TotalBounces < min_bounces) { return; }
+        if(creature.TotalBounces < minBounces) { return; }
 
         transform.position = creature.transform.position;
         playerMotor.ResetGravity();

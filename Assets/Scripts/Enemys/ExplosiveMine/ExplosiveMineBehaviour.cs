@@ -9,10 +9,10 @@ public class ExplosiveMineBehaviour : MonoBehaviour
         #region Variables
 
     [Header("Explosion")]
-    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject explosion = null;
 
     [Header("Animation")]
-    [SerializeField] private Animator anim;
+    [SerializeField] private Animator anim = null;
 
     // Script-side variables
     private GameObject player;

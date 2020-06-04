@@ -60,7 +60,6 @@ public class Alive : MonoBehaviour
     ///<summary>Takes damage.</summary>
     ///<param name="damage">Damage to receive</param>
     public void TakeDamage(int damage, GameObject dealer) {
-        Debug.Log(damage);
         if(damage == 0) return;
 
         if(damage > 0)

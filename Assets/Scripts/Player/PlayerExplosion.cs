@@ -5,14 +5,14 @@ public class PlayerExplosion : MonoBehaviour {
         #region Variables
 
     [Header("Informatio")]
-    [SerializeField] private float maxExplosionDistance;
+    [SerializeField] private float maxExplosionDistance = 20f;
 
     [Header("Visuals")]
-    [SerializeField] private GameObject explosionRadiusVisual;
-    [SerializeField] private SpriteRenderer[] explosionRadiusSprites;
+    [SerializeField] private GameObject explosionRadiusVisual = null;
+    [SerializeField] private SpriteRenderer[] explosionRadiusSprites = null;
 
     [Header("Prefabs")]
-    public GameObject explosion_Prefab;
+    public GameObject explosion_Prefab = null;
 
     // Local variables
     private CreatureController creature;

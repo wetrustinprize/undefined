@@ -7,8 +7,8 @@ public class Interactible : MonoBehaviour {
 
         #region Variables
 
-    [SerializeField] private Animator indicator;
-    [SerializeField] private UnityEvent onInteract;
+    [SerializeField] private Animator indicator = null;
+    [SerializeField] private UnityEvent onInteract = null;
 
         #endregion
 

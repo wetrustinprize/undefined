@@ -1,13 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CreatureAnimator : MonoBehaviour
 {
 
         #region Variables
 
-    [SerializeField] private CreatureController creatureController;
+    [SerializeField] private CreatureController creatureController = null;
 
     // Script side
     private SpriteRenderer spriteRenderer;

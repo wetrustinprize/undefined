@@ -7,8 +7,8 @@ public class HUDItemInfo : MonoBehaviour
         #region Variables
 
     [Header("UI")]
-    [SerializeField] private Image itemImage;
-    [SerializeField] private Text itemQuantity;
+    [SerializeField] private Image itemImage = null;
+    [SerializeField] private Text itemQuantity = null;
 
     [Header("Info")]
     public int inventoryIndex;

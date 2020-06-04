@@ -6,12 +6,12 @@ using System;
 public class HUDShopItemDetails : MonoBehaviour {
 
     [Header("UI Components")]
-    [SerializeField] private Image itemIcon;
-    [SerializeField] private Text itemName;
-    [SerializeField] private Text itemPrice;
-    [SerializeField] private Text yourGold;
-    [SerializeField] private Text shopMessage;
-    [SerializeField] private Button buyButton;
+    [SerializeField] private Image itemIcon = null;
+    [SerializeField] private Text itemName = null;
+    [SerializeField] private Text itemPrice = null;
+    [SerializeField] private Text yourGold = null;
+    [SerializeField] private Text shopMessage = null;
+    [SerializeField] private Button buyButton = null;
 
     public void ShowItem(ItemShop item, int playerGold) {
 

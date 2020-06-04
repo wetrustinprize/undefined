@@ -17,9 +17,9 @@ public class GroundEnemy : BaseAgent
         #region Variables
     
     [Header("Ground Enemy Settings")]
-    [SerializeField] private GroundEnemyBehaviour myBehaviour;
-    [SerializeField] private float distanceToStopChasing;
-    [SerializeField] private float distanceToAttack;
+    [SerializeField] private GroundEnemyBehaviour myBehaviour = GroundEnemyBehaviour.Idle;
+    [SerializeField] private float distanceToStopChasing = 100;
+    [SerializeField] private float distanceToAttack = 1.5f;
 
         #region References
 
@@ -56,7 +56,6 @@ public class GroundEnemy : BaseAgent
 
     void OnDamage(int damage, GameObject dealer) {
 
-        Debug.Log(dealer == player);
         if(dealer == player)
         {
             ChangeBehaviour(GroundEnemyBehaviour.Chasing);

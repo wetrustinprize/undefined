@@ -18,30 +18,30 @@ public class CreatureController : MonoBehaviour
         #region Variables
 
     [Header("State")]
-    [SerializeField] private CreatureState state;   // The current state of the creature
+    [SerializeField] private CreatureState state = CreatureState.Following;   // The current state of the creature
 
     [Header("Following")]
-    [SerializeField] private float follow_Time;             // The time to the creature get close to the player
-    [SerializeField] private Vector2 follow_Offset;         // The off of the creature
+    [SerializeField] private float follow_Time = 0.1f;             // The time to the creature get close to the player
+    [SerializeField] private Vector2 follow_Offset = Vector2.zero;         // The off of the creature
 
     [Header("Bouncing")]
-    [SerializeField] private float bounce_Slowing;          // Slow percentage of each bounce
-    [SerializeField] private int bounce_Max;                // Maximun bounces
-    [SerializeField] private int bounce_Min;                // Min bounces to the player teleport (used for sfx)
-    [SerializeField] private Vector2 bounce_Dir;            // The direction to fly towards
-    [SerializeField] private float bounce_Velocity;         // The velocity of the fly
-    [SerializeField] private float bounce_MaxDist;          // Maximung distance to fly
-    [SerializeField] private float bounce_MaxPlayerDist;    // Maximung distance from player
-    [SerializeField] private LayerMask bounce_Layers;       // The layers to perform the raycast
-    [SerializeField] private Vector2 bounce_PlayerOffset;
+    [SerializeField] private float bounce_Slowing = 0.8f;          // Slow percentage of each bounce
+    [SerializeField] private int bounce_Max = 3;                // Maximun bounces
+    [SerializeField] private int bounce_Min = 0;                // Min bounces to the player teleport (used for sfx)
+    [SerializeField] private Vector2 bounce_Dir = Vector2.zero;            // The direction to fly towards
+    [SerializeField] private float bounce_Velocity = 50;         // The velocity of the fly
+    [SerializeField] private float bounce_MaxDist = 50;          // Maximung distance to fly
+    [SerializeField] private float bounce_MaxPlayerDist = 10000;    // Maximung distance from player
+    [SerializeField] private LayerMask bounce_Layers = 0;       // The layers to perform the raycast
+    [SerializeField] private Vector2 bounce_PlayerOffset = Vector2.zero;
 
     [Header("Explosion")]
-    [SerializeField] private float explosion_Velocity;      // The velocity which the creature travels to the explosion destionation
-    [SerializeField] private float explosion_Time;          // The time the creature stays in the "explosion" animation
+    [SerializeField] private float explosion_Velocity = 60;      // The velocity which the creature travels to the explosion destionation
+    [SerializeField] private float explosion_Time = 0.3f;          // The time the creature stays in the "explosion" animation
 
     [Header("SFX")]
-    [SerializeField] private AudioClip bounce_NoTeleportSFX;    // Bounce SFX (can't teleport)
-    [SerializeField] private AudioClip bounce_TeleportSFX;      // Bounce SFX (can teleport)
+    [SerializeField] private AudioClip bounce_NoTeleportSFX = null;    // Bounce SFX (can't teleport)
+    [SerializeField] private AudioClip bounce_TeleportSFX = null;      // Bounce SFX (can teleport)
 
     // Events
     public Action OnBounceEnd;                      // Called when bounce ends

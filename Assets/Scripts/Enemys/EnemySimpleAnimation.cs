@@ -1,19 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemySimpleAnimation : MonoBehaviour
 {
 
         #region Variables
 
+    [Header("Animation")]
+    [SerializeField] private bool ignoreInputVel = false;
+    [SerializeField] private bool ignoreInputDir = false;
+
+    [Space(10)]
+    [SerializeField] private bool ignoreVel = false;
+    [SerializeField] private bool ignoreCollisions = false;
+
     [Header("Animation Settings")]
-    [SerializeField] private bool ignoreFlipX;
-    [SerializeField] private bool ignoreFlipY;
+    [SerializeField] private bool ignoreFlipX = false;
+    [SerializeField] private bool ignoreFlipY = false;
 
     [Header("Animator Reference")]
-    [SerializeField] private Animator animator;
-    [SerializeField] private SpriteRenderer flipSprite;
+    [SerializeField] private Animator animator = null;
+    [SerializeField] private SpriteRenderer flipSprite = null;
 
     // Script side
     private Motor motor;
@@ -29,20 +35,50 @@ public class EnemySimpleAnimation : MonoBehaviour
 
     void Update()
     {
-        // Get values
-        Vector2 inputVel = motor.GetForce("input").ActualForce;
-
-        float inputHVel = inputVel.x / motor.MaxSpeed.x;
-        float inputVVel = inputVel.y / motor.MaxSpeed.y;
-
         float inputHDir = motor.InputAxis.x;
         float inputVDir = motor.InputAxis.y;
 
-        float hVel = motor.finalSpeed.x;
-        float vVel = motor.finalSpeed.y;
+        if(!ignoreInputVel)
+        {
+            // Get values
+            Vector2 inputVel = motor.GetForce("input").ActualForce;
 
-        bool onAir = !motor.OnGround;
-        bool onWall = motor.OnWall;
+            float inputHVel = inputVel.x / motor.MaxSpeed.x;
+            float inputVVel = inputVel.y / motor.MaxSpeed.y;
+
+            // Apply animator values
+            animator.SetFloat("inputHVel", inputHVel);
+            animator.SetFloat("inputVVel", inputVVel);
+        }
+
+        if(!ignoreInputDir)
+        {
+            // Apply animator values
+            animator.SetFloat("inputHDir", inputHDir);
+            animator.SetFloat("inputVDir", inputVDir);
+        }
+
+        if(!ignoreVel)
+        {
+            // Get values
+            float hVel = motor.finalSpeed.x;
+            float vVel = motor.finalSpeed.y;
+
+            // Apply animator values
+            animator.SetFloat("hVel", hVel);
+            animator.SetFloat("vVel", vVel);
+        }
+
+        if(!ignoreCollisions)
+        {
+            // Get values
+            bool onAir = !motor.OnGround;
+            bool onWall = motor.OnWall;
+
+            // Apply animator values
+            animator.SetBool("onAir", onAir);
+            animator.SetBool("onWall", onWall);
+        }
 
         // Check flip
         if(!ignoreFlipX)
@@ -57,16 +93,5 @@ public class EnemySimpleAnimation : MonoBehaviour
             else if(inputVDir < 0) flipSprite.flipY = false;
         }
 
-        // Apply animator values
-        animator.SetFloat("inputHVel", inputHVel);
-        animator.SetFloat("inputVVel", inputVVel);
-        animator.SetFloat("inputHDir", inputHDir);
-        animator.SetFloat("inputVDir", inputVDir);
-
-        animator.SetFloat("hVel", hVel);
-        animator.SetFloat("vVel", vVel);
-
-        animator.SetBool("onAir", onAir);
-        animator.SetBool("onWall", onWall);
     }
 }
