@@ -1,5 +1,6 @@
 using UnityEngine;
 using Undefined.Items;
+using Undefined.Items.Shop;
 using System.Collections.Generic;
 using System;
 
@@ -14,18 +15,23 @@ public class PlayerInventory : MonoBehaviour {
     [Header("Backpack")]
     [SerializeField] private List<InventoryItem> items = new List<InventoryItem>();
     [SerializeField] private int gold = 0;
+    [SerializeField] private int secretGold = 0;
 
     // Events
     public Action<ItemObject> onEquip;
     public Action<ItemObject> onUnequip;
     public Action<ItemObject> onUse;
 
+    public Action<int> onChangeGold;
+    public Action<int> onChangeSecretGold;
+
     // Public acess
     public List<InventoryItem> Items { get { return items; } }
     public InventoryItem ActiveItem { get { return equipedActive; } }
     public InventoryItem PassiveItem { get { return equipedPassive; } }
     public InventoryItem WeaponItem { get { return equipedWeapon; } }
-    public int Gold { get { return gold; } set { gold = value; } }
+    public int Gold { get { return gold; } set { AddGold(value); } }
+    public int SecretGold { get { return secretGold; } set { AddGold(value, ShopCoin.Secret); } }
 
         #endregion
 
@@ -43,6 +49,24 @@ public class PlayerInventory : MonoBehaviour {
             equipedActive = new InventoryItem();
         
         onUse?.Invoke(usedItem);
+
+    }
+
+    public void AddGold(int quantity, ShopCoin coinType = ShopCoin.Gold)
+    {
+        
+        switch(coinType)
+        {
+            case ShopCoin.Gold:
+                onChangeGold(quantity);
+                gold += quantity;
+                break;
+            
+            case ShopCoin.Secret:
+                onChangeSecretGold(quantity);
+                secretGold += quantity;
+                break;
+        }
 
     }
 

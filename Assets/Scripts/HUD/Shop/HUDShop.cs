@@ -27,8 +27,11 @@ public class HUDShop : MonoBehaviour {
 
     void Start() {
 
-        inventory = GameObject.FindWithTag("Player").GetComponent<PlayerInventory>();
+        inventory = GameManager.Player.GetComponent<PlayerInventory>();
         selectedItem = -1;
+
+        inventory.onChangeGold += q => itemDetails.UpdatePlayerGold(q, ShopCoin.Gold);
+        inventory.onChangeSecretGold += q => itemDetails.UpdatePlayerGold(q, ShopCoin.Secret);
 
     }
 
@@ -46,10 +49,20 @@ public class HUDShop : MonoBehaviour {
 
         ItemShop item = myDetails.sellingItems[selectedItem];
 
-        if(inventory.Gold < item.value) return;
+        switch(item.coinType)
+        {
+            case ShopCoin.Gold:
+                if(inventory.Gold < item.value) return;
+                inventory.Gold -= item.value;
+                break;
+            
+            case ShopCoin.Secret:
+                if(inventory.SecretGold < item.value) return;
+                inventory.SecretGold -= item.value;
+                break;
+        }
 
-        inventory.Gold -= item.value;
-        item.sellingItem.OnBuy(inventory.gameObject);
+        item.sellingItem.OnBuy(GameManager.Player.gameObject);
         inventory.AddItem(item.sellingItem);
 
         RefreshShop();
@@ -71,7 +84,7 @@ public class HUDShop : MonoBehaviour {
         if(deletedItems.Exists(i => i == selectedItem)) selectedItem = -1;
 
         if(selectedItem == -1)
-            itemDetails.ShowItem(myDetails, emptyShop, inventory.Gold);
+            itemDetails.ShowItem(myDetails, emptyShop);
         else
             ShowSelectedItem(selectedItem);
 
@@ -112,7 +125,7 @@ public class HUDShop : MonoBehaviour {
     public void ShowSelectedItem(int shopListIndex) {
 
         selectedItem = shopListIndex;
-        itemDetails.ShowItem(myDetails.sellingItems[shopListIndex], inventory.Gold);
+        itemDetails.ShowItem(myDetails.sellingItems[shopListIndex]);
 
     }
 
