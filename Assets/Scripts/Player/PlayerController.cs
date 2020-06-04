@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour {
     public bool canSkills = true;
     public bool canDash = true;
     public bool canTeleport = true;
-    public bool canGhost = true;
+    public bool canExplode = true;
+
+    [Space(10)]
     [SerializeField] private float explosionMinTimer = 0.35f;
 
     [Header("Inventory")]
@@ -156,6 +158,8 @@ public class PlayerController : MonoBehaviour {
 
     void HoldingAttackTick() {
 
+        if(!canExplode) AttackCanceled();
+
         totalAttackSeconds += Time.deltaTime;
 
         if(totalAttackSeconds >= explosionMinTimer && !explosion.IsShowingVisual)
@@ -167,18 +171,20 @@ public class PlayerController : MonoBehaviour {
 
     void AttackCanceled() {
 
+        if(!receiveInput) return;
+        if(!holdingAttack) return;
+
         holdingAttack = false;
 
-        if(canAttack)
+        if(totalAttackSeconds > explosionMinTimer && canExplode && canSkills)
         {
-            if(totalAttackSeconds < explosionMinTimer) {
-                attack.Execute();
-            }
-            else
-            {
-                explosion.Execute();
-                explosion.StopExplosionVisual();
-            }
+            explosion.Execute();
+            explosion.StopExplosionVisual();
+        }
+        else if(canAttack)
+        {
+            explosion.StopExplosionVisual();
+            attack.Execute();
         }
 
         totalAttackSeconds = 0;
