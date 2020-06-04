@@ -18,12 +18,14 @@ MonoBehaviour:
   - "Est\xE1 ensolarado hoje, dia estranho para Pandora."
   noItemsMessage: []
   sellingItems:
-  - value: 300
+  - value: 1
+    coinType: 1
     sellerDescriptions:
     - "Eu achei isso jogado no ch\xE3o, mas pelo seu brilho deve ser caro!"
     - "Isso aqui \xE9 MUITO pesado, por isso \xE9 caro."
     sellingItem: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
   - value: 12
+    coinType: 0
     sellerDescriptions:
     - "Esses patos s\xE3o bem f\xE1ceis de achar, \xE9 s\xF3 dessenterar um tumulo."
     - "Delicioso com um pouco de lim\xE3o!"

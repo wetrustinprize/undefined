@@ -160,7 +160,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -243,7 +243,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5282,9 +5282,9 @@ MonoBehaviour:
   canJump: 1
   canAttack: 1
   canSkills: 1
-  canDash: 1
-  canTeleport: 1
-  canGhost: 1
+  canDash: 0
+  canTeleport: 0
+  canExplode: 0
   explosionMinTimer: 0.35
   canUseActiveItem: 1
 --- !u!114 &6774648264558360627
@@ -5513,6 +5513,7 @@ MonoBehaviour:
   - quantity: 12
     itemObj: {fileID: 11400000, guid: 6d26c55939b0f9d41b63db56c0bbdd2b, type: 2}
   gold: 1000
+  secretGold: 0
 --- !u!114 &2150744075976561101
 MonoBehaviour:
   m_ObjectHideFlags: 0

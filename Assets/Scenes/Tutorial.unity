@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -6231,12 +6231,16 @@ MonoBehaviour:
     m_Bits: 512
   Damage: 1
   coolDown: 0.3
-  pushForce: 2
-  pushTime: 0.2
+  pushForce:
+    Name: 
+    ForceToApply: {x: 0, y: 0}
+    stopBehaviour: 15
+    disableAllGravity: 0
+    TimeToStop: 0
   attackerSlow:
     Name: 
     Value: {x: 0, y: 0}
-    Types: 
+    Types: 0
   attackerSlowTimer: 0
 --- !u!1 &589561587
 GameObject:
@@ -12641,7 +12645,7 @@ GameObject:
   - component: {fileID: 1238007549}
   - component: {fileID: 1238007548}
   m_Layer: 0
-  m_Name: tutorial_box
+  m_Name: click_tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52253,7 +52257,7 @@ Tilemap:
     second:
       serializedVersion: 2
       m_TileIndex: 30
-      m_TileSpriteIndex: 28
+      m_TileSpriteIndex: 42
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -78078,7 +78082,7 @@ Tilemap:
     m_Data: {fileID: 0}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 215
+  - m_RefCount: 214
     m_Data: {fileID: 4639022430756777787, guid: 0a2fa8bcc16fff14c892e220d2919240,
       type: 3}
   - m_RefCount: 70
@@ -78110,8 +78114,9 @@ Tilemap:
       type: 3}
   - m_RefCount: 0
     m_Data: {fileID: 0}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
+  - m_RefCount: 1
+    m_Data: {fileID: 1352030900671485100, guid: 0a2fa8bcc16fff14c892e220d2919240,
+      type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 188469886}
   - m_RefCount: 1
@@ -78132,7 +78137,8 @@ Tilemap:
     m_Data: {fileID: -1262643091546145172, guid: 0a2fa8bcc16fff14c892e220d2919240,
       type: 3}
   - m_RefCount: 1
-    m_Data: {fileID: 853880765238411164, guid: ec5f8798908fc6f489cafa705b70bff5, type: 3}
+    m_Data: {fileID: 1870788652903451106, guid: ec5f8798908fc6f489cafa705b70bff5,
+      type: 3}
   m_TileMatrixArray:
   - m_RefCount: 7181
     m_Data:
@@ -80109,14 +80115,6 @@ CompositeCollider2D:
         Y: -179523744
       - X: 3060000000
         Y: -180000000
-    - - X: 3000238180
-        Y: -180238096
-      - X: 3000238180
-        Y: -180000000
-      - X: 3029762048
-        Y: -180000000
-      - X: 3029762048
-        Y: -180238096
     - - X: 3030237952
         Y: -180238096
       - X: 3030237952
@@ -80132,6 +80130,14 @@ CompositeCollider2D:
       - X: 2969761948
         Y: -180000000
       - X: 2969761948
+        Y: -180238096
+    - - X: 3000238180
+        Y: -180238096
+      - X: 3000238180
+        Y: -180000000
+      - X: 3029762048
+        Y: -180000000
+      - X: 3029762048
         Y: -180238096
     - - X: 3689762007
         Y: -210238196
