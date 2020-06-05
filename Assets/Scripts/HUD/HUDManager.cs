@@ -59,7 +59,7 @@ public class HUDManager : MonoBehaviour
         Shop = hudShop.GetComponent<HUDShop>();
 
         // Player
-        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        player = GameManager.Player.GetComponent<PlayerController>();
 
         // Inputs
         inputs.UI.InventoryButton.performed += cb => {
