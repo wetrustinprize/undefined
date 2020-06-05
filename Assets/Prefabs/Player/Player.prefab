@@ -5330,7 +5330,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b5950f6beab6ac46bd15406298091cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashForce: {x: 7, y: 0}
+  dashForce:
+    Name: 
+    ForceToApply: {x: 7, y: 0}
+    stopBehaviour: 15
+    disableAllGravity: 1
+    TimeToStop: 0.1
   dashDuration: 0.1
   dashCooldown: 3
   applyCooldown: 1
@@ -5510,8 +5515,10 @@ MonoBehaviour:
     quantity: 0
     itemObj: {fileID: 0}
   items:
-  - quantity: 12
-    itemObj: {fileID: 11400000, guid: 6d26c55939b0f9d41b63db56c0bbdd2b, type: 2}
+  - quantity: 1
+    itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
+  - quantity: 1
+    itemObj: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
   gold: 1000
   secretGold: 0
 --- !u!114 &2150744075976561101

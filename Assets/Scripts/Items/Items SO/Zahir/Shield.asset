@@ -9,15 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea63c8e427178b54d8fbd719e6bc6803, type: 3}
+  m_Script: {fileID: 11500000, guid: b075a934fdc4ef544849c1f2a3328426, type: 3}
   m_Name: Shield
   m_EditorClassIdentifier: 
-  itemName: Shield
-  description: Um brilho poderoso vem de dentro do escudo.
-  statsDescription: Protege muito contra inimigos.
+  itemName: Escudo
+  description: "Um escudo feito de um metal muito forte, parece ter m\xE1gia envolvida
+    nele."
+  statsDescription: Recebe muito menos dano.
   icon: {fileID: 8782653928033206789, guid: 337f29af88a73934e82c05c76e560bc5, type: 3}
   onEquipSFX: {fileID: 0}
   onUnequipSFX: {fileID: 0}
-  agility: 0
-  strength: 0
-  toughness: 50
+  shieldEffect: {fileID: 6486748800229036641, guid: 739434e52eea40c4e844d56247f9bb90,
+    type: 3}
+  aditionalDefense: 0.5
