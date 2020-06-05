@@ -133,7 +133,9 @@ public class PlayerInventory : MonoBehaviour {
 
         GameManager.Sound.PlayUISFX(item.itemObj.onEquipSFX);
 
+        oldItem?.itemObj.OnUnequip(this.gameObject);
         item.itemObj.OnEquip(this.gameObject);
+        
         onEquip?.Invoke(item.itemObj);
 
         if(oldItem != null)
