@@ -90,7 +90,6 @@ public class GroundEnemy : BaseAgent
         {
             if(dist < distanceToAttack && attackModule != null)
             {  
-                Debug.Log("Attacking!");
                 attackModule.DirectAttack(player, 0, false, false);
             }
 
