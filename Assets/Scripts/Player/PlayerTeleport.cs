@@ -62,7 +62,6 @@ public class PlayerTeleport : MonoBehaviour
         if(performing)
         {
             Vector3 dir = GameManager.Camera.GetWorldPositionOnPlane(GameManager.Player.lastMousePosition, 0) - transform.position;
-            Debug.Log(dir);
             dir.Normalize();
 
             float rot_z = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
