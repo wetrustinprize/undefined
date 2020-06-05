@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Undefined.Force;
+using System;
 
 [RequireComponent(typeof(Motor))]
 [DisallowMultipleComponent]
@@ -10,13 +11,16 @@ public class Dash : MonoBehaviour
         #region Variables
 
     [Header("Dash Settings")]
-    [SerializeField] private Vector2 dashForce = Vector2.zero;
+    [SerializeField] private ForceTemplate dashForce = null;
 
     [Space]
 
-    [SerializeField] private float dashDuration = 3f;
     [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private bool applyCooldown = true;
+
+    // Events
+    public Action<float> onDash;
+    public Action onDashCooldownEnd;
 
     // Script side variables
     Motor m {get {return GetComponent<Motor>();}}
@@ -24,6 +28,7 @@ public class Dash : MonoBehaviour
 
     // Public acess variables
     public float CurrentCooldown { get { return dashTimer; } }
+    public bool CanCooldownDash { get { return !(dashTimer > 0);}}
 
         #endregion
 
@@ -31,7 +36,11 @@ public class Dash : MonoBehaviour
     void Update() {
 
         if(dashTimer > 0)
+        {
             dashTimer = Mathf.Clamp(dashTimer - Time.deltaTime, 0, dashCooldown);
+            if(dashTimer <= 0)
+                onDashCooldownEnd?.Invoke();
+        }
 
     }
 
@@ -39,11 +48,17 @@ public class Dash : MonoBehaviour
         
         if(dashTimer > 0 && applyCooldown) return;
 
-        Force f = new Force("dash", dashForce * m.LastFacingDir, dashDuration, CollisionStopBehaviour.AnyCollision, true);
+        Force f = new Force(dashForce);
+
+        f.ForceApplied = f.ActualForce = dashForce.ForceToApply * m.LastFacingDir;
+        f.Name = "dash";
+
         m.ClearAllForces();
         m.AddForce(f, false, true, true);
         m.RemoveForce("jump");
         dashTimer = dashCooldown;
+
+        onDash?.Invoke(dashCooldown);
 
     }
 
