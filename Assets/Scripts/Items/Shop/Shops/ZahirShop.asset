@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5976673f7a0c88a42866177eb92cb81f, type: 3}
+  m_Name: ZahirShop
+  m_EditorClassIdentifier: 
+  shopName: Topeira Vendedora
+  welcomeMessage:
+  - "Seja bem-vinda forasteira!\nO que voc\xEA gostaria de comprar?"
+  - "Ol\xE1 forasteira! O que gostaria de comprar?"
+  noItemsMessage:
+  - "Voc\xEA acabou com meu estoque!"
+  sellingItems:
+  - value: 4
+    coinType: 1
+    sellerDescriptions:
+    - "Achei isso jogador bem no fundo dessa caverna.\nParece m\xE1gico, e ao mesmo
+      tempo bem tecnol\xF3gico."
+    - "O material desse escudo \xE9 bem forte, parece ser \xF3timo para se defender
+      desses slimes idiotas."
+    sellingItem: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
+  - value: 2
+    coinType: 1
+    sellerDescriptions:
+    - "Essas botas... S\xE3o iguais as suas? S\xF3 que tem adesivos.\nN\xE3o, pera,
+      elas parecem mais tecnol\xF3gicas."
+    sellingItem: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
+  - value: 0
+    coinType: 0
+    sellerDescriptions: []
+    sellingItem: {fileID: 0}

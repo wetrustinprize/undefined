@@ -307,6 +307,8 @@ GameObject:
   - component: {fileID: 6774648263188878031}
   - component: {fileID: 6774648263188878030}
   - component: {fileID: 6774648263188878028}
+  - component: {fileID: 4084674666653664272}
+  - component: {fileID: 6009902863327808937}
   m_Layer: 9
   m_Name: Sprite
   m_TagString: Untagged
@@ -432,6 +434,123 @@ MonoBehaviour:
   wallSlideParticlesVel: 5
   animator: {fileID: 6774648263188878030}
   sprite: {fileID: 6774648263188878031}
+--- !u!114 &4084674666653664272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774648263188878032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 710863cc13ebc3d45815a1aecef98a60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footsteps:
+  - {fileID: 8300000, guid: 188802f39eb24e94284f3abcb723be9e, type: 3}
+  - {fileID: 8300000, guid: 1c39c6c7c1379784fabbe1931d7ced68, type: 3}
+  - {fileID: 8300000, guid: 1a52ba7d94df3e04fa22c84fd835797f, type: 3}
+  - {fileID: 8300000, guid: 8c578deb5a721ec49874257476f7a574, type: 3}
+  - {fileID: 8300000, guid: 1fea955b56671f241b45c14b3689332b, type: 3}
+  - {fileID: 8300000, guid: 00893ef1559f098409af6003f2529b5a, type: 3}
+  - {fileID: 8300000, guid: c6c566fff266d4448aa87439d5df12e7, type: 3}
+  - {fileID: 8300000, guid: 811aa10ea9451074388486e082ffa251, type: 3}
+--- !u!82 &6009902863327808937
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6774648263188878032}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 22.213564
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6774648264049727488
 GameObject:
   m_ObjectHideFlags: 0
@@ -5336,9 +5455,9 @@ MonoBehaviour:
     stopBehaviour: 15
     disableAllGravity: 1
     TimeToStop: 0.1
-  dashDuration: 0.1
   dashCooldown: 3
   applyCooldown: 1
+  dashSound: {fileID: 8300000, guid: f81f12d3a07aaba4eaf96f4979cdb5bb, type: 3}
 --- !u!114 &6774648264558360620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5519,6 +5638,8 @@ MonoBehaviour:
     itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
   - quantity: 1
     itemObj: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
+  - quantity: 12
+    itemObj: {fileID: 11400000, guid: ed4bce7a24a9d3e45a9ff2c2c9de7254, type: 2}
   gold: 1000
   secretGold: 0
 --- !u!114 &2150744075976561101
