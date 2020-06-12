@@ -18,6 +18,9 @@ public class Dash : MonoBehaviour
     [SerializeField] private float dashCooldown = 3f;
     [SerializeField] private bool applyCooldown = true;
 
+    [Header("Sounds")]
+    [SerializeField] private AudioClip dashSound = null;
+
     // Events
     public Action<float> onDash;
     public Action onDashCooldownEnd;
@@ -59,6 +62,11 @@ public class Dash : MonoBehaviour
         dashTimer = dashCooldown;
 
         onDash?.Invoke(dashCooldown);
+
+        if(dashSound != null)
+        {
+            GetComponent<AudioSource>().PlayOneShot(dashSound);
+        }
 
     }
 
