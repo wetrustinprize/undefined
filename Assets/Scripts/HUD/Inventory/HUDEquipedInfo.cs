@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using Undefined.Items;
 
+using TMPro;
+
 public class HUDEquipedInfo : MonoBehaviour {
 
         #region Variables
 
     [Header("Informations")]
     [SerializeField] private Image equipedSprite = null;
-    [SerializeField] private Text ammount = null;
+    [SerializeField] private TextMeshProUGUI ammount = null;
 
     [Header("Button")]
     [SerializeField] private Button selectButton = null;

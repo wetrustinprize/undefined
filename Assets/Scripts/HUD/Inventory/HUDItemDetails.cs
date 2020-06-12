@@ -2,16 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using Undefined.Items;
 
+using TMPro;
+
 public class HUDItemDetails : MonoBehaviour {
 
         #region Variables
 
     [Header("UI Components")]
     [SerializeField] private Image itemIcon = null;
-    [SerializeField] private Text itemName = null;
-    [SerializeField] private Text itemDescription = null;
-    [SerializeField] private Text itemStats = null;
-    [SerializeField] private Text buttonText = null;
+    [SerializeField] private TextMeshProUGUI itemName = null;
+    [SerializeField] private TextMeshProUGUI itemDescription = null;
+    [SerializeField] private TextMeshProUGUI itemStats = null;
+    [SerializeField] private TextMeshProUGUI buttonText = null;
 
     // Script side
     private CanvasGroup group;
@@ -45,7 +47,7 @@ public class HUDItemDetails : MonoBehaviour {
         else
         {
             itemIcon.sprite = item.icon;
-            itemName.text = item.itemName.ToUpper();
+            itemName.text = item.itemName;
             itemDescription.text = $"<i>{item.description}</i>";
             itemStats.text = $"<b>Stats:</b>\n{item.statsDescription}";
             buttonText.text = equipedItem ? "Unequip" : "Equip";

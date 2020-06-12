@@ -3,25 +3,27 @@ using UnityEngine.UI;
 using Undefined.Items.Shop;
 using System;
 
+using TMPro;
+
 public class HUDShopItemDetails : MonoBehaviour {
 
         #region Variables
 
     [Header("UI Components")]
     [SerializeField] private Image itemIcon = null;
-    [SerializeField] private Text itemName = null;
-    [SerializeField] private Text shopMessage = null;
+    [SerializeField] private TextMeshProUGUI itemName = null;
+    [SerializeField] private TextMeshProUGUI shopMessage = null;
     [SerializeField] private Button buyButton = null;
 
     [Header("Gold")]
     [SerializeField] private GameObject itemPriceGoldVisible = null;
-    [SerializeField] private Text itemPriceGold = null;
-    [SerializeField] private Text yourGold = null;
+    [SerializeField] private TextMeshProUGUI itemPriceGold = null;
+    [SerializeField] private TextMeshProUGUI yourGold = null;
 
     [Header("Secret")]
     [SerializeField] private GameObject itemPriceSecretGoldVisible = null;
-    [SerializeField] private Text itemPriceSecret = null;
-    [SerializeField] private Text yourSecret = null;
+    [SerializeField] private TextMeshProUGUI itemPriceSecret = null;
+    [SerializeField] private TextMeshProUGUI yourSecret = null;
 
     // script-side variables
     private int lastGold = 0;

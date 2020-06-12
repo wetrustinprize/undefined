@@ -2,13 +2,15 @@
 using UnityEngine.UI;
 using Undefined.Items;
 
+using TMPro;
+
 public class HUDItemInfo : MonoBehaviour
 {
         #region Variables
 
     [Header("UI")]
     [SerializeField] private Image itemImage = null;
-    [SerializeField] private Text itemQuantity = null;
+    [SerializeField] private TextMeshProUGUI itemQuantity = null;
 
     [Header("Info")]
     public int inventoryIndex;
@@ -39,7 +41,11 @@ public class HUDItemInfo : MonoBehaviour
         invManager = invetoryManager;
 
         itemImage.sprite = myItem.icon;
-        itemQuantity.text = item.quantity == 0 ? "" : $"{item.quantity}";
+
+        if(myItem.type == ItemType.Active)
+            itemQuantity.text = item.quantity == 0 ? "" : $"{item.quantity}";
+        else
+            itemQuantity.text = "";
 
     }
 

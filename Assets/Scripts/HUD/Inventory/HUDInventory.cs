@@ -2,6 +2,8 @@
 using Undefined.Items;
 using System.Collections.Generic;
 
+using TMPro;
+
 public class HUDInventory : MonoBehaviour
 {
         #region Variables
@@ -14,8 +16,12 @@ public class HUDInventory : MonoBehaviour
     [SerializeField] private HUDEquipedInfo passiveItemInfo = null;
     [SerializeField] private HUDEquipedInfo weaponItemInfo = null;
 
+    [Header("Currency")]
+    [SerializeField] private HUDInventoryCurrency currency = null;
+
     [Header("Backpack")]
-    [SerializeField] private Transform itemsTransform = null;
+    [SerializeField] private Transform passiveItemsTransform = null;
+    [SerializeField] private Transform activeItemsTransform = null;
     [SerializeField] private GameObject itemPrefab = null;
 
     // Script side variables
@@ -29,6 +35,8 @@ public class HUDInventory : MonoBehaviour
     private InventoryItem activeItem { get { return inventory.ActiveItem; }}
     private InventoryItem passiveItem { get { return inventory.PassiveItem; }}
     private InventoryItem weaponItem { get { return inventory.WeaponItem; } }
+    private int myGold { get { return inventory.Gold; } }
+    private int mySecret { get { return inventory.SecretGold; } }
 
         #endregion
 
@@ -70,17 +78,33 @@ public class HUDInventory : MonoBehaviour
         passiveItemInfo.SetNewEquip(passiveItem.itemObj, passiveItem.quantity);
         weaponItemInfo.SetNewEquip(weaponItem.itemObj, weaponItem.quantity);
 
+        // Shows currency
+        currency.Setup(myGold, mySecret);
+
         // Deletes all item prefabs inside the backpack panel
-        for(int i = 0; i < itemsTransform.childCount; i++) {
+        for(int i = 0; i < passiveItemsTransform.childCount; i++)
+            Destroy(passiveItemsTransform.GetChild(i).gameObject);
 
-            Destroy(itemsTransform.GetChild(i).gameObject);
-
-        }
+        for(int i = 0; i < activeItemsTransform.childCount; i++)
+            Destroy(activeItemsTransform.GetChild(i).gameObject);
 
         // Create all items prefabs inside the backpack panel
         for(int i = 0; i < items.Count; i++) {
 
-            GameObject itemObj = Instantiate(itemPrefab, itemsTransform);
+            InventoryItem item = items[i];
+            GameObject itemObj = null;
+
+            switch(item.itemObj.type)
+            {
+                case ItemType.Active:
+                    itemObj = Instantiate(itemPrefab, activeItemsTransform);
+                    break;
+                
+                case ItemType.Passive:
+                    itemObj = Instantiate(itemPrefab, passiveItemsTransform);
+                    break;
+            }
+
             itemObj.GetComponent<HUDItemInfo>().Setup(items[i], i, this);
 
         }
