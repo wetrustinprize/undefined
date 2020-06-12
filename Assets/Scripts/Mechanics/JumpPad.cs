@@ -33,6 +33,8 @@ public class JumpPad : MonoBehaviour
 
     void OnDrawGizmos() {
 
+        if(forceToApply == null) return;
+
         Gizmos.DrawLine(this.transform.position, this.transform.position + (Vector3)forceToApply.ForceToApply);
 
     }
