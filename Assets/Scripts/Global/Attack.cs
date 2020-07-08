@@ -138,9 +138,9 @@ public class Attack : MonoBehaviour
         if(!ignoreCooldown) ApplyCooldown();
         if(!ignoreSlow) ApplySlow();
 
-        a.TakeDamage(customDamage == 0 ? Damage : customDamage, this.gameObject);
+        bool received = a.TakeDamage(customDamage == 0 ? Damage : customDamage, this.gameObject);
 
-        if(a.TryGetComponent<Motor>(out Motor m)) {
+        if(a.TryGetComponent<Motor>(out Motor m) && received) {
             
             float height = m.WallColliderSize.y / 2;
             Vector2 playerPos = (Vector2)a.transform.position + new Vector2(0, height);

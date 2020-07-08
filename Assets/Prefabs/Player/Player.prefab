@@ -423,6 +423,7 @@ MonoBehaviour:
   driftThreshold: 0.3
   dashThreshold: 2
   deathFocus: {fileID: 1967801071}
+  deahtSpriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   ghostParticle: {fileID: 7798819625000943297, guid: d64b205ae2c684a489139632649d1f39,
     type: 3}
   dustSpawnTransform: {fileID: 6774648264049727489}
@@ -467,7 +468,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5541,6 +5542,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 30
   health: 0
   defense: 0

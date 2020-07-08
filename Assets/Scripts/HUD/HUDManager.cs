@@ -5,6 +5,9 @@ public enum HUDType {
 
     Inventory,
     Shop,
+    Health,
+    Items,
+    GameOver,
 
 
 }
@@ -17,6 +20,9 @@ public class HUDManager : MonoBehaviour
     [Header("Canvas Groups")]
     [SerializeField] private CanvasGroup hudInventory = null;
     [SerializeField] private CanvasGroup hudShop = null;
+    [SerializeField] private CanvasGroup hudHealth = null;
+    [SerializeField] private CanvasGroup hudItems = null;
+    [SerializeField] private CanvasGroup hudGameOver = null;
 
     [Header("Able")]
     public bool canOpenInventory = true;
@@ -77,6 +83,11 @@ public class HUDManager : MonoBehaviour
         // Hide initial huds
         UpdateHUD(HUDType.Shop, true);
         UpdateHUD(HUDType.Inventory, true);
+        UpdateHUD(HUDType.GameOver, true);
+
+        // Show initial huds
+        UpdateHUD(HUDType.Health, false);
+        UpdateHUD(HUDType.Items, false);
 
     }
 
@@ -116,6 +127,21 @@ public class HUDManager : MonoBehaviour
                 player.receiveInput = hide;
 
                 break;
+            
+            case HUDType.Health:
+                hudHealth.alpha = hide ? 0 : 1;
+                break;
+
+            case HUDType.Items:
+                hudItems.alpha = hide ? 0 : 1;
+                break;
+
+            case HUDType.GameOver:
+
+                hudGameOver.interactable = !hide;
+                if(!hide) hudGameOver.GetComponent<Animator>().SetTrigger("Fade");
+                
+                break;
                     
 
         }
@@ -125,6 +151,8 @@ public class HUDManager : MonoBehaviour
     public void HideAllHUD() {
         UpdateHUD(HUDType.Inventory, true);
         UpdateHUD(HUDType.Shop, true);
+        UpdateHUD(HUDType.Items, true);
+        UpdateHUD(HUDType.Health, true);
     }
 
     public void ToggleInventory() {

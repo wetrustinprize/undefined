@@ -12,6 +12,7 @@ public class Motor : MonoBehaviour
         #region Variables
 
     [Header("Bypass:")]
+    [SerializeField] private bool freeze = false;
     [SerializeField] private bool bypassInput = false;
     [SerializeField] private bool bypassGravity = false;
 
@@ -230,6 +231,11 @@ public class Motor : MonoBehaviour
             list = ref constantForces;
         
         list.ForEach(f => {f.ActualForce = Vector2.zero;});
+    }
+
+    public void SetFreeze(bool f)
+    {
+        freeze = f;
     }
 
     // Called to apply a force
@@ -636,6 +642,9 @@ public class Motor : MonoBehaviour
         // Resets the external speed
         externalSpeed = Vector2.zero;
 
+        // If frozen then return
+        if(freeze) return;
+
         // Checks if the list is null or empty
         if(externalForces == null || externalForces.Count == 0) return;
 
@@ -734,6 +743,9 @@ public class Motor : MonoBehaviour
 
         // Resets the original value of the constant speed
         constantExternalSpeed = Vector2.zero;
+
+        // If is frozen, then return
+        if(freeze) return;
 
         // Checks if the list is null or is empty
         if(constantForces == null || constantForces.Count == 0) return;

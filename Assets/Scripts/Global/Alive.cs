@@ -7,6 +7,11 @@ public class Alive : MonoBehaviour
 
         #region Variables
 
+    [Header("Bypass")]
+    public bool CanReceiveDamage = true;
+    public bool CanReceiveHeal = true;
+
+    [Header("Information")]
     [SerializeField] private int maxHealth;                         // The maximun HP this Alive can have
     [SerializeField] private int health;                            // The current HP this Alive have
 
@@ -57,10 +62,12 @@ public class Alive : MonoBehaviour
 
     }
 
-    ///<summary>Takes damage.</summary>
+    ///<summary>Takes damage or heals. Returns true if has received damage/heal</summary>
     ///<param name="damage">Damage to receive</param>
-    public void TakeDamage(int damage, GameObject dealer) {
-        if(damage == 0) return;
+    public bool TakeDamage(int damage, GameObject dealer) {
+        if(damage == 0) return false;
+        if(damage > 0 && !CanReceiveDamage) return false;
+        if(damage < 0 && !CanReceiveHeal) return false;
 
         if(damage > 0)
         {
@@ -82,6 +89,8 @@ public class Alive : MonoBehaviour
                 onHeal?.Invoke(damage, dealer);
             }
         }
+
+        return true;
 
     }
 

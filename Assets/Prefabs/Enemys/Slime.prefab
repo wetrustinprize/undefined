@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: 4324886272587796339}
   - component: {fileID: 4324886272587796348}
   - component: {fileID: 4324886272587796349}
-  - component: {fileID: 4324886272587796342}
   - component: {fileID: 4324886272587796341}
   - component: {fileID: 4324886272587796340}
   - component: {fileID: 4324886272587796331}
+  - component: {fileID: 6707336631558761037}
   m_Layer: 9
   m_Name: Slime
   m_TagString: Untagged
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f68448340d6840b940cd83371d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeze: 0
   bypassInput: 0
   bypassGravity: 0
   maxSpeed: {x: 5, y: 1}
@@ -129,7 +130,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4324886272587796351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b3c244c7e957d5f498404ccfb5c8f52c, type: 3}
+  m_Script: {fileID: 11500000, guid: a5af6f8c555c0c441b1f46a831765f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4324886272587796339
@@ -141,14 +142,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 4324886272587796351}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f596ec0bc85f2e74bbf917d54c0b237a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ec9ed47bb7789c42b9a49c3f29f6bfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   facingDir: {x: 1, y: 0}
   raycastLayers:
     serializedVersion: 2
     m_Bits: 768
-  maxAngle: 45
+  maxAngle: 40
 --- !u!114 &4324886272587796348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,26 +194,6 @@ MonoBehaviour:
   myBehaviour: 0
   distanceToStopChasing: 30
   distanceToAttack: 1.5
---- !u!114 &4324886272587796342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4324886272587796351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a21899e8c2f6c4e41a91977ca024cc4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ignoreInputVel: 1
-  ignoreInputDir: 1
-  ignoreVel: 0
-  ignoreCollisions: 1
-  ignoreFlipX: 0
-  ignoreFlipY: 1
-  animator: {fileID: 4324886272615893263}
-  flipSprite: {fileID: 4324886272615893256}
 --- !u!114 &4324886272587796341
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,9 +262,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
+  maxHealth: 3
   health: 0
   defense: 0
+--- !u!114 &6707336631558761037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4324886272587796351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fefe2aa19aad545b65098ff461f2fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ignoreInputVel: 1
+  ignoreInputDir: 1
+  ignoreVel: 0
+  ignoreCollisions: 1
+  ignoreFlipX: 0
+  ignoreFlipY: 1
+  animator: {fileID: 4324886272615893263}
+  flipSprite: {fileID: 4324886272615893256}
 --- !u!1 &4324886272615893258
 GameObject:
   m_ObjectHideFlags: 0

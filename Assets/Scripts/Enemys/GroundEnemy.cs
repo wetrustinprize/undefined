@@ -51,6 +51,7 @@ public class GroundEnemy : BaseAgent
         // Settings events
         this.myMotor.onTouchWall += OnTouchWall;
         this.aliveModule.onDamage += OnDamage;
+        this.aliveModule.onDie += () => { Destroy(this.gameObject); };
 
     }
 

@@ -47,6 +47,7 @@ public class PlayerController : MonoBehaviour {
     private PlayerExplosion explosion { get { return GetComponent<PlayerExplosion>(); } }
     private PlayerInventory inventory { get { return GetComponent<PlayerInventory>(); } }
     private PlayerInteraction interaction { get { return GetComponent<PlayerInteraction>(); } }
+    private Alive alive { get { return GetComponent<Alive>(); } }
 
     // Script side
     private PlayerInput inputs;
@@ -77,6 +78,19 @@ public class PlayerController : MonoBehaviour {
     }
 
     void Start() {
+
+        // Death
+        alive.onDie += () => {
+            receiveInput = false;
+
+            alive.CanReceiveDamage = false;
+            alive.CanReceiveHeal = false;
+
+            motor.SetFreeze(true);
+
+            GameManager.HUD.HideAllHUD();
+            GameManager.HUD.canOpenInventory = false;
+        };
 
         // Movement
         inputs.Player.Move.performed += cb => { 

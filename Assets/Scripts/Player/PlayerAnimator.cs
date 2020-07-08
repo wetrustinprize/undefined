@@ -18,7 +18,8 @@ public class PlayerAnimator : MonoBehaviour
 
     [Header("Death Animation Settingss")]
     [SerializeField] private Transform deathFocus = null;      // Where will the camera focus when the player dies
- 
+    [SerializeField] private Material deahtSpriteMaterial = null;
+
     [Header("Particles")]
     [SerializeField] private GameObject ghostParticle = null;          // The ghost "particle"
     [Space]
@@ -52,6 +53,7 @@ public class PlayerAnimator : MonoBehaviour
         
         // Setup the alive events
         alive.onDamage += (dmg, dealer) => { DamageEffect(); };
+        alive.onDie += () => { DeathAnimation(); };
 
         // Setup the jump event
         jump.OnWallJump += WallJumpEffect;
@@ -62,6 +64,10 @@ public class PlayerAnimator : MonoBehaviour
     }
 
         #region Alive Events
+
+    private void DeathAnimation() {
+        animator.SetTrigger("Death");
+    }
 
     private void DamageEffect() {
 
@@ -147,6 +153,7 @@ public class PlayerAnimator : MonoBehaviour
             case 0:
                 GameManager.HUD.HideAllHUD();
 
+                sprite.material = deahtSpriteMaterial;
                 sprite.sortingLayerName = "Details";
                 sprite.sortingOrder = 999;
 
@@ -157,6 +164,7 @@ public class PlayerAnimator : MonoBehaviour
             case 1:
                 GameManager.Camera.Resize(10, 2f);
                 GameManager.Camera.LookAt(deathFocus, 1f);
+                GameManager.HUD.UpdateHUD(HUDType.GameOver, false);
                 break;
         }
 
@@ -170,11 +178,6 @@ public class PlayerAnimator : MonoBehaviour
 
     // Updates the animator
     void Update() {
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            animator.SetTrigger("Death");
-        }
-
         // Gets all velocity info
         float vInput = motor.InputAxis.x;
         float hVel = motor.GetForce("input").ActualForce.x / motor.MaxSpeed.x;
