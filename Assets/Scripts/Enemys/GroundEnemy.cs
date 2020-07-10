@@ -11,7 +11,7 @@ public enum GroundEnemyBehaviour {
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(CollisionCheckModule))]
 [RequireComponent(typeof(VisionModule))]
-public class GroundEnemy : BaseAgent
+public class GroundEnemy : BaseAgent, IChunkEntity
 {
 
         #region Variables
@@ -28,9 +28,15 @@ public class GroundEnemy : BaseAgent
     Jump jumpModule;
     Attack attackModule;
     Alive aliveModule;
+    GoldDropModule goldModule;
     GameObject player;
 
+    bool dieNextFrame = false;
+
         #endregion
+
+    // Script side
+    bool outOfChunk = true;
 
         #endregion
 
@@ -41,6 +47,7 @@ public class GroundEnemy : BaseAgent
         this.collisionModule = this.GetComponent<CollisionCheckModule>();
         this.visionModule = this.GetComponent<VisionModule>();
         this.aliveModule = this.GetComponent<Alive>();
+        this.goldModule = this.GetComponent<GoldDropModule>();
 
         this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
         this.attackModule = this.TryGetComponent(out Attack attack) ? attack : null;
@@ -51,8 +58,23 @@ public class GroundEnemy : BaseAgent
         // Settings events
         this.myMotor.onTouchWall += OnTouchWall;
         this.aliveModule.onDamage += OnDamage;
-        this.aliveModule.onDie += () => { Destroy(this.gameObject); };
+        this.aliveModule.onDie += () => { dieNextFrame = true; goldModule.Spawn(); };
 
+    }
+
+    void Update() {
+        if(dieNextFrame) Destroy(this.gameObject);
+    }
+
+    public void OnChunk() {
+        outOfChunk = false;
+        myMotor.SetFreeze(false);
+    }
+
+    public void OutChunk() {
+        outOfChunk = true;
+        myMotor.SetFreeze(true);
+        myMotor.ReceiveInput(Vector2.zero);
     }
 
     void OnDamage(int damage, GameObject dealer) {
@@ -65,6 +87,8 @@ public class GroundEnemy : BaseAgent
     }
 
     void FixedUpdate() {
+
+        if(outOfChunk) return;
 
         switch(myBehaviour) {
             case GroundEnemyBehaviour.Idle:
