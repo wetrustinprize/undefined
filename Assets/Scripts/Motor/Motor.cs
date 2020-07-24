@@ -173,24 +173,6 @@ public class Motor : MonoBehaviour
         
     }
 
-        #region Collision Methods
-
-    // void OnCollisionEnter2D(Collision2D collision) {
-
-    //     CheckIsGroundedOrCelling();
-    //     CheckNearWall();
-
-    // }
-
-    // void OnCollisionExit2D(Collision2D collision) {
-
-    //     CheckIsGroundedOrCelling();
-    //     CheckNearWall();
-
-    // }
-
-        #endregion
-
         #region Public Methods
 
     // Called to apply a input

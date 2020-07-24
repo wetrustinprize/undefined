@@ -3734,7 +3734,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -193.39809}
+  m_AnchoredPosition: {x: 0, y: -329.2896}
   m_SizeDelta: {x: 0.000061035, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1914508760
@@ -6072,7 +6072,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 29.55
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6382,7 +6382,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 111.7
+  m_fontSize: 128
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6428,7 +6428,7 @@ MonoBehaviour:
     spaceCount: 1
     wordCount: 2
     linkCount: 0
-    lineCount: 1
+    lineCount: 2
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
@@ -8459,6 +8459,7 @@ GameObject:
   - component: {fileID: 1925431015918184892}
   - component: {fileID: 387623304402791587}
   - component: {fileID: 4649431952128224255}
+  - component: {fileID: 5252453779325010467}
   m_Layer: 5
   m_Name: GAMEOVER
   m_TagString: Untagged
@@ -8519,6 +8520,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5252453779325010467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725849809941663663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a44549e3a0ef4574288607fb37d27740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btnRetry: {fileID: 3574647431694569392}
+  btnQuit: {fileID: 3963126879468934587}
 --- !u!1 &8778347596835361395
 GameObject:
   m_ObjectHideFlags: 0

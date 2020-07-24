@@ -92,7 +92,7 @@ public class CreatureController : MonoBehaviour
     void Start() {
         
         // gets the player gameobject and motor
-        player = GameObject.FindWithTag("Player");
+        player = GameManager.Player.gameObject;
         playerMotor = player.GetComponent<Motor>();
 
         // gets audio source

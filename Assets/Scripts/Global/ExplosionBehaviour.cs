@@ -9,6 +9,7 @@ public class ExplosionBehaviour : MonoBehaviour
     [Header("Explosion Settings")]
     [SerializeField] private float explosionRadius = 6;
     [SerializeField] private LayerMask raycastLayers = 0;
+    [SerializeField] private bool ignorePlayer = false;
 
     // Local variables
     private Attack attack;
@@ -23,10 +24,10 @@ public class ExplosionBehaviour : MonoBehaviour
         // Explodes
         foreach(Collider2D col in Physics2D.OverlapCircleAll(transform.position, explosionRadius, raycastLayers))
         {
-            if(col.tag != "Player")
-            {
-                attack.DirectAttack(col.gameObject);
-            }
+            Debug.Log(col.gameObject.name);
+            if(col.tag == "Player" && ignorePlayer) return;
+
+            attack.DirectAttack(col.gameObject);
         }
 
     }

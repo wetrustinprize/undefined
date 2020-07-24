@@ -52,18 +52,38 @@ public class PlayerInventory : MonoBehaviour {
 
     }
 
+    public void OverrideInventory(List<InventoryItem> newItems)
+    {
+        items = newItems;
+    }
+
+    public void SetGold(int quantity, ShopCoin coinType, bool callAction = true) {
+        switch(coinType)
+        {
+            case ShopCoin.Gold:
+                if(callAction) onChangeGold?.Invoke(quantity);
+                gold = quantity;
+                break;
+            
+            case ShopCoin.Secret:
+                if(callAction) onChangeSecretGold?.Invoke(quantity);
+                secretGold = quantity;
+                break;
+        }
+    }
+
     public void AddGold(int quantity, ShopCoin coinType = ShopCoin.Gold)
     {
         
         switch(coinType)
         {
             case ShopCoin.Gold:
-                onChangeGold(quantity);
+                onChangeGold?.Invoke(quantity);
                 gold += quantity;
                 break;
             
             case ShopCoin.Secret:
-                onChangeSecretGold(quantity);
+                onChangeSecretGold?.Invoke(quantity);
                 secretGold += quantity;
                 break;
         }
@@ -109,41 +129,48 @@ public class PlayerInventory : MonoBehaviour {
 
     }
 
-    public void EquipItem(int index) {
-
-        InventoryItem item = items[index];
+    public void EquipItem(InventoryItem equipItem)
+    {
         InventoryItem oldItem = null;
 
-        switch(item.itemObj.type) {
+        switch(equipItem.itemObj.type) {
             case ItemType.Active:
                 if(equipedActive.itemObj != null) { oldItem = equipedActive; }
-                equipedActive = item;
+                equipedActive = equipItem;
                 break;
             
             case ItemType.Passive:
                 if(equipedPassive.itemObj != null) { oldItem = equipedPassive; }
-                equipedPassive = item;
+                equipedPassive = equipItem;
                 break;
 
             case ItemType.Weapon:
                 if(equipedWeapon.itemObj != null) { oldItem = equipedWeapon; }
-                equipedWeapon = item;
+                equipedWeapon = equipItem;
                 break;
         }
 
-        GameManager.Sound.PlayUISFX(item.itemObj.onEquipSFX);
+        GameManager.Sound.PlayUISFX(equipItem.itemObj.onEquipSFX);
 
         oldItem?.itemObj.OnUnequip(this.gameObject);
-        item.itemObj.OnEquip(this.gameObject);
+        equipItem.itemObj.OnEquip(this.gameObject);
         
-        onEquip?.Invoke(item.itemObj);
+        onEquip?.Invoke(equipItem.itemObj);
 
         if(oldItem != null)
         {
             AddItem(oldItem.itemObj, oldItem.quantity);
         }
 
-        RemoveItem(item);
+        RemoveItem(equipItem);
+
+    }
+
+    public void EquipItem(int index) {
+
+        InventoryItem item = items[index];
+        
+        EquipItem(item);
 
     }
 

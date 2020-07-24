@@ -51,7 +51,7 @@ public abstract class BaseAgent : MonoBehaviour {
 
         #endregion
 
-    protected virtual void Start() {
+    protected virtual void Awake() {
 
         this.mySeeker = this.GetComponent<Seeker>();
         this.myMotor = this.GetComponent<Motor>();

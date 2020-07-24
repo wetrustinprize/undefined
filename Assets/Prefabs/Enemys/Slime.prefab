@@ -20,6 +20,7 @@ GameObject:
   - component: {fileID: 4324886272587796340}
   - component: {fileID: 4324886272587796331}
   - component: {fileID: 6707336631558761037}
+  - component: {fileID: 763834953}
   m_Layer: 9
   m_Name: Slime
   m_TagString: Untagged
@@ -287,6 +288,27 @@ MonoBehaviour:
   ignoreFlipY: 1
   animator: {fileID: 4324886272615893263}
   flipSprite: {fileID: 4324886272615893256}
+--- !u!114 &763834953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4324886272587796351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c546e8ca93286943841b8c50c03a47d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 7589184482563188744, guid: 6b2b826861fad0543a4bf80a0d352998,
+    type: 3}
+  spawnForce:
+    Name: 
+    ForceToApply: {x: 0, y: 2}
+    stopBehaviour: 48
+    disableAllGravity: 0
+    TimeToStop: 1
+  coinValue: 5
 --- !u!1 &4324886272615893258
 GameObject:
   m_ObjectHideFlags: 0

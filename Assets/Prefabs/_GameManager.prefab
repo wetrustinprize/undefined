@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7414060821691732583}
   - component: {fileID: 7414060821691732580}
   - component: {fileID: 7414060821691732581}
+  - component: {fileID: 2783888485857246364}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -65,3 +66,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mixer: {fileID: 24100000, guid: 6971013de76fb9b4d8f0dc36dfabd007, type: 2}
+--- !u!114 &2783888485857246364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7414060821691732602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68d457f144e3f894eba1e567548dbdc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  save:
+    PlayerPosition: {x: 0, y: 0}
+    Health: 0
+    PlayerGold: 0
+    PlayerSecret: 0
+    ActiveItem:
+      quantity: 0
+      itemObj: {fileID: 0}
+    PassiveItem:
+      quantity: 0
+      itemObj: {fileID: 0}
+    WeaponItem:
+      quantity: 0
+      itemObj: {fileID: 0}
+    Items: []
+    CanDash: 0
+    CanTeleport: 0
+    CanExplode: 0

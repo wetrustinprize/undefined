@@ -24,9 +24,6 @@ public class PlayerShield : MonoBehaviour
 
     void Damaged(int damage, GameObject dealer) {
 
-        Vector2 size = dealer.GetComponent<BoxCollider2D>().size / 2;
-        Vector2 offset = dealer.GetComponent<BoxCollider2D>().offset;
-
         Vector2 dir = ((Vector2)dealer.transform.position - (Vector2)this.transform.position).normalized;
 
         Debug.Log($"Player Pos: {myPlayer.transform.position}\nAtacker Pos: {dealer.transform.position}\nDirection: {dir}");

@@ -151,8 +151,6 @@ public class PlayerAnimator : MonoBehaviour
 
         switch(stage) {
             case 0:
-                GameManager.HUD.HideAllHUD();
-
                 sprite.material = deahtSpriteMaterial;
                 sprite.sortingLayerName = "Details";
                 sprite.sortingOrder = 999;

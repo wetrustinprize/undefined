@@ -18,7 +18,6 @@ public class Tutorial_Shoes : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col) {
 
         if(col.tag != "Player") return;
-        col.gameObject.GetComponent<Jump>().allowWallJumps = true;
 
         myAnimator.SetTrigger("Pickup");
 

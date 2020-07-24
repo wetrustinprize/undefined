@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour {
     public bool canDash = true;
     public bool canTeleport = true;
     public bool canExplode = true;
+    public bool canWallJump { get { return jump.allowWallJumps; } set { jump.allowWallJumps = value; } }
 
     [Space(10)]
     [SerializeField] private float explosionMinTimer = 0.35f;
@@ -77,20 +78,22 @@ public class PlayerController : MonoBehaviour {
         if(holdingAttack) HoldingAttackTick();
     }
 
+    void Die() {
+        GameManager.HUD.HideAllHUD();
+        GameManager.HUD.canOpenInventory = false;
+
+        this.receiveInput = false;
+
+        this.alive.CanReceiveDamage = false;
+        this.alive.CanReceiveHeal = false;
+
+        this.motor.SetFreeze(true);
+    }
+
     void Start() {
 
         // Death
-        alive.onDie += () => {
-            receiveInput = false;
-
-            alive.CanReceiveDamage = false;
-            alive.CanReceiveHeal = false;
-
-            motor.SetFreeze(true);
-
-            GameManager.HUD.HideAllHUD();
-            GameManager.HUD.canOpenInventory = false;
-        };
+        alive.onDie += Die;
 
         // Movement
         inputs.Player.Move.performed += cb => { 

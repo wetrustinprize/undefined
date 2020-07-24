@@ -45,6 +45,11 @@ public class Alive : MonoBehaviour
 
     }
 
+    public void OverrideHealth(int newHealth)
+    {
+        health = newHealth;
+    }
+
     public void SetNewMaxHealth(int newMaxHealth, bool resetHealth = false) {
 
         maxHealth = newMaxHealth;

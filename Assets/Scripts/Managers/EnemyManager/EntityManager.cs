@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class EntityManager : MonoBehaviour { 
 
@@ -17,19 +18,29 @@ public class EntityManager : MonoBehaviour {
     [Header("Spawns")]
     [SerializeField] private List<EntitySpawn> spawns = new List<EntitySpawn>();
 
+    // Actions
+    public event Action<Vector2Int> onPlayerChangeChunk;
+
     // Script side
 
     private Vector2Int playerChunk = Vector2Int.zero;
-    private List<IChunkEntity> activeEntitys = new List<IChunkEntity>();
+    private List<GameObject> activeEntitys = new List<GameObject>();
 
         #endregion
 
     void Start()
     {
+        // EntitySpawn with spawnOnStart enabled
+        foreach(EntitySpawn spawn in spawns)
+        {
+            if(spawn.SpawnOnStart)
+                spawn.Spawn();
+        }
+
         CheckPlayerChunk();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         CheckPlayerChunk();
     }
@@ -41,29 +52,50 @@ public class EntityManager : MonoBehaviour {
         if(playerChunk != chunk)
         {
             playerChunk = chunk;
+            onPlayerChangeChunk?.Invoke(playerChunk);
 
             Vector2 size = Vector2.one * 3 * chunkSize;
             Vector2 pos = new Vector2((playerChunk.x - 2) * chunkSize + size.x/2, (playerChunk.y + 1) * chunkSize - size.y/2);
             pos += (Vector2)this.transform.position;
 
-            List<IChunkEntity> ices = new List<IChunkEntity>();
+            List<GameObject> ices = new List<GameObject>();
             
-            foreach(Collider2D c in Physics2D.OverlapBoxAll(pos, size, 0f, raycastLayer))
-                if(c.TryGetComponent<IChunkEntity>(out IChunkEntity ice)) ices.Add(ice);
-
-            ices.ForEach(ice => ice.OnChunk());
-            Debug.Log(ices);
+            foreach(Collider2D c in Physics2D.OverlapBoxAll(pos, size, 0f, raycastLayer)) {
+                if(c.GetComponent<IChunkEntity>() != null)
+                {
+                    ices.Add(c.gameObject);
+                    c.gameObject.GetComponent<IChunkEntity>().OnChunk();
+                }
+            }
             
-            activeEntitys.ForEach(ice => { if(!ices.Contains(ice)) { ice.OutChunk(); } } );
+            activeEntitys.RemoveAll(ice => ice == null);
+            activeEntitys.ForEach(ice => {
+                Debug.Log(ice == null); 
+                Debug.Log(ice); 
+                if(!ices.Contains(ice)) { ice.GetComponent<IChunkEntity>().OutChunk(); } 
+            } );
             activeEntitys = ices;
         }
 
+    }
+
+    public void ClearAllEntities() {
+        foreach(GameObject go in FindObjectsOfType<GameObject>())
+        {
+            if(go.GetComponent<IChunkEntity>() != null)
+                Destroy(go);
+        }
     }
 
     public Vector2Int GetChunkPos(Vector3 position)
     {
         Vector2 pos = (Vector2)(position - this.transform.position) / chunkSize;
         return new Vector2Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y));
+    }
+
+    public bool OnPlayerRange(Vector2Int chunkPos)
+    {
+        return Vector2Int.Distance(playerChunk, chunkPos) < 2;
     }
 
     public void OnDrawGizmos() {

@@ -537,6 +537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 1
   health: 1
   defense: 0
@@ -6145,6 +6147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 5
   health: 0
   defense: 0
@@ -6160,6 +6164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f68448340d6840b940cd83371d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeze: 0
   bypassInput: 0
   bypassGravity: 0
   maxSpeed: {x: 1, y: 1}
@@ -7003,6 +7008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 1
   health: 1
   defense: 0
@@ -7069,6 +7076,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 1
   health: 1
   defense: 0
@@ -7124,6 +7133,7 @@ GameObject:
   - component: {fileID: 891503230}
   - component: {fileID: 891503232}
   - component: {fileID: 891503231}
+  - component: {fileID: 891503233}
   m_Layer: 0
   m_Name: sprite
   m_TagString: Untagged
@@ -7252,6 +7262,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &891503233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 891503227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 071e8a5c620dcaa4d8be2bfc1d63fd05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill: 3
 --- !u!1 &902279625
 GameObject:
   m_ObjectHideFlags: 0
@@ -12845,6 +12868,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb11869ad788e1b41bbdde7d384d902f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanReceiveDamage: 1
+  CanReceiveHeal: 1
   maxHealth: 1
   health: 1
   defense: 0

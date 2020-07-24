@@ -6,7 +6,8 @@ public class SkillEnabler : MonoBehaviour
     public enum SkillToEnable {
         Explosion,
         Dash,
-        Teleport
+        Teleport,
+        WallJump
     }
 
         #region Variables
@@ -14,12 +15,16 @@ public class SkillEnabler : MonoBehaviour
     [Header("Skill to enable")]
     [SerializeField] private SkillToEnable skill = SkillToEnable.Explosion;
 
+    // Script side
+    private bool hasEnabled = false;
+
         #endregion
 
     void OnTriggerEnter2D(Collider2D col) {
 
         if(col.tag == "Player")
         {
+            hasEnabled = true;
             PlayerController controller = GameManager.Player;
 
             switch(skill)
@@ -35,7 +40,13 @@ public class SkillEnabler : MonoBehaviour
                 case SkillToEnable.Teleport:
                     controller.canTeleport = true;
                     break;
+                
+                case SkillToEnable.WallJump:
+                    controller.canWallJump = true;
+                    break;
             }
+
+            GameManager.Checkpoint.Save();
         }
 
     }

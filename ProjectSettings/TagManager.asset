@@ -7,7 +7,6 @@ TagManager:
   - Enemy
   - Creature
   - HUD
-  - PlayerSpawn
   - PlayerExplosion
   layers:
   - Default

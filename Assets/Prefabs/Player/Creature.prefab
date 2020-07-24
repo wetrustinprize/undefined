@@ -143,7 +143,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1994587769
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -6005158379782703491, guid: faf722a40266c4841a7af32d9e2233f3,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -262,8 +262,7 @@ AudioSource:
   m_GameObject: {fileID: 2082061543944998816}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -3699192042270973512, guid: 2c629c049737c04459db712ba542a134,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

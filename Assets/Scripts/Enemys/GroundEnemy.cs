@@ -40,8 +40,8 @@ public class GroundEnemy : BaseAgent, IChunkEntity
 
         #endregion
 
-    protected override void Start() {
-        base.Start();
+     protected override void Awake() {
+        base.Awake();
 
         // Getting all modules
         this.collisionModule = this.GetComponent<CollisionCheckModule>();
@@ -52,13 +52,16 @@ public class GroundEnemy : BaseAgent, IChunkEntity
         this.jumpModule = this.TryGetComponent(out Jump jump) ? jump : null;
         this.attackModule = this.TryGetComponent(out Attack attack) ? attack : null;
 
-        // Getting player
-        this.player = GameManager.Player.gameObject;
-
         // Settings events
         this.myMotor.onTouchWall += OnTouchWall;
         this.aliveModule.onDamage += OnDamage;
         this.aliveModule.onDie += () => { dieNextFrame = true; goldModule.Spawn(); };
+    }
+
+    void Start() {
+
+        // Getting player
+        this.player = GameManager.Player.gameObject;
 
     }
 
@@ -72,6 +75,8 @@ public class GroundEnemy : BaseAgent, IChunkEntity
     }
 
     public void OutChunk() {
+        if(dieNextFrame) return;
+
         outOfChunk = true;
         myMotor.SetFreeze(true);
         myMotor.ReceiveInput(Vector2.zero);
