@@ -106,6 +106,10 @@ public class Jump : MonoBehaviour
 
     }
 
+    public void ResetWallJumps() {
+        wallJumps = 0;
+    }
+
     // Function to execute the jump
     public void Execute() {
 

@@ -5402,9 +5402,9 @@ MonoBehaviour:
   canJump: 1
   canAttack: 1
   canSkills: 1
-  canDash: 0
+  canDash: 1
   canTeleport: 0
-  canExplode: 0
+  canExplode: 1
   explosionMinTimer: 0.35
   canUseActiveItem: 1
 --- !u!114 &6774648264558360627
@@ -5419,6 +5419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f09f68448340d6840b940cd83371d62a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  freeze: 0
   bypassInput: 0
   bypassGravity: 0
   maxSpeed: {x: 1, y: 0}
@@ -5456,7 +5457,7 @@ MonoBehaviour:
     stopBehaviour: 15
     disableAllGravity: 1
     TimeToStop: 0.1
-  dashCooldown: 3
+  dashCooldown: 1
   applyCooldown: 1
   dashSound: {fileID: 8300000, guid: f81f12d3a07aaba4eaf96f4979cdb5bb, type: 3}
 --- !u!114 &6774648264558360620
@@ -5671,8 +5672,7 @@ AudioSource:
   m_GameObject: {fileID: 6774648264558360631}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -2623900880580756675, guid: 2c629c049737c04459db712ba542a134,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
