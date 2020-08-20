@@ -71,7 +71,7 @@ public class PlayerAnimator : MonoBehaviour
 
     private void DamageEffect() {
 
-        cam.Shake(1, 1, 0.3f, Vector2.one);
+        cam.Shake(1, 25, 0.1f, Vector2.one);
 
     }
 
