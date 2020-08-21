@@ -219,6 +219,13 @@ public class CameraController : MonoBehaviour
         lookAt = newLookAt.gameObject;
     }
 
+    ///<summary>Focus the camera at the Player</summary>
+    public void LookAtPlayer()
+    {
+        lookAt = GameManager.Player.gameObject;
+        look_Smooth = 0f;
+    }
+
     ///<summary>Changes the size of the camera</summary>
     public void Resize(float newSize, float time = -1) {
         size = newSize;

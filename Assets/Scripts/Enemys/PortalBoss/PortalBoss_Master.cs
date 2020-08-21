@@ -9,6 +9,7 @@ public class PortalBoss_Master : MonoBehaviour
     [SerializeField] private float maxHeight = 0f;
 
     [Header("Big Rock")]
+    [SerializeField] private PortalBoss_BigRock[] bigRocks;
     [SerializeField] private AnimationCurve bigRockDelayCurve;
     [SerializeField] private float bigRockDelayStart;
     [SerializeField] private float bigRockDelayEnd;
@@ -19,6 +20,7 @@ public class PortalBoss_Master : MonoBehaviour
     [SerializeField] private float bigRockFloatVelocityEnd;
 
     [Header("Laser Rock")]
+    [SerializeField] private PortaBoss_LaserRock laserRock;
     [SerializeField] private AnimationCurve laserRockDelayCurve;
     [SerializeField] private float laserRockDelayStart;
     [SerializeField] private float laserRockDelayEnd;
@@ -29,6 +31,8 @@ public class PortalBoss_Master : MonoBehaviour
     [SerializeField] private float laserRockPrepSpeedEnd;
 
     // Script side variables
+    private bool activated = false;
+
     private float startHeight = 0f;
     private Transform player;
     private float heightPercentage = 0f;
@@ -56,14 +60,39 @@ public class PortalBoss_Master : MonoBehaviour
         this.startHeight = this.transform.position.y;
         this.player = GameManager.Player.gameObject.transform;
 
+        this.activated = false;
+
+        ToggleComponents(false);
+
+    }
+
+    public void Activate() {
+        this.activated = true;
+
         CalculateBigRockDelay();
         CalculateBigRockVelocity();
 
         CalculateLaserRockDelay();
         CalculateLaserRockPrepSpeed();
+
+        ToggleComponents(true);
+    }
+
+    void ToggleComponents(bool enable) {
+
+        foreach(PortalBoss_BigRock br in bigRocks)
+        {
+            br.enabled = enable;
+        }
+
+        laserRock.enabled = enable;
+        laserRock.laserAnimator.enabled = true;
+
     }
 
     void Update() {
+
+        if(!activated) return;
 
         this.heightPercentage = Mathf.Clamp((this.player.position.y - this.startHeight) / this.maxHeight, 0, 1);
 

@@ -93,6 +93,8 @@ GameObject:
   - component: {fileID: 213039042995623275}
   - component: {fileID: 213039042995623274}
   - component: {fileID: 213039042995623272}
+  - component: {fileID: 213039043080274334}
+  - component: {fileID: 213039043080274333}
   m_Layer: 0
   m_Name: PortalBoss
   m_TagString: Untagged
@@ -162,6 +164,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHeight: 100
+  bigRocks:
+  - {fileID: 213039044504697263}
+  - {fileID: 213039043415007634}
   bigRockDelayCurve:
     serializedVersion: 2
     m_Curve:
@@ -214,6 +219,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   bigRockFloatVelocityStart: 1
   bigRockFloatVelocityEnd: 2
+  laserRock: {fileID: 213039044131822856}
   laserRockDelayCurve:
     serializedVersion: 2
     m_Curve:
@@ -266,6 +272,64 @@ MonoBehaviour:
     m_RotationOrder: 4
   laserRockPrepSpeedStart: 0.3
   laserRockPrepSpeedEnd: 0.2
+--- !u!61 &213039043080274334
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213039042995623285}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -23.49, y: 6.8}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 26.66, y: 16.3}
+  m_EdgeRadius: 0
+--- !u!114 &213039043080274333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213039042995623285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce63d36c6431748498d076f13e93c4b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnterTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 213039042995623272}
+        m_MethodName: Activate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onExitTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+  filterTags:
+  - Player
+  repeatType: 0
 --- !u!1 &213039043361450157
 GameObject:
   m_ObjectHideFlags: 0

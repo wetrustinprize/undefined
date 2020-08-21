@@ -21,7 +21,7 @@ public class PortaBoss_LaserRock : MonoBehaviour
     [SerializeField] private float floatHeight = 30f;
 
     [Header("Shoot")]
-    [SerializeField] private Animator laserAnimator = null;
+    public Animator laserAnimator = null;
     [SerializeField] private float laserHeight = 2f;
     [SerializeField] private float laserThreshold;
     [SerializeField] private Attack myAttack;
@@ -31,6 +31,7 @@ public class PortaBoss_LaserRock : MonoBehaviour
     private LineRenderer laserTrail;
 
     private Vector3 lastPlayerPos;
+    private Vector3 lastLaserPos;
     private bool followPlayer;
 
     private float curShootTimer = 0f;
@@ -51,6 +52,8 @@ public class PortaBoss_LaserRock : MonoBehaviour
         this.laserTrail = GetComponent<LineRenderer>();
         this.laserTrail.positionCount = 2;
         this.followPlayer = true;
+
+        this.laserAnimator.enabled = false;
 
     }
 
@@ -84,12 +87,19 @@ public class PortaBoss_LaserRock : MonoBehaviour
 
     void LaserFollowBehaviour() {
 
+        Vector3 direction = player.transform.position - this.transform.position;
+        direction.Normalize();
+
+        Vector3 laserEndPoint = this.transform.position + direction * 300;
+        lastLaserPos = this.followPlayer ? laserEndPoint : lastLaserPos;
+
         Vector3[] positions = new Vector3[] { 
             this.transform.position, 
-            this.followPlayer ? this.player.transform.position + new Vector3(0, laserHeight, 0) : this.lastPlayerPos
+            lastLaserPos
+            //this.followPlayer ? this.player.transform.position + new Vector3(0, laserHeight, 0) : this.lastPlayerPos
             };
 
-        lastPlayerPos = positions[1];
+        lastPlayerPos = this.followPlayer ? player.transform.position : lastPlayerPos;
 
         this.laserTrail.SetPositions(positions);
 
