@@ -7,7 +7,8 @@ public class PortalBoss_BigRock : MonoBehaviour
 
         Following,
         Floating,
-        Falling
+        Falling,
+        Away,
 
     }
 
@@ -32,6 +33,9 @@ public class PortalBoss_BigRock : MonoBehaviour
     [Header("Distance Check")]
     [SerializeField] private float distanceThreshold = 0.01f;
 
+    [Space]
+    public bool activated = false;
+
     // Script side variables
     private GameObject player;
     private Vector3 gotoVector;
@@ -53,6 +57,10 @@ public class PortalBoss_BigRock : MonoBehaviour
 
         this.player = GameManager.Player.gameObject;
 
+    }
+
+    public void SetAway() {
+        ChangeState(BigRockState.Away);
     }
 
     void ChangeState(BigRockState newState)
@@ -83,6 +91,9 @@ public class PortalBoss_BigRock : MonoBehaviour
 
     void FixedUpdate() {
 
+        if(!activated) return;
+        if(this.state == BigRockState.Away) { AwayBehaviour(); return; }
+
         this.gotoVector = this.transform.position;
 
         switch(state)
@@ -102,6 +113,13 @@ public class PortalBoss_BigRock : MonoBehaviour
         }
 
         this.transform.position = gotoVector;
+
+    }
+
+    void AwayBehaviour() {
+
+        Vector3 awayPos = this.player.transform.position + new Vector3(0, 60, 0);
+        this.transform.position = Vector3.Lerp(this.transform.position, awayPos, Time.fixedDeltaTime / 5);
 
     }
 

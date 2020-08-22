@@ -78,15 +78,25 @@ public class PortalBoss_Master : MonoBehaviour
         ToggleComponents(true);
     }
 
+    public void AwayAll() {
+
+        foreach(PortalBoss_BigRock br in bigRocks)
+        {
+            br.SetAway();
+        }
+
+        laserRock.SetAway();
+
+    }
+
     void ToggleComponents(bool enable) {
 
         foreach(PortalBoss_BigRock br in bigRocks)
         {
-            br.enabled = enable;
+            br.activated = enable;
         }
 
-        laserRock.enabled = enable;
-        laserRock.laserAnimator.enabled = true;
+        laserRock.activated = enable;
 
     }
 

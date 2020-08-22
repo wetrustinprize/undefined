@@ -8,6 +8,7 @@ TagManager:
   - Creature
   - HUD
   - PlayerExplosion
+  - MapSpawner
   layers:
   - Default
   - TransparentFX

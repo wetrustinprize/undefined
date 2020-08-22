@@ -8,6 +8,7 @@ public class PortaBoss_LaserRock : MonoBehaviour
 
         Following,
         Shooting,
+        Away,
 
     }
 
@@ -26,7 +27,10 @@ public class PortaBoss_LaserRock : MonoBehaviour
     [SerializeField] private float laserThreshold;
     [SerializeField] private Attack myAttack;
     
+    [Space]
+    public bool activated = false;
     // Script side variables
+
     private GameObject player;
     private LineRenderer laserTrail;
 
@@ -53,11 +57,12 @@ public class PortaBoss_LaserRock : MonoBehaviour
         this.laserTrail.positionCount = 2;
         this.followPlayer = true;
 
-        this.laserAnimator.enabled = false;
-
     }
 
     void FixedUpdate() {
+
+        if(!activated) return;
+        if(this.state == LaserRockState.Away) { AwayBehaviour(); return; }
 
         LaserFollowBehaviour();
         TimerBehaviour();
@@ -107,6 +112,8 @@ public class PortaBoss_LaserRock : MonoBehaviour
 
     void ShotBehaviour() {
 
+        if(!activated) return;
+
         GameManager.Camera.Shake(5, 20, 0.25f, Vector2.one);
 
         float distance = Vector2.Distance(player.transform.position, this.lastPlayerPos);
@@ -115,6 +122,17 @@ public class PortaBoss_LaserRock : MonoBehaviour
         {
             this.myAttack.DirectAttack(player);
         }
+
+    }
+
+    public void SetAway() {
+        ChangeState(LaserRockState.Away);
+    }
+
+    void AwayBehaviour() {
+
+        Vector3 awayPos = this.player.transform.position + new Vector3(0, 60, 0);
+        this.transform.position = Vector3.Lerp(this.transform.position, awayPos, Time.fixedDeltaTime / 5);
 
     }
 
@@ -138,6 +156,8 @@ public class PortaBoss_LaserRock : MonoBehaviour
     }
 
     void ChangeState(LaserRockState newState) {
+
+        if(this.state == LaserRockState.Away) return;
 
         switch(newState)
         {

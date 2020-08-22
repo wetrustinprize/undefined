@@ -5402,9 +5402,9 @@ MonoBehaviour:
   canJump: 1
   canAttack: 1
   canSkills: 1
-  canDash: 1
+  canDash: 0
   canTeleport: 0
-  canExplode: 1
+  canExplode: 0
   explosionMinTimer: 0.35
   canUseActiveItem: 1
 --- !u!114 &6774648264558360627

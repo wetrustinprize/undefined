@@ -46,11 +46,11 @@ public class EntitySpawn : MonoBehaviour {
     }
 
     void OnDieEntity() {
-        Debug.Log("Teste");
         timer = respawnTime;
     }
 
     void FixedUpdate() {
+
 
         if(timer > 0)
         {

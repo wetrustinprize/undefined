@@ -76,6 +76,7 @@ public class PlayerController : MonoBehaviour {
 
     void Update() {
         if(holdingAttack) HoldingAttackTick();
+        if(Input.GetKeyDown(KeyCode.K)) { alive.TakeDamage(100, this.gameObject); }
     }
 
     void Die() {
@@ -211,6 +212,10 @@ public class PlayerController : MonoBehaviour {
         #endregion
 
         #region Walk
+
+    public void ResetInput() {
+        motor.ReceiveInput(Vector2.zero);
+    }
 
     void WalkPerfomed(Vector2 dir, bool force = false) {
 

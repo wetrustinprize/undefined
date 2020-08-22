@@ -15,14 +15,12 @@ public class EntityManager : MonoBehaviour {
     [Header("Raycasting")]
     [SerializeField] private LayerMask raycastLayer = 0;
 
-    [Header("Spawns")]
-    [SerializeField] private List<EntitySpawn> spawns = new List<EntitySpawn>();
 
     // Actions
     public event Action<Vector2Int> onPlayerChangeChunk;
 
     // Script side
-
+    private GameObject[] spawns = new GameObject[] {};
     private Vector2Int playerChunk = Vector2Int.zero;
     private List<GameObject> activeEntitys = new List<GameObject>();
 
@@ -30,11 +28,16 @@ public class EntityManager : MonoBehaviour {
 
     void Start()
     {
+        spawns = GameObject.FindGameObjectsWithTag("MapSpawner");
+
         // EntitySpawn with spawnOnStart enabled
-        foreach(EntitySpawn spawn in spawns)
+        foreach(GameObject spawnga in spawns)
         {
-            if(spawn.SpawnOnStart)
-                spawn.Spawn();
+            if(spawnga.TryGetComponent<EntitySpawn>(out EntitySpawn spawn))
+            {
+                if(spawn.SpawnOnStart)
+                    spawn.Spawn();
+            }
         }
 
         CheckPlayerChunk();

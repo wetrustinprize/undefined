@@ -125,7 +125,7 @@ MonoBehaviour:
   forceToApply:
     Name: jumppad
     ForceToApply: {x: 0, y: 15}
-    stopBehaviour: 12
+    stopBehaviour: 15
     disableAllGravity: 1
     TimeToStop: 0.3
   useAutoTime: 1
