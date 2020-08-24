@@ -56,11 +56,16 @@ public class PortalBoss_BigRock : MonoBehaviour
         ChangeState(BigRockState.Floating);
 
         this.player = GameManager.Player.gameObject;
+        GameManager.Checkpoint.onLoad += () => {this.player = GameManager.Player.gameObject;};
 
     }
 
     public void SetAway() {
         ChangeState(BigRockState.Away);
+    }
+
+    public void Reset() {
+        ChangeState(BigRockState.Floating);
     }
 
     void ChangeState(BigRockState newState)

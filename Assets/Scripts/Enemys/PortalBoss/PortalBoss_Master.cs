@@ -5,6 +5,10 @@ public class PortalBoss_Master : MonoBehaviour
 
         #region Variables
 
+    [Header("Animation")]
+    [SerializeField] private PortalBoss_Animation animationManager;
+    [SerializeField] private Animator animationAnimator;
+
     [Header("Height Settings")]
     [SerializeField] private float maxHeight = 0f;
 
@@ -43,6 +47,9 @@ public class PortalBoss_Master : MonoBehaviour
     private float laserRockActualDelay = 0f;
     private float laserRockActualPrepSpeed = 0f;
 
+    private Vector2[] bigRockPos;
+    private Vector2 laserRockPos;
+
     // Public acess variables
     public float BigRockActualDelay { get { return bigRockActualDelay; } }
     public float BigRockActualVelocity { get { return bigRockActualFloatVelocity; } }
@@ -64,6 +71,22 @@ public class PortalBoss_Master : MonoBehaviour
 
         ToggleComponents(false);
 
+        // Stop attacking when player dies
+        GameManager.Player.alive.onDie += () => { AwayAll(); };
+
+        // On load reset positions
+        GameManager.Checkpoint.onLoad += () => { Reset(); };
+
+        // Save positions
+        bigRockPos = new Vector2[bigRocks.Length];
+
+        for(int i = 0; i < bigRocks.Length; i++)
+        {
+            bigRockPos[i] = bigRocks[i].gameObject.transform.position;
+        }
+
+        laserRockPos = laserRock.transform.position;
+
     }
 
     public void Activate() {
@@ -76,6 +99,37 @@ public class PortalBoss_Master : MonoBehaviour
         CalculateLaserRockPrepSpeed();
 
         ToggleComponents(true);
+    }
+
+    public void Reset() {
+
+        this.animationManager.animateFast = this.activated;
+
+        Deactivate();
+
+        for(int i = 0; i < bigRocks.Length; i++)
+        {
+            this.bigRocks[i].gameObject.transform.position = bigRockPos[i];
+            this.bigRocks[i].Reset();
+        }
+
+        this.laserRock.gameObject.transform.position = laserRockPos;
+        this.laserRock.Reset();
+
+        this.player = GameManager.Player.gameObject.transform;
+
+        this.animationManager.ResetAnimation();
+        this.animationManager.hasAnimated = false;
+        this.animationAnimator.enabled = true;
+
+    }
+
+    public void Deactivate() {
+
+        this.activated = false;
+
+        ToggleComponents(false);
+
     }
 
     public void AwayAll() {

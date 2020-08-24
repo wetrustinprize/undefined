@@ -52,6 +52,7 @@ public class PortaBoss_LaserRock : MonoBehaviour
     void Start() {
 
         this.player = GameManager.Player.gameObject;
+        GameManager.Checkpoint.onLoad += () => {this.player = GameManager.Player.gameObject;};
         
         this.laserTrail = GetComponent<LineRenderer>();
         this.laserTrail.positionCount = 2;
@@ -129,6 +130,10 @@ public class PortaBoss_LaserRock : MonoBehaviour
         ChangeState(LaserRockState.Away);
     }
 
+    public void Reset() {
+        ChangeState(LaserRockState.Following, true);
+    }
+
     void AwayBehaviour() {
 
         Vector3 awayPos = this.player.transform.position + new Vector3(0, 60, 0);
@@ -155,9 +160,14 @@ public class PortaBoss_LaserRock : MonoBehaviour
 
     }
 
-    void ChangeState(LaserRockState newState) {
+    void ChangeState(LaserRockState newState)
+    {
+        ChangeState(newState, false);
+    }
 
-        if(this.state == LaserRockState.Away) return;
+    void ChangeState(LaserRockState newState, bool force = false) {
+
+        if(this.state == LaserRockState.Away && !force) return;
 
         switch(newState)
         {

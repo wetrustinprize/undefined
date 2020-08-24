@@ -10,25 +10,28 @@ TextureImporter:
     second: arbustro_2
   - first:
       213: -6240333983308654515
-    second: pedra_1
+    second: rocks1
   - first:
       213: 640849971508171845
-    second: folhas_1
+    second: tree1f
   - first:
       213: 7138122551887934499
-    second: tronco_1
+    second: tree1_0
   - first:
       213: 2317383643460560524
-    second: florest_1_0
+    second: tree1_1
   - first:
       213: 9087604692332265314
-    second: florest_1_1
+    second: tree2_1
   - first:
       213: 5845719629141703536
-    second: florest_1_2
+    second: tree2_0
   - first:
       213: 5432815264405030672
-    second: florest_1_3
+    second: tree2f
+  - first:
+      213: -8805053449125816238
+    second: tree1_1
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -113,49 +116,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: arbustro_1
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 333
-        width: 64
-        height: 43
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 23ea21f495ec0a948b4193865371e9a0
-      internalID: -5122721175796222358
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: arbustro_2
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 333
-        width: 64
-        height: 50
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cad199d6560983f47aaf5c8eee6098b1
-      internalID: 135576505368592614
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: pedra_1
+      name: rocks1
       rect:
         serializedVersion: 2
         x: 0
@@ -176,7 +137,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: folhas_1
+      name: tree1f
       rect:
         serializedVersion: 2
         x: 128
@@ -197,7 +158,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tronco_1
+      name: tree1_0
       rect:
         serializedVersion: 2
         x: 263
@@ -218,7 +179,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_0
+      name: tree1_1
       rect:
         serializedVersion: 2
         x: 390
@@ -226,7 +187,7 @@ TextureImporter:
         width: 122
         height: 192
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -239,7 +200,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_1
+      name: tree2_1
       rect:
         serializedVersion: 2
         x: 408
@@ -247,7 +208,7 @@ TextureImporter:
         width: 94
         height: 193
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -260,7 +221,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_2
+      name: tree2_0
       rect:
         serializedVersion: 2
         x: 279
@@ -268,7 +229,7 @@ TextureImporter:
         width: 93
         height: 193
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -281,7 +242,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: florest_1_3
+      name: tree2f
       rect:
         serializedVersion: 2
         x: 151
@@ -289,7 +250,7 @@ TextureImporter:
         width: 105
         height: 109
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -297,6 +258,27 @@ TextureImporter:
       bones: []
       spriteID: 0178e2dd2bc356b40800000000000000
       internalID: 5432815264405030672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: rocks1_1
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 299
+        width: 64
+        height: 34
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25817880a8a2ec580800000000000000
+      internalID: -8805053449125816238
       vertices: []
       indices: 
       edges: []

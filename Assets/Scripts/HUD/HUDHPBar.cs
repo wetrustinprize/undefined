@@ -27,7 +27,7 @@ public class HUDHPBar : MonoBehaviour
     {
         lastExplodedBar = 999;
 
-        playerAliveComponent = GameObject.FindWithTag("Player").GetComponent<Alive>();
+        playerAliveComponent = GameManager.Player.alive;
 
         // Event to run when the player gets damaged.
         playerAliveComponent.onDamage += (dmg, dealer) => {OnDamage();};

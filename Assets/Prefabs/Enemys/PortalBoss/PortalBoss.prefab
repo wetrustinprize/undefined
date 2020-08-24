@@ -165,6 +165,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 613dec812df95ef45b34f3dec84a8713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationManager: {fileID: 625124849619842691}
+  animationAnimator: {fileID: 213039043080274332}
   maxHeight: 100
   bigRocks:
   - {fileID: 213039044504697263}
@@ -331,7 +333,7 @@ MonoBehaviour:
       m_Calls: []
   filterTags:
   - Player
-  repeatType: 0
+  repeatType: 1
 --- !u!95 &213039043080274332
 Animator:
   serializedVersion: 3
@@ -367,6 +369,7 @@ MonoBehaviour:
   endAnimator: {fileID: 0}
   laserAnimator: {fileID: 1121115280}
   laserLineRender: {fileID: 1121115283}
+  hasAnimated: 0
 --- !u!1 &213039043361450157
 GameObject:
   m_ObjectHideFlags: 0

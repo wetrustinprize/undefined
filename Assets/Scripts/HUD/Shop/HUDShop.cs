@@ -27,7 +27,7 @@ public class HUDShop : MonoBehaviour {
 
     void Start() {
 
-        inventory = GameManager.Player.GetComponent<PlayerInventory>();
+        inventory = GameManager.Player.inventory;
         selectedItem = -1;
 
         inventory.onChangeGold += q => itemDetails.UpdatePlayerGold(q, ShopCoin.Gold);

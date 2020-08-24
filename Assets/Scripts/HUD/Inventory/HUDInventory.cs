@@ -29,7 +29,6 @@ public class HUDInventory : MonoBehaviour
     //private bool selectedEquipItem;
 
     // Script side
-    private GameObject player;
     private PlayerInventory inventory;
     private List<InventoryItem> items { get { return inventory.Items; } }
     private InventoryItem activeItem { get { return inventory.ActiveItem; }}
@@ -42,9 +41,8 @@ public class HUDInventory : MonoBehaviour
 
     void Awake() {
 
-        // Gets the player and its inventory
-        player = GameObject.FindWithTag("Player");
-        inventory = player.GetComponent<PlayerInventory>();
+        // Gets the player inventory
+        inventory = GameManager.Player.inventory;
 
         // Setup the player events
         inventory.onUse += cb => RefreshBackpack();

@@ -14,11 +14,24 @@ public class PortalBoss_Animation : MonoBehaviour {
     [SerializeField] private Animator laserAnimator;
     [SerializeField] private LineRenderer laserLineRender;
 
+    // Script side
+    [HideInInspector] public bool hasAnimated;
+    [HideInInspector] public bool animateFast;
+
         #endregion
 
     public void StartAnimation() {
 
-        this.myAnimator.SetTrigger("Start");
+        if(this.hasAnimated) return;
+
+        FocusOnPortal();
+        this.myAnimator.SetTrigger(this.animateFast ? "StartFast" : "Start");
+
+    }
+
+    public void ResetAnimation() {
+
+        this.myAnimator.SetTrigger("Reset");
 
     }
 
@@ -58,8 +71,8 @@ public class PortalBoss_Animation : MonoBehaviour {
 
         GameManager.Camera.LookAtPlayer();
         GameManager.Player.receiveInput = true;
-        Destroy(this.myAnimator);
-        Destroy(this);
+        this.myAnimator.enabled = false;
+        this.hasAnimated = true;
 
     }
 

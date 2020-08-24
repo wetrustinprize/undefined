@@ -1,6 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-
+using System;
 using Undefined.Checkpoints;
 
 public class CheckPointManager : MonoBehaviour {
@@ -10,21 +9,22 @@ public class CheckPointManager : MonoBehaviour {
     [Header("Last Save Information")]
     [SerializeField] private Save save;
 
+    // Action
+    public Action onSave;
+    public Action onLoad;
+
         #endregion
 
     public void Save() {
-        GameObject player = GameManager.Player.gameObject;
-        PlayerController controller = player.GetComponent<PlayerController>();
-        PlayerInventory inventory = player.GetComponent<PlayerInventory>();
-        Alive alive = player.GetComponent<Alive>();
-
-        save = new Save(player.transform.position, controller, inventory, alive);
+        save = new Save(GameManager.Player.transform.position);
+        onSave?.Invoke();
     }
 
     public void Load() {
         GameManager.Entity.ClearAllEntities();
         GameManager.manager.RespawnPlayer(save.PlayerPosition);
         save.Load();
+        onLoad?.Invoke();
     }
 
 }

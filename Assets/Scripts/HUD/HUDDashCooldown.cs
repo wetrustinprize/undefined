@@ -21,7 +21,7 @@ public class HUDDashCooldown : MonoBehaviour
         myGroup = GetComponent<CanvasGroup>();
         myGroup.alpha = 0;
 
-        GameManager.Player.GetComponent<Dash>().onDash += Timer;
+        GameManager.Player.dash.onDash += Timer;
 
     }
 

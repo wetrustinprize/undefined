@@ -34,31 +34,32 @@ namespace Undefined.Checkpoints {
 
             #endregion
 
-        public Save(Vector3 position, PlayerController controller, PlayerInventory inventory, Alive alive)
+        public Save(Vector2 position)
         {
+            PlayerController controller = GameManager.Player;
+
             this.PlayerPosition = position;
             
-            this.PlayerGold = inventory.Gold;
-            this.PlayerSecret = inventory.SecretGold;
-            this.ActiveItem = inventory.ActiveItem;
-            this.PassiveItem = inventory.PassiveItem;
-            this.WeaponItem = inventory.WeaponItem;
-            this.Items = inventory.Items;
+            this.PlayerGold = controller.inventory.Gold;
+            this.PlayerSecret = controller.inventory.SecretGold;
+            this.ActiveItem = controller.inventory.ActiveItem;
+            this.PassiveItem = controller.inventory.PassiveItem;
+            this.WeaponItem = controller.inventory.WeaponItem;
+            this.Items = controller.inventory.Items;
 
             this.CanDash = controller.canDash;
             this.CanTeleport = controller.canTeleport;
             this.CanExplode = controller.canExplode;
             this.CanWalljump = controller.canWallJump;
 
-            this.Health = alive.Health;
+            this.Health = controller.alive.Health;
         }
 
         public void Load() {
-            GameObject player = GameManager.Player.gameObject;
 
-            PlayerController controller = player.GetComponent<PlayerController>();
-            PlayerInventory inventory = player.GetComponent<PlayerInventory>();
-            Alive alive = player.GetComponent<Alive>();
+            PlayerController controller = GameManager.Player;
+            PlayerInventory inventory = controller.inventory;
+            Alive alive = controller.alive;
 
             GameManager.Player.gameObject.transform.position = this.PlayerPosition;
 

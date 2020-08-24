@@ -109,12 +109,16 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: f58efb86f6ee00b439232dbbe48053a8, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 0ed81e9ec365f78408db35ae8ce49a9b, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: -3397222427440847490, guid: ec5f8798908fc6f489cafa705b70bff5,
       type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 994262924760189150, guid: 0a2fa8bcc16fff14c892e220d2919240, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 2
     m_Data:
@@ -137,6 +141,8 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 2
     m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: -16.960266, g: -16.960266, b: -16.960266, a: -16.960266}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}

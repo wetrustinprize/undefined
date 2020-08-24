@@ -39,16 +39,18 @@ public class PlayerController : MonoBehaviour {
     public bool canUseActiveItem = true;
 
     // Script side variables
-    private Motor motor { get {return GetComponent<Motor>(); } }
-    private Jump jump { get { return GetComponent<Jump>(); } }
-    private PlayerJump pjump { get {return GetComponent<PlayerJump>(); } }
-    private Dash dash { get { return GetComponent<Dash>(); } }
-    private Attack attack { get {return GetComponent<Attack>(); } }
-    private PlayerTeleport teleport { get { return GetComponent<PlayerTeleport>(); } }
-    private PlayerExplosion explosion { get { return GetComponent<PlayerExplosion>(); } }
-    private PlayerInventory inventory { get { return GetComponent<PlayerInventory>(); } }
-    private PlayerInteraction interaction { get { return GetComponent<PlayerInteraction>(); } }
-    private Alive alive { get { return GetComponent<Alive>(); } }
+
+    // Components
+    public Motor motor { get; private set; }
+    public Jump jump { get; private set; }
+    public PlayerJump pjump { get; private set; }
+    public Dash dash { get; private set; }
+    public Attack attack { get; private set; }
+    public PlayerTeleport teleport { get; private set; }
+    public PlayerExplosion explosion { get; private set; }
+    public PlayerInventory inventory { get; private set; }
+    public PlayerInteraction interaction { get; private set; }
+    public Alive alive { get; private set; }
 
     // Script side
     private PlayerInput inputs;
@@ -61,6 +63,18 @@ public class PlayerController : MonoBehaviour {
         #endregion
 
     void Awake() {
+
+        // Gets all components
+        this.motor = GetComponent<Motor>();
+        this.jump = GetComponent<Jump>();
+        this.pjump = GetComponent<PlayerJump>();
+        this.dash = GetComponent<Dash>();
+        this.attack = GetComponent<Attack>();
+        this.teleport = GetComponent<PlayerTeleport>();
+        this.explosion = GetComponent<PlayerExplosion>();
+        this.inventory = GetComponent<PlayerInventory>();
+        this.interaction = GetComponent<PlayerInteraction>();
+        this.alive = GetComponent<Alive>();
 
         inputs = new PlayerInput();
 

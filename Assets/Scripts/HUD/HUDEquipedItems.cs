@@ -20,11 +20,13 @@ public class HUDEquipedItems : MonoBehaviour
 
         void Start() {
 
-                myInventory = GameManager.Player.GetComponent<PlayerInventory>();
+                myInventory = GameManager.Player.inventory;
 
                 myInventory.onEquip += cb => { Refresh(); };
                 myInventory.onUnequip += cb => { Refresh(); };
                 myInventory.onUse += cb => { Refresh(); };
+
+                Refresh();
 
         }
 
