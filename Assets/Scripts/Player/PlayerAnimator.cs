@@ -6,12 +6,6 @@ public class PlayerAnimator : MonoBehaviour
     
         #region Variables
 
-    [Header("References")]
-    [SerializeField] private Motor motor = null;               // Reference to the Player Motor component
-    [SerializeField] private Attack attack = null;             // Reference to the Attack component
-    [SerializeField] private Jump jump = null;                 // Reference to the Jump component
-    [SerializeField] private Alive alive = null;               // Referente to the Alive component
-
     [Header("Animator Settings")]
     [SerializeField] private float driftThreshold = 0.3f;      // The threshold to play the drift animation
     [SerializeField] private float dashThreshold = 2;      // The threshold to stop the dash animation
@@ -43,9 +37,23 @@ public class PlayerAnimator : MonoBehaviour
     private float squishPercentage;
     private float lastInput;
 
+    private Motor motor = null;
+    private Attack attack = null;
+    private Jump jump = null;
+    private Alive alive = null;
+    private PlayerInventory inventory = null;
+
         #endregion
 
     void Start() {
+
+        // Get components
+        PlayerController controller = GameManager.Player;
+        motor = controller.motor;
+        attack = controller.attack;
+        jump = controller.jump;
+        alive = controller.alive;
+        inventory = controller.inventory;
 
         // Setup the attack events
         attack.onPerform += AttackAnim;
@@ -227,7 +235,7 @@ public class PlayerAnimator : MonoBehaviour
         animator.SetBool("Drift", drifting);
 
         if(highVelocityDashing)     animator.SetTrigger("Dash");
-        if(attacked)    animator.SetTrigger("Attack");
+        if(attacked)    animator.SetTrigger(inventory.WeaponItem.itemObj == null ? "Attack" : "SwordAttack");
 
         // Squish effect
         squishPercentage = Mathf.Lerp(squishPercentage, Mathf.Clamp(vVel / -70, 0, 1), Time.fixedDeltaTime);

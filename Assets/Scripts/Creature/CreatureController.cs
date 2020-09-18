@@ -23,6 +23,8 @@ public class CreatureController : MonoBehaviour
     [Header("Following")]
     [SerializeField] private float follow_Time = 0.1f;             // The time to the creature get close to the player
     [SerializeField] private Vector2 follow_Offset = Vector2.zero;         // The off of the creature
+    [SerializeField] private float flapSpeed = 3f;                  // Flap speed
+    [SerializeField] private float flapIntensity = 0.25f;           // Flap intensity
 
     [Header("Bouncing")]
     [SerializeField] private float bounce_Slowing = 0.8f;          // Slow percentage of each bounce
@@ -280,9 +282,14 @@ public class CreatureController : MonoBehaviour
 
         isNearPlayer = Vector2.Distance(transform.position - (Vector3)follow_Offset, player.transform.position) < 1;
 
+        Vector3 flapY = new Vector2(
+            0,
+            Mathf.Sin(Time.time * flapSpeed) * flapIntensity    
+        );
+
         Move(Vector3.Lerp(  
                 transform.position, 
-                player.transform.position + (Vector3)follow_Offset, 
+                player.transform.position + (Vector3)follow_Offset + flapY, 
                 Time.fixedDeltaTime / follow_Time
             )
         );

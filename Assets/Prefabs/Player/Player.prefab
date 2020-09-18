@@ -5635,8 +5635,8 @@ MonoBehaviour:
     quantity: 0
     itemObj: {fileID: 0}
   equipedWeapon:
-    quantity: 0
-    itemObj: {fileID: 0}
+    quantity: 1
+    itemObj: {fileID: 11400000, guid: bdefe8f2580a0ce4b8118c3f3c422e7e, type: 2}
   items:
   - quantity: 1
     itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}

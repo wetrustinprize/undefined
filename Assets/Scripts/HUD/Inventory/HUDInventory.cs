@@ -90,20 +90,24 @@ public class HUDInventory : MonoBehaviour
         for(int i = 0; i < items.Count; i++) {
 
             InventoryItem item = items[i];
-            GameObject itemObj = null;
+            GameObject itemHUDObj = null;
 
             switch(item.itemObj.type)
             {
                 case ItemType.Active:
-                    itemObj = Instantiate(itemPrefab, activeItemsTransform);
+                    itemHUDObj = Instantiate(itemPrefab, activeItemsTransform);
                     break;
                 
                 case ItemType.Passive:
-                    itemObj = Instantiate(itemPrefab, passiveItemsTransform);
+                    itemHUDObj = Instantiate(itemPrefab, passiveItemsTransform);
+                    break;
+
+                case ItemType.Weapon:
+                    itemHUDObj = Instantiate(itemPrefab, passiveItemsTransform);
                     break;
             }
 
-            itemObj.GetComponent<HUDItemInfo>().Setup(items[i], i, this);
+            itemHUDObj.GetComponent<HUDItemInfo>().Setup(items[i], i, this);
 
         }
 

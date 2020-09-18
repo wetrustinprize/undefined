@@ -237,6 +237,8 @@ MonoBehaviour:
   state: 0
   follow_Time: 0.1
   follow_Offset: {x: 0, y: 4}
+  flapSpeed: 3
+  flapIntensity: 0.2
   bounce_Slowing: 0.8
   bounce_Max: 3
   bounce_Min: 0
