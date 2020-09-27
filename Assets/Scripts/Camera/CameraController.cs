@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using Undefined.Rooms;
 
 public class CameraController : MonoBehaviour
 {
     
         #region Variables
+
+    public Room room1;
 
 
     [Header("Follow settings")]
@@ -70,6 +73,18 @@ public class CameraController : MonoBehaviour
 
         #endregion
 
+        #region Boundaries
+
+    private float boundariesMinX;
+    private float boundariesMaxX;
+    private float boundariesMinY;
+    private float boundariesMaxY;
+
+    private float horzExtent;
+    private float vertExtent;
+
+        #endregion
+
         #region Static
 
     public static CameraController main { get { return GameObject.FindWithTag("MainCamera").GetComponent<CameraController>();} }
@@ -79,17 +94,21 @@ public class CameraController : MonoBehaviour
         #endregion
 
     void Awake() {
-
+        // Get the camera component
+        thisCam = GetComponent<Camera>();
     }
 
     void Start() {
+
+        // Bounds setup
+        vertExtent = thisCam.orthographicSize;
+        horzExtent = vertExtent * Screen.width / Screen.height;
 
         // Initial size
         currentSize = size;
         resizeTime = 1;
 
-        // Get the camera component
-        thisCam = GetComponent<Camera>();
+        SetRoom(room1);
 
     }
 
@@ -97,21 +116,64 @@ public class CameraController : MonoBehaviour
 
         if(isPlayer)
             PlayerFollow();
-        else
+        else if(lookAt != null)
             OtherFollow();
 
         CameraShake();
         CameraPush();
         SizeLerp();
+        Boundaries();
 
-        newPos.z = -currentSize;
+        
+        thisCam.orthographicSize = currentSize;
 
+        newPos.z = -1;
         transform.position = newPos;
         
 
     }
 
+    public void SetRoom(Room room)
+    {
+        float originX = room.origin.x;
+        float originY = room.origin.y;
+        float sizeX = room.tilesetSize.x + originX;
+        float sizeY = room.tilesetSize.y + originY;
+
+        boundariesMinX = horzExtent + originX / 2.0f;
+        boundariesMaxX = sizeX / 2.0f + horzExtent;
+        boundariesMinY = vertExtent + originY / 2.0f;
+        boundariesMaxY = sizeY / 2.0f + vertExtent;
+
+    }
+
         #region Calculatios
+
+    void OnDrawGizmos() {
+
+        Vector3 center = new Vector3(
+            boundariesMaxX - (boundariesMaxX - boundariesMinX) / 2,
+            boundariesMaxY - (boundariesMaxY - boundariesMinY) / 2,
+            0
+        );
+
+        Vector3 size = new Vector3(
+            (boundariesMaxX - boundariesMinX),
+            (boundariesMaxY - boundariesMinY),
+            0
+        );
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(center, size);
+
+    }
+
+    void Boundaries() {
+
+        newPos.x = Mathf.Clamp(newPos.x, boundariesMinX, boundariesMaxX);
+        newPos.y = Mathf.Clamp(newPos.y, boundariesMinY, boundariesMaxY);
+
+    }
 
     void OtherFollow() {
         
