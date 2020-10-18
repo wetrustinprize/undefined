@@ -5,23 +5,18 @@ public class CameraController : MonoBehaviour
 {
     
         #region Variables
-
-    public Room room1;
-
+    
+    [Header("Camera settings")]
+    [SerializeField] private float originalSize = 30;
 
     [Header("Follow settings")]
     [SerializeField] private GameObject lookAt = null;
-    [SerializeField] private float size = 30;
+    [SerializeField] private float lookVelocity = 1;
 
-    [Header("Look ahead settings:")]
-    [SerializeField] private float lookAheadDistance = 7;
-    [SerializeField] private float lookAheadStartTimeSpeed = 3;
-    [SerializeField] private float lookAheadEndTimeSpeed = 1;
-    [SerializeField] private float lookAheadTime = 3;
+    [Header("Boundaries settings:")]
+    [SerializeField] private float boundariesTransitionTime = 1f;
+    [SerializeField] private AnimationCurve boundariesTransitionCurve;
 
-    [Header("Vertical look ahead settings:")]
-    [SerializeField] private float gravityScale = 50;
-    [SerializeField] private AnimationCurve gravityScaleCurve = null;
 
     // Script-side
     private bool isPlayer { get { return lookAt.GetComponent<PlayerController>(); } }
@@ -34,9 +29,6 @@ public class CameraController : MonoBehaviour
     private Camera thisCam;
     public Camera Camera { get { return thisCam; } }
 
-    private Vector2 lookAheadValue;
-    private float timeMovingCamera;
-
         #region Lookat
 
     private float look_Smooth;
@@ -45,6 +37,7 @@ public class CameraController : MonoBehaviour
 
         #region Camera Size
 
+    private float size;
     private float currentSize;
     private float resizeTime;
 
@@ -75,10 +68,17 @@ public class CameraController : MonoBehaviour
 
         #region Boundaries
 
-    private float boundariesMinX;
-    private float boundariesMaxX;
-    private float boundariesMinY;
-    private float boundariesMaxY;
+    private Vector2 oldMinBoundaries;
+    private Vector2 oldMaxBoundaries;
+    
+    private Vector2 curMinBoundaries;
+    private Vector2 curMaxBoundaries;
+
+    private Vector2 newMinBoundaries;
+    private Vector2 newMaxBoundaries;
+
+
+    private float boundariesTimer;
 
     private float horzExtent;
     private float vertExtent;
@@ -96,54 +96,84 @@ public class CameraController : MonoBehaviour
     void Awake() {
         // Get the camera component
         thisCam = GetComponent<Camera>();
+
     }
 
     void Start() {
 
-        // Bounds setup
-        vertExtent = thisCam.orthographicSize;
-        horzExtent = vertExtent * Screen.width / Screen.height;
-
         // Initial size
-        currentSize = size;
+        currentSize = originalSize;
+        size = currentSize;
         resizeTime = 1;
-
-        SetRoom(room1);
 
     }
 
-    void Update() {
+        #region FixedUpdate
 
-        if(isPlayer)
-            PlayerFollow();
-        else if(lookAt != null)
-            OtherFollow();
+    void FixedUpdate() {
 
-        CameraShake();
-        CameraPush();
-        SizeLerp();
+        CameraGoto();
+        CameraEffects();
         Boundaries();
-
-        
-        thisCam.orthographicSize = currentSize;
 
         newPos.z = -1;
         transform.position = newPos;
-        
+    }
+
+    void CameraEffects() {
+
+        newPos += (Vector3)(push_actDistance + shake_Final);
+
+    }
+
+    void CameraGoto() {
+
+        if(boundariesTimer <= 0)
+            newPos = Vector2.Lerp(newPos, (Vector2)lookAt.transform.position, Time.fixedDeltaTime * lookVelocity);
+
+    }
+
+    void Boundaries() {
+
+        newPos.x = Mathf.Clamp(newPos.x, curMinBoundaries.x, curMaxBoundaries.x);
+        newPos.y = Mathf.Clamp(newPos.y, curMinBoundaries.y, curMaxBoundaries.y);
+
+    }
+
+        #endregion
+
+    void Update() {
+
+        CameraShakeAnimation();
+        CameraPush();
+        SizeLerpAnimation();
+        BoundariesAnimation();
+
+        thisCam.orthographicSize = currentSize;
 
     }
 
     public void SetRoom(Room room)
     {
+        // Bounds setup
+        vertExtent = thisCam.orthographicSize;
+        horzExtent = vertExtent * Screen.width / Screen.height;
+
         float originX = room.origin.x;
         float originY = room.origin.y;
-        float sizeX = room.tilesetSize.x + originX;
-        float sizeY = room.tilesetSize.y + originY;
+        float sizeX = room.tilesetSize.x;
+        float sizeY = room.tilesetSize.y;
 
-        boundariesMinX = horzExtent + originX / 2.0f;
-        boundariesMaxX = sizeX / 2.0f + horzExtent;
-        boundariesMinY = vertExtent + originY / 2.0f;
-        boundariesMaxY = sizeY / 2.0f + vertExtent;
+        boundariesTimer = boundariesTransitionTime;
+
+        oldMinBoundaries = curMinBoundaries;
+        oldMaxBoundaries = curMaxBoundaries;
+
+        newMinBoundaries.x = originX + horzExtent;
+        newMinBoundaries.y = originY + vertExtent;
+
+        newMaxBoundaries.x = originX + sizeX - horzExtent;
+        newMaxBoundaries.y = originY + sizeY - vertExtent;
 
     }
 
@@ -152,14 +182,14 @@ public class CameraController : MonoBehaviour
     void OnDrawGizmos() {
 
         Vector3 center = new Vector3(
-            boundariesMaxX - (boundariesMaxX - boundariesMinX) / 2,
-            boundariesMaxY - (boundariesMaxY - boundariesMinY) / 2,
+            curMaxBoundaries.x - (curMaxBoundaries.x - curMinBoundaries.x) / 2,
+            curMaxBoundaries.y - (curMaxBoundaries.y - curMinBoundaries.y) / 2,
             0
         );
 
         Vector3 size = new Vector3(
-            (boundariesMaxX - boundariesMinX),
-            (boundariesMaxY - boundariesMinY),
+            (curMaxBoundaries.x - curMinBoundaries.x),
+            (curMaxBoundaries.y - curMinBoundaries.y),
             0
         );
 
@@ -168,33 +198,18 @@ public class CameraController : MonoBehaviour
 
     }
 
-    void Boundaries() {
+    void BoundariesAnimation() {
 
-        newPos.x = Mathf.Clamp(newPos.x, boundariesMinX, boundariesMaxX);
-        newPos.y = Mathf.Clamp(newPos.y, boundariesMinY, boundariesMaxY);
-
-    }
-
-    void OtherFollow() {
-        
-        if(look_Smooth <= 0)
+        if(boundariesTimer > 0)
         {
-            newPos = lookAt.transform.position;
-            return;
+            boundariesTimer -= Time.deltaTime;
+            
+            float boundariesCurveValue = boundariesTransitionCurve.Evaluate(1-boundariesTimer/boundariesTransitionTime);
+
+            curMaxBoundaries = Vector2.Lerp(oldMaxBoundaries, newMaxBoundaries, boundariesCurveValue);
+            curMinBoundaries = Vector2.Lerp(oldMinBoundaries, newMinBoundaries, boundariesCurveValue);
+
         }
-        else
-        {
-            newPos = Vector3.Lerp(this.transform.position, lookAt.transform.position, Time.deltaTime / look_Smooth);
-        }
-
-    }
-
-    void PlayerFollow() {
-        
-        LookAhead();
-        CameraGoto();
-
-        timeMovingCamera = isWalking ? (timeMovingCamera + Time.deltaTime) : 0;
 
     }
 
@@ -211,11 +226,9 @@ public class CameraController : MonoBehaviour
             push_ReturnTimer += Time.deltaTime;
         }
 
-        newPos += (Vector3)push_actDistance;
-
     }
 
-    void CameraShake() {
+    void CameraShakeAnimation() {
 
         if(shake_Timer <= 0) return;
 
@@ -231,43 +244,11 @@ public class CameraController : MonoBehaviour
         
         shake_Timer -= Time.deltaTime;
 
-        newPos += (Vector3)shake_Final;
-
     }
 
-    void SizeLerp() {
+    void SizeLerpAnimation() {
 
         currentSize = Mathf.Lerp(currentSize, size, Time.deltaTime / resizeTime);
-
-    }
-
-    void LookAhead() {
-
-        float horizontalLookAhead = 0;
-        float verticalLookAhead = 0;
-        float time = isWalking ? lookAheadStartTimeSpeed : lookAheadEndTimeSpeed;
-
-        float gravity = playerMotor.finalSpeed.y;
-
-        Vector2 newLookAhead = Vector2.zero;
-
-        if(timeMovingCamera >= lookAheadTime)
-        {
-            horizontalLookAhead = dir * lookAheadDistance;
-        }
-
-        verticalLookAhead -= gravityScaleCurve.Evaluate(-gravity / gravityScale) * lookAheadDistance;
-
-        newLookAhead.x = horizontalLookAhead;
-        newLookAhead.y = verticalLookAhead;
-
-        lookAheadValue = Vector2.Lerp(lookAheadValue, newLookAhead, Time.deltaTime / time);
-
-    }
-
-    void CameraGoto() {
-
-        newPos = (Vector2)lookAt.transform.position + lookAheadValue;
 
     }
 
@@ -277,7 +258,6 @@ public class CameraController : MonoBehaviour
 
     ///<summary>Changes the transform to the camera look at</summary>
     public void LookAt(Transform newLookAt, float smoothTime = 0f) {
-        look_Smooth = smoothTime;
         lookAt = newLookAt.gameObject;
     }
 
@@ -285,7 +265,11 @@ public class CameraController : MonoBehaviour
     public void LookAtPlayer()
     {
         lookAt = GameManager.Player.gameObject;
-        look_Smooth = 0f;
+    }
+
+    ///<summary>Resets the camera size</summary>
+    public void ResetSize(float time = -1) {
+        Resize(originalSize, time);
     }
 
     ///<summary>Changes the size of the camera</summary>

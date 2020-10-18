@@ -98,17 +98,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a0a7957464e3f44ba9e8f95af60a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  room1:
-    size: {x: 28, y: 16}
-    origin: {x: -12, y: -9}
+  originalSize: 15
   lookAt: {fileID: 0}
-  size: 15
-  lookAheadDistance: 7
-  lookAheadStartTimeSpeed: 3
-  lookAheadEndTimeSpeed: 1
-  lookAheadTime: 3
-  gravityScale: 50
-  gravityScaleCurve:
+  lookVelocity: 15
+  boundariesTransitionTime: 1
+  boundariesTransitionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -123,8 +117,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
