@@ -37,6 +37,7 @@ public class PortalBoss_Animation : MonoBehaviour {
 
     public void FocusOnPortal() {
 
+        GameManager.Camera.SetIgnoreBoundaries(false);
         GameManager.Camera.LookAt(this.transform, 0.1f);
         GameManager.Player.receiveInput = false;
         GameManager.Player.ResetInput();
@@ -46,6 +47,7 @@ public class PortalBoss_Animation : MonoBehaviour {
 
     public void FocusOnEnd() {
 
+        GameManager.Camera.SetIgnoreBoundaries(true);
         GameManager.Camera.LookAt(endAnimator.transform, 0.1f);
         endAnimator.SetTrigger("Open");
 

@@ -18,16 +18,25 @@ public class RoomTrigger : MonoBehaviour {
 
     void Start() {
 
+        // Gets the player collider size
+        Vector2 psize = GameManager.Player.GetComponent<BoxCollider2D>().size;
+
         // Set Room origin
         this.room.origin = this.transform.position;
 
         // Create room trigger
         this.gameObject.layer = 10;
 
+        Vector2 triggerSize = Vector2.zero;
+        Vector2 triggerOffset = Vector2.zero;
+
+        triggerSize = room.tilesetSize - psize * 2;
+        triggerOffset = room.tilesetSize / 2;
+
         trigger = this.gameObject.AddComponent<BoxCollider2D>();
         trigger.isTrigger = true;
-        trigger.size = room.tilesetSize;
-        trigger.offset = room.tilesetSize / 2;
+        trigger.size = triggerSize;
+        trigger.offset = triggerOffset;
 
     }
 

@@ -233,7 +233,11 @@ public class PlayerController : MonoBehaviour {
 
     void WalkPerfomed(Vector2 dir, bool force = false) {
 
-        if((!canMove || !receiveInput) && !force) return;
+        if(!force)
+        {
+            if(!receiveInput) return;
+            if(!canMove) return;
+        }
 
         Vector2 input = dir;
         input.y = 0;

@@ -21,7 +21,7 @@ public class CheckPointManager : MonoBehaviour {
     }
 
     public void Load() {
-        GameManager.Entity.ClearAllEntities();
+        //GameManager.Entity.ClearAllEntities();
         GameManager.manager.RespawnPlayer(save.PlayerPosition);
         save.Load();
         onLoad?.Invoke();

@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
     [Header("Boundaries settings:")]
     [SerializeField] private float boundariesTransitionTime = 1f;
     [SerializeField] private AnimationCurve boundariesTransitionCurve;
+    [SerializeField] private bool ignoreBoundaries = false;
 
 
     // Script-side
@@ -135,6 +136,8 @@ public class CameraController : MonoBehaviour
 
     void Boundaries() {
 
+        if(ignoreBoundaries) return;
+
         newPos.x = Mathf.Clamp(newPos.x, curMinBoundaries.x, curMaxBoundaries.x);
         newPos.y = Mathf.Clamp(newPos.y, curMinBoundaries.y, curMaxBoundaries.y);
 
@@ -175,6 +178,10 @@ public class CameraController : MonoBehaviour
         newMaxBoundaries.x = originX + sizeX - horzExtent;
         newMaxBoundaries.y = originY + sizeY - vertExtent;
 
+        // Freezes the player
+        GameManager.Player.motor.SetFreeze(true);
+        GameManager.Player.receiveInput = false;
+
     }
 
         #region Calculatios
@@ -208,6 +215,10 @@ public class CameraController : MonoBehaviour
 
             curMaxBoundaries = Vector2.Lerp(oldMaxBoundaries, newMaxBoundaries, boundariesCurveValue);
             curMinBoundaries = Vector2.Lerp(oldMinBoundaries, newMinBoundaries, boundariesCurveValue);
+
+            if(boundariesTimer <= 0)
+                GameManager.Player.motor.SetFreeze(false);
+                GameManager.Player.receiveInput = true;
 
         }
 
@@ -255,6 +266,13 @@ public class CameraController : MonoBehaviour
         #endregion
 
         #region Public Functions
+
+
+    ///<summary>Changes the ignoreBoundaries bool</summary>
+    public void SetIgnoreBoundaries(bool ignore)
+    {
+        ignoreBoundaries = ignore;
+    }
 
     ///<summary>Changes the transform to the camera look at</summary>
     public void LookAt(Transform newLookAt, float smoothTime = 0f) {

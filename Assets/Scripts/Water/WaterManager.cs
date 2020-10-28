@@ -11,7 +11,7 @@ public class WaterManager : MonoBehaviour
     [Header("Reflection Sprite")]
     [SerializeField] private SpriteRenderer spriteRenderer = null;
 
-    private RenderTexture waterReflection;
+    public static RenderTexture waterReflection;
     public static WaterManager instance;
 
 
@@ -21,7 +21,8 @@ public class WaterManager : MonoBehaviour
     void LateUpdate() {
 
         if(waterReflectionCamera == null) return;
-
+        if(GameManager.Camera == null) return;
+ 
         waterReflectionCamera.backgroundColor = GameManager.Camera.Camera.backgroundColor;
         waterReflectionCamera.orthographicSize = GameManager.Camera.Camera.orthographicSize;
 
@@ -49,7 +50,7 @@ public class WaterManager : MonoBehaviour
         else
         {
             spriteRenderer.material.SetTexture("_Reflection", waterReflection);
-            Destroy(waterReflectionCamera);
+            Destroy(waterReflectionCamera.gameObject);
         }
 
 
