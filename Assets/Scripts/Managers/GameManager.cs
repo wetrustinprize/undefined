@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
             cameraInstance = Instantiate(CameraPrefab).GetComponent<CameraController>();
             Camera.LookAt(playerInstance.transform);
         }
-        if(entityInstance == null)
+        if(entityInstance == null && MapInfo != null)
         {
             if(MapInfo.TryGetComponent<EntityManager>(out EntityManager em))
             {

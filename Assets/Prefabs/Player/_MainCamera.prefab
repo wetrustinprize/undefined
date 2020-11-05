@@ -61,9 +61,9 @@ Camera:
   near clip plane: 0.3
   far clip plane: 9000
   field of view: 60
-  orthographic: 0
-  orthographic size: 12
-  m_Depth: 0
+  orthographic: 1
+  orthographic size: 15
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -98,30 +98,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a0a7957464e3f44ba9e8f95af60a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  originalSize: 15
   lookAt: {fileID: 0}
-  size: 30
-  lookAheadDistance: 7
-  lookAheadStartTimeSpeed: 3
-  lookAheadEndTimeSpeed: 1
-  lookAheadTime: 3
-  gravityScale: 50
-  gravityScaleCurve:
+  lookVelocity: 15
+  boundariesTransitionTime: 0.3
+  boundariesTransitionCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 1
+      time: 0.9
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -169,8 +166,7 @@ AudioSource:
   m_GameObject: {fileID: 7611345636058918857}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -6602275131285052795, guid: 2c629c049737c04459db712ba542a134,
-    type: 2}
+  OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1

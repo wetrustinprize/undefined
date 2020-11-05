@@ -416,10 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad2b57a277389a44bbd8b8555314fd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  motor: {fileID: 6774648264558360627}
-  attack: {fileID: 6774648264558360621}
-  jump: {fileID: 6774648264558360623}
-  alive: {fileID: 6774648264558360618}
   driftThreshold: 0.3
   dashThreshold: 2
   deathFocus: {fileID: 1967801071}
@@ -5635,15 +5631,9 @@ MonoBehaviour:
     quantity: 0
     itemObj: {fileID: 0}
   equipedWeapon:
-    quantity: 1
-    itemObj: {fileID: 11400000, guid: bdefe8f2580a0ce4b8118c3f3c422e7e, type: 2}
-  items:
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
-  - quantity: 12
-    itemObj: {fileID: 11400000, guid: ed4bce7a24a9d3e45a9ff2c2c9de7254, type: 2}
+    quantity: 0
+    itemObj: {fileID: 0}
+  items: []
   gold: 1000
   secretGold: 0
 --- !u!114 &2150744075976561101

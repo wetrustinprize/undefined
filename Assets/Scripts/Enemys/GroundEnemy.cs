@@ -11,7 +11,7 @@ public enum GroundEnemyBehaviour {
 [RequireComponent(typeof(Motor))]
 [RequireComponent(typeof(CollisionCheckModule))]
 [RequireComponent(typeof(VisionModule))]
-public class GroundEnemy : BaseAgent, IChunkEntity
+public class GroundEnemy : BaseAgent
 {
 
         #region Variables
@@ -34,9 +34,6 @@ public class GroundEnemy : BaseAgent, IChunkEntity
     bool dieNextFrame = false;
 
         #endregion
-
-    // Script side
-    bool outOfChunk = true;
 
         #endregion
 
@@ -69,19 +66,6 @@ public class GroundEnemy : BaseAgent, IChunkEntity
         if(dieNextFrame) Destroy(this.gameObject);
     }
 
-    public void OnChunk() {
-        outOfChunk = false;
-        myMotor.SetFreeze(false);
-    }
-
-    public void OutChunk() {
-        if(dieNextFrame) return;
-
-        outOfChunk = true;
-        myMotor.SetFreeze(true);
-        myMotor.ReceiveInput(Vector2.zero);
-    }
-
     void OnDamage(int damage, GameObject dealer) {
 
         if(dealer == player)
@@ -92,8 +76,6 @@ public class GroundEnemy : BaseAgent, IChunkEntity
     }
 
     void FixedUpdate() {
-
-        if(outOfChunk) return;
 
         switch(myBehaviour) {
             case GroundEnemyBehaviour.Idle:

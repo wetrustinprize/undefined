@@ -370,6 +370,7 @@ MonoBehaviour:
   laserAnimator: {fileID: 1121115280}
   laserLineRender: {fileID: 1121115283}
   hasAnimated: 0
+  animateFast: 0
 --- !u!1 &213039043361450157
 GameObject:
   m_ObjectHideFlags: 0
