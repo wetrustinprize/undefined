@@ -29,7 +29,7 @@ public class GroundEnemy : BaseAgent
     Attack attackModule;
     Alive aliveModule;
     GoldDropModule goldModule;
-    GameObject player;
+    GameObject player { get { return GameManager.Player.gameObject; } }
 
     bool dieNextFrame = false;
 
@@ -53,13 +53,6 @@ public class GroundEnemy : BaseAgent
         this.myMotor.onTouchWall += OnTouchWall;
         this.aliveModule.onDamage += OnDamage;
         this.aliveModule.onDie += () => { dieNextFrame = true; goldModule.Spawn(); };
-    }
-
-    void Start() {
-
-        // Getting player
-        this.player = GameManager.Player.gameObject;
-
     }
 
     void Update() {

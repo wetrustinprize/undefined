@@ -9,20 +9,13 @@ public class SoundsManager : MonoBehaviour
     [SerializeField] private AudioMixer mixer;
 
     // Script side
-    private AudioSource uiSource;
+    private AudioSource uiSource { get { return GameManager.Camera.GetComponent<AudioSource>(); } }
 
         #endregion
 
     void Awake() {
 
         DontDestroyOnLoad(this.gameObject);
-
-    }
-
-    void Start() {
-
-        // Gets the UI AudioSource
-        uiSource = CameraController.main.GetComponent<AudioSource>();
 
     }
 

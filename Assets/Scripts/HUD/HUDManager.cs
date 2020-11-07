@@ -148,12 +148,20 @@ public class HUDManager : MonoBehaviour
 
     }
 
-    public void HideAllHUD() {
-        UpdateHUD(HUDType.Inventory, true);
-        UpdateHUD(HUDType.Shop, true);
-        UpdateHUD(HUDType.Items, true);
-        UpdateHUD(HUDType.Health, true);
+    public void UpdateAllHUD(bool u) {
+        UpdateHUD(HUDType.Inventory, u);
+        UpdateHUD(HUDType.Shop, u);
+        UpdateHUD(HUDType.Items, u);
+        UpdateHUD(HUDType.Health, u);
     }
+
+    public void ShowAllHUD() {
+        UpdateAllHUD(false);
+    }
+
+    public void HideAllHUD() {
+        UpdateAllHUD(true);
+    }   
 
     public void ToggleInventory() {
         ToggleHUD(HUDType.Inventory);

@@ -38,6 +38,9 @@ public class PlayerController : MonoBehaviour {
     [Header("Inventory")]
     public bool canUseActiveItem = true;
 
+    [Header("Sprite")]
+    public SpriteRenderer playerSprite = null;
+
     // Script side variables
 
     // Components
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour {
     public PlayerInventory inventory { get; private set; }
     public PlayerInteraction interaction { get; private set; }
     public Alive alive { get; private set; }
+    public PlayerAnimator animator { get; private set; }
 
     // Script side
     private PlayerInput inputs;
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour {
         this.inventory = GetComponent<PlayerInventory>();
         this.interaction = GetComponent<PlayerInteraction>();
         this.alive = GetComponent<Alive>();
+        this.animator = this.playerSprite.GetComponent<PlayerAnimator>();
 
         inputs = new PlayerInput();
 
@@ -92,23 +97,7 @@ public class PlayerController : MonoBehaviour {
         if(holdingAttack) HoldingAttackTick();
         if(Input.GetKeyDown(KeyCode.K)) { alive.TakeDamage(100, this.gameObject); }
     }
-
-    void Die() {
-        GameManager.HUD.HideAllHUD();
-        GameManager.HUD.canOpenInventory = false;
-
-        this.receiveInput = false;
-
-        this.alive.CanReceiveDamage = false;
-        this.alive.CanReceiveHeal = false;
-
-        this.motor.SetFreeze(true);
-    }
-
     void Start() {
-
-        // Death
-        alive.onDie += Die;
 
         // Movement
         inputs.Player.Move.performed += cb => { 

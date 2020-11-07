@@ -61,7 +61,6 @@ public class PlayerAnimator : MonoBehaviour
         
         // Setup the alive events
         alive.onDamage += (dmg, dealer) => { DamageEffect(); };
-        alive.onDie += () => { DeathAnimation(); };
 
         // Setup the jump event
         jump.OnWallJump += WallJumpEffect;
@@ -73,7 +72,7 @@ public class PlayerAnimator : MonoBehaviour
 
         #region Alive Events
 
-    private void DeathAnimation() {
+    public void DeathAnimation() {
         animator.SetTrigger("Death");
     }
 
@@ -163,12 +162,13 @@ public class PlayerAnimator : MonoBehaviour
                 sprite.sortingLayerName = "Details";
                 sprite.sortingOrder = 999;
 
-                GameManager.Camera.Resize(20, 0.05f);
+                GameManager.Camera.SetIgnoreBoundaries(true);
+                GameManager.Camera.Resize(10, 0.05f);
                 GameManager.Camera.Shake(5, 5, 0.3f, Vector2.one);
                 break;
             
             case 1:
-                GameManager.Camera.Resize(10, 2f);
+                GameManager.Camera.Resize(7, 2f);
                 GameManager.Camera.LookAt(deathFocus, 1f);
                 GameManager.HUD.UpdateHUD(HUDType.GameOver, false);
                 break;

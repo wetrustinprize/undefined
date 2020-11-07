@@ -15,12 +15,11 @@ public class SpriteScreenParallax : MonoBehaviour
 
     void Start() {
         startPos = (Vector2)transform.position;
-        cam = GameManager.Camera.transform;
     }
 
     void LateUpdate() {
 
-        Vector2 pos = cam.transform.position * -effect;
+        Vector2 pos = GameManager.Camera.transform.position * -effect;
 
         transform.position = new Vector2(
             startPos.x + pos.x,
