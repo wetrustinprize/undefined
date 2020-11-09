@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class PortalBoss_Animation : MonoBehaviour {
 
@@ -60,6 +61,13 @@ public class PortalBoss_Animation : MonoBehaviour {
         this.laserLineRender.SetPositions(pos);
         this.laserAnimator.SetFloat("PrepSpeed", 1);
         this.laserAnimator.SetTrigger("Shot");
+
+    }
+
+    IEnumerator PortalOpen() {
+
+        yield return new WaitForSeconds(0.25f);
+        this.endAnimator.SetTrigger("Open");
 
     }
 

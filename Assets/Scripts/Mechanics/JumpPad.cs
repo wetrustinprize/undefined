@@ -9,6 +9,9 @@ public class JumpPad : MonoBehaviour
     [SerializeField] private ForceTemplate forceToApply = null;
     [SerializeField] private bool useAutoTime = true;
 
+    [Space()]
+    [SerializeField] private Animator jumppad_animator = null;
+
         #endregion
 
     void ApplyForce(Collider2D col) {
@@ -20,6 +23,7 @@ public class JumpPad : MonoBehaviour
 
             motor.RemoveForce("jump");
             motor.AddForce((Force)forceToApply, false, true, true, true);
+            jumppad_animator.SetTrigger("Push");
 
         }
 
