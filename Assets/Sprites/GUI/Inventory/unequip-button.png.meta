@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 8b869f02732a31d469c9fd0363b3c6b8
+guid: a65f4006421b1b74a8ebf2b59ba8c23f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -921400536022659248
-    second: equip-button_0
+      213: -4559809777419946075
+    second: unequip-button_0
   - first:
-      213: -2212261461328366953
-    second: equip-button_1
+      213: -4813555541898135850
+    second: unequip-button_1
   - first:
-      213: -2757947113658629313
-    second: equip-button_2
+      213: -5306102044255660215
+    second: unequip-button_2
   externalObjects: {}
   serializedVersion: 10
   mipmaps:
@@ -95,64 +95,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: equip-button_0
+      name: unequip-button_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 35
+        width: 48
         height: 11
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 05fc38228178633f0800000000000000
-      internalID: -921400536022659248
+      spriteID: 5a7f7859a2d48b0c0800000000000000
+      internalID: -4559809777419946075
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: equip-button_1
+      name: unequip-button_1
       rect:
         serializedVersion: 2
-        x: 35
+        x: 48
         y: 0
-        width: 35
+        width: 48
         height: 11
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7927c370ce77c41e0800000000000000
-      internalID: -2212261461328366953
+      spriteID: 6d67c8aecb0d23db0800000000000000
+      internalID: -4813555541898135850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: equip-button_2
+      name: unequip-button_2
       rect:
         serializedVersion: 2
-        x: 70
+        x: 96
         y: 0
-        width: 35
+        width: 48
         height: 11
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f33401d56bdc9b9d0800000000000000
-      internalID: -2757947113658629313
+      spriteID: 947da2ebd40fc56b0800000000000000
+      internalID: -5306102044255660215
       vertices: []
       indices: 
       edges: []

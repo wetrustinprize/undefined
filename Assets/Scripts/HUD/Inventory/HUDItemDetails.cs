@@ -13,7 +13,9 @@ public class HUDItemDetails : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI itemName = null;
     [SerializeField] private TextMeshProUGUI itemDescription = null;
     [SerializeField] private TextMeshProUGUI itemStats = null;
-    [SerializeField] private TextMeshProUGUI buttonText = null;
+
+    [SerializeField] private Button itemEquipButton = null;
+    [SerializeField] private Button itemUnEquipButton = null;
 
     // Script side
     private CanvasGroup group;
@@ -50,7 +52,9 @@ public class HUDItemDetails : MonoBehaviour {
             itemName.text = item.itemName;
             itemDescription.text = $"<i>{item.description}</i>";
             itemStats.text = $"<b>Stats:</b>\n{item.statsDescription}";
-            buttonText.text = equipedItem ? "Unequip" : "Equip";
+
+            itemEquipButton.gameObject.SetActive(!equipedItem);
+            itemUnEquipButton.gameObject.SetActive(equipedItem);
 
             group.interactable = true;
             group.alpha = 1f;
