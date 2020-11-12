@@ -32,22 +32,12 @@ public class HUDEquipedItems : MonoBehaviour
 
         void Refresh() {
 
-                if(myInventory.PassiveItem.itemObj != null)
-                        passiveIcon.sprite = myInventory.PassiveItem.itemObj.icon;
-                else
-                        passiveIcon.sprite = null;
-
-
-                if(myInventory.ActiveItem.itemObj != null)
-                {                        
-                        activeIcon.sprite = myInventory.ActiveItem.itemObj.icon;
-                        passiveQuantity.text = $"x{myInventory.ActiveItem.quantity}";
-                }
-                else
-                {
-                        activeIcon.sprite = null;
-                        passiveQuantity.text = $"";
-                }
+                passiveIcon.sprite = myInventory.PassiveItem.itemObj != null ? myInventory.PassiveItem.itemObj.icon : null;
+                passiveIcon.color = new Color(1,1,1, myInventory.PassiveItem.itemObj != null ? 1 : 0);
+                   
+                activeIcon.sprite = myInventory.ActiveItem.itemObj != null ? myInventory.ActiveItem.itemObj.icon : null;
+                activeIcon.color = new Color(1,1,1, myInventory.ActiveItem.itemObj != null ? 1 : 0);
+                passiveQuantity.text = myInventory.ActiveItem.itemObj != null ? $"x{myInventory.ActiveItem.quantity}" : "";
 
         }
 

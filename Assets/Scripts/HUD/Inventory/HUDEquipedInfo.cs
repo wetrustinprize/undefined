@@ -22,6 +22,7 @@ public class HUDEquipedInfo : MonoBehaviour {
 
     void Start() {
 
+        equipedSprite.color = new Color(1,1,1, 0);
         equipedSprite.sprite = null;
         selectButton.interactable = false;
 
@@ -32,6 +33,8 @@ public class HUDEquipedInfo : MonoBehaviour {
     }
 
     public void SetNewEquip(ItemObject itemToEquip = null, int quantity = 0) {
+
+        equipedSprite.color = new Color(1,1,1, itemToEquip == null ? 0 : 1);
 
         equipedSprite.sprite = itemToEquip != null ? itemToEquip.icon : null;
         selectButton.interactable = itemToEquip != null;

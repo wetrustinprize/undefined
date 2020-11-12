@@ -33,7 +33,8 @@ MonoBehaviour:
     - "Essas botas... S\xE3o iguais as suas? S\xF3 que tem adesivos.\nN\xE3o, pera,
       elas parecem mais tecnol\xF3gicas."
     sellingItem: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
-  - value: 0
+  - value: 1
     coinType: 0
-    sellerDescriptions: []
-    sellingItem: {fileID: 0}
+    sellerDescriptions:
+    - Eu tomo isso o tempo todo! Sempre me machuco nas pedras...
+    sellingItem: {fileID: 11400000, guid: ed4bce7a24a9d3e45a9ff2c2c9de7254, type: 2}

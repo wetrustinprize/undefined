@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour {
         #region Variables
 
     [SerializeField] private Interactible curInteractible = null;
+    [SerializeField] private Animator iteractibleAnimator = null;
 
         #endregion
 
@@ -18,18 +19,25 @@ public class PlayerInteraction : MonoBehaviour {
     }
 
     public void SetInteractible(Interactible newInteractible, bool force = false) {
-
-        if(force || curInteractible == null) curInteractible = newInteractible;
         
+        if(curInteractible == null)
+        {
+            curInteractible = newInteractible;
+            curInteractible?.SetSelect(true);
+            iteractibleAnimator.SetBool("Show", true);
+            return;
+        }
+
         float curDist = Vector2.Distance(this.transform.position, curInteractible.transform.position);
         float newDist = Vector2.Distance(this.transform.position, newInteractible.transform.position);
 
-        if(newDist < curDist) {
+        if(newDist < curDist || force) {
 
-            curInteractible.SetSelect(false);
-            newInteractible.SetSelect(true);
+            curInteractible?.SetSelect(false);
 
             curInteractible = newInteractible;
+            curInteractible?.SetSelect(true);
+            iteractibleAnimator.SetBool("Show", true);
 
         }
 
@@ -39,7 +47,11 @@ public class PlayerInteraction : MonoBehaviour {
 
         interactible.SetSelect(false);
         
-        if(curInteractible == interactible) curInteractible = null;
+        if(curInteractible == interactible) 
+        {
+            curInteractible = null;
+            iteractibleAnimator.SetBool("Show", false);
+        }
 
     }
 

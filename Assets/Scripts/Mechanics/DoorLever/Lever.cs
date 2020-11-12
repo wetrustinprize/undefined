@@ -9,9 +9,8 @@ public class Lever : MonoBehaviour
     [SerializeField] private Color leverColor = Color.white;
     [SerializeField] private SpriteRenderer leverSprite = null;
 
-    [Header("Lever Debug Sprites")]    
-    [SerializeField] private Sprite leverOn = null;
-    [SerializeField] private Sprite leverOff = null;
+    [Header("Lever Animator")]    
+    [SerializeField] private Animator leverAnimator;
 
     [Header("Doors")]
     [SerializeField] private Door[] doorsToActivate = null;
@@ -35,8 +34,8 @@ public class Lever : MonoBehaviour
 
     public void Toggle() {
 
-        leverSprite.sprite = spriteOn ? leverOff : leverOn;
         spriteOn = !spriteOn;
+        leverAnimator.SetBool("On", spriteOn);
 
         foreach(Door d in doorsToActivate)
         {
