@@ -100,8 +100,6 @@ public class HUDShop : MonoBehaviour {
 
             ItemObject sellingItem = myDetails.sellingItems[i].sellingItem;
 
-            print(sellingItem);
-
             // Check if the player already have this passive item.
             // Passive items have a limit of 1 in inventory
             if(sellingItem.type == ItemType.Passive) {
