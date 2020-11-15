@@ -20,4 +20,4 @@ MonoBehaviour:
   onUnequipSFX: {fileID: 0}
   rainbowEffect: {fileID: 3446654259952602745, guid: 87a8771f21f81df4d8f2871fbdccc81b,
     type: 3}
-  aditionalWallJumpSpeed: {x: 12, y: 12}
+  aditionalWallJumpSpeed: {x: 6, y: 6}

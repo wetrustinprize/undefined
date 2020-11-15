@@ -21,6 +21,10 @@ public class ExplosionBehaviour : MonoBehaviour
         // Gets the attack component
         attack = GetComponent<Attack>();
 
+        // Pos
+        Vector3 pos = transform.position;
+        pos.z = 0;
+
         // Explodes
         foreach(Collider2D col in Physics2D.OverlapCircleAll(transform.position, explosionRadius, raycastLayers))
         {

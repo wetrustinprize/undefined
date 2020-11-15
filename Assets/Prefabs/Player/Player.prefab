@@ -5738,15 +5738,7 @@ MonoBehaviour:
   equipedWeapon:
     quantity: 0
     itemObj: {fileID: 0}
-  items:
-  - quantity: 15
-    itemObj: {fileID: 11400000, guid: ed4bce7a24a9d3e45a9ff2c2c9de7254, type: 2}
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: 75ecc70af5ed3b9458c3a8c7d8a0a5e1, type: 2}
-  - quantity: 1
-    itemObj: {fileID: 11400000, guid: bdefe8f2580a0ce4b8118c3f3c422e7e, type: 2}
+  items: []
   gold: 0
   secretGold: 0
 --- !u!114 &2150744075976561101

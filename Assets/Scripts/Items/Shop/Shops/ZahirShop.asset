@@ -19,7 +19,7 @@ MonoBehaviour:
   noItemsMessage:
   - "Voc\xEA acabou com meu estoque!"
   sellingItems:
-  - value: 4
+  - value: 1
     coinType: 1
     sellerDescriptions:
     - "Achei isso jogador bem no fundo dessa caverna.\nParece m\xE1gico, e ao mesmo
@@ -27,7 +27,7 @@ MonoBehaviour:
     - "O material desse escudo \xE9 bem forte, parece ser \xF3timo para se defender
       desses slimes idiotas."
     sellingItem: {fileID: 11400000, guid: 97088af0ca50b8c4f8575fbd88d23c40, type: 2}
-  - value: 2
+  - value: 3
     coinType: 1
     sellerDescriptions:
     - "Essas botas... S\xE3o iguais as suas? S\xF3 que tem adesivos.\nN\xE3o, pera,

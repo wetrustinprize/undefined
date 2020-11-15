@@ -30,8 +30,12 @@ public class PlayerInventory : MonoBehaviour {
     public InventoryItem ActiveItem { get { return equipedActive; } }
     public InventoryItem PassiveItem { get { return equipedPassive; } }
     public InventoryItem WeaponItem { get { return equipedWeapon; } }
-    public int Gold { get { return gold; } set { AddGold(value); } }
-    public int SecretGold { get { return secretGold; } set { AddGold(value, ShopCoin.Secret); } }
+    public int Gold { get { return gold; } set { 
+        SetGold(value); 
+    } }
+    public int SecretGold { get { return secretGold; } set { 
+        SetGold(value, ShopCoin.Secret); 
+    } }
 
         #endregion
 
@@ -74,17 +78,31 @@ public class PlayerInventory : MonoBehaviour {
 
     public void AddGold(int quantity, ShopCoin coinType = ShopCoin.Gold)
     {
+        switch(coinType)
+        {
+            case ShopCoin.Gold:
+                gold += quantity;
+                break;
+            
+            case ShopCoin.Secret:
+                secretGold += quantity;
+                break;
+        }
+    }
+
+    public void SetGold(int quantity, ShopCoin coinType = ShopCoin.Gold)
+    {
         
         switch(coinType)
         {
             case ShopCoin.Gold:
                 onChangeGold?.Invoke(quantity);
-                gold += quantity;
+                gold = quantity;
                 break;
             
             case ShopCoin.Secret:
                 onChangeSecretGold?.Invoke(quantity);
-                secretGold += quantity;
+                secretGold = quantity;
                 break;
         }
 
@@ -178,7 +196,6 @@ public class PlayerInventory : MonoBehaviour {
 
         if(equipedActive.itemObj == item) {
             equipedActive.quantity += quantity;
-            Debug.Log($"Equiped active is the same as this new item. ({item.name}) (total: {equipedActive.quantity})");
             return;
         }
 
@@ -189,16 +206,13 @@ public class PlayerInventory : MonoBehaviour {
             InventoryItem i = items[itemIndex];
 
             if(i.itemObj.type == ItemType.Passive) {
-                Debug.Log($"Found the item in inventory, but passive items cannot be stacked. ({item.name})");
                 return;
             }
 
             i.quantity += quantity;
-            Debug.Log($"Found the item in inventory, stacking. ({item.name}) (total: {i.quantity})");
             return;
         }
 
-        Debug.Log($"Didn't found the item in inventory, creating new one. ({item.name})");
         items.Add(new InventoryItem(item, quantity));
 
     }

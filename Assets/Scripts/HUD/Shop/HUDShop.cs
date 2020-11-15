@@ -72,6 +72,9 @@ public class HUDShop : MonoBehaviour {
 
     void RefreshShop() {
 
+        itemDetails.UpdatePlayerGold(inventory.Gold, ShopCoin.Gold);
+        itemDetails.UpdatePlayerGold(inventory.SecretGold, ShopCoin.Secret);
+        
         // Deletes all item prefabs inside the shop items panel
         for(int i = 0; i < itemsTransform.childCount; i++) {
 
@@ -107,24 +110,32 @@ public class HUDShop : MonoBehaviour {
                     deletedItems.Add(i);
                     continue;
                 }
+
+                if(inventory.PassiveItem.itemObj = sellingItem) {
+                    deletedItems.Add(i);
+                    continue;
+                }
             }
 
             // Creates the prefabs
             GameObject itemObj = Instantiate(itemsPrefab, itemsTransform);
             itemObj.GetComponent<HUDShopItemInfo>().Setup(sellingItem, i, this);
             totalItems++;
-            
         }
-
+        
         emptyShop = totalItems <= 0;
-
     }
+
 
     ///<summary>Shows a specific item that the shop sells</summary>
     ///<param name="shopListIndex">The index of the item in ShopDetails</param>
     public void ShowSelectedItem(int shopListIndex) {
 
         selectedItem = shopListIndex;
+
+        itemDetails.UpdatePlayerGold(inventory.Gold, ShopCoin.Gold);
+        itemDetails.UpdatePlayerGold(inventory.SecretGold, ShopCoin.Secret);
+
         itemDetails.ShowItem(myDetails.sellingItems[shopListIndex]);
 
     }

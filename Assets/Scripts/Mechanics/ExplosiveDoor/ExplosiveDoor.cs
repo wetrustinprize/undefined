@@ -24,7 +24,6 @@ public class ExplosiveDoor : MonoBehaviour
     }
 
     void CheckIsExplosion(int damage, GameObject dealer) {
-        Debug.Log(dealer.tag);
         if(dealer.tag == "PlayerExplosion")
         {
             Destroy(this.gameObject);

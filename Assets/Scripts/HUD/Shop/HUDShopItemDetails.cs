@@ -37,19 +37,15 @@ public class HUDShopItemDetails : MonoBehaviour {
         {
             case ShopCoin.Gold:
                 yourGold.text = quantity.ToString();
+                lastGold = quantity;
                 break;
             
             case ShopCoin.Secret:
                 yourSecret.text = quantity.ToString();
+                lastSecretGold = quantity;
                 break;
 
         }
-    }
-
-    public void BlankAll() {
-
-
-
     }
 
     public void ShowItem(ItemShop item) {
