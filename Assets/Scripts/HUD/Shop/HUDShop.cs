@@ -111,7 +111,7 @@ public class HUDShop : MonoBehaviour {
                     continue;
                 }
 
-                if(inventory.PassiveItem.itemObj = sellingItem) {
+                if(inventory.PassiveItem.itemObj == sellingItem) {
                     deletedItems.Add(i);
                     continue;
                 }
